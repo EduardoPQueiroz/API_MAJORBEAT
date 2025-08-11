@@ -58,4 +58,7 @@ public class Musico{
     @Enumerated
     private TipoMusico tipoMusico;
 
+    @Column
+    private int QtdMembros;
+
 }

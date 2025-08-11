@@ -3,25 +3,22 @@ package br.com.harmoniar.MajorBeatAPI.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.type.descriptor.java.LocalDateTimeJavaType;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table
 @Getter
 @Setter
-public class Candidatura {
-
+@Entity
+@Table
+public class Disponibilidade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private int id;
 
     @Column
-    private LocalDateTime dataEnvio;
+    private LocalDateTime inicioDispo;
 
     @Column
-    private String status;
-    
+    private LocalDateTime fimDispo;
 }
