@@ -5,26 +5,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
-@Getter
-@Setter
 @Entity
 @Table
-public class Mensagem {
-
-
+@Getter
+@Setter
+public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
 
     @Column
-    private String texto;
-
-    @Column
-    private String status;
-
-    @Column
-    private LocalDateTime dataEnvio;
+    private LocalDateTime dataInicio;
 }

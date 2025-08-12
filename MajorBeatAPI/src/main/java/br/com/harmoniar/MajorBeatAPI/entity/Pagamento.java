@@ -5,26 +5,27 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
+@Table
+@Entity
 @Getter
 @Setter
-@Entity
-@Table
-public class Mensagem {
-
+public class Pagamento {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String texto;
+    private float valor;
 
     @Column
-    private String status;
+    private LocalDateTime dataPagamento;
 
     @Column
-    private LocalDateTime dataEnvio;
+    private String formaPagamento;
+
+    @Column
+    private boolean status;
 }

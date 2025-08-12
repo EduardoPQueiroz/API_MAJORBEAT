@@ -16,7 +16,7 @@ public class Musico{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private int id;
+    private Long id;
 
     @Column
     private String nome;
@@ -58,7 +58,5 @@ public class Musico{
     @Enumerated
     private TipoMusico tipoMusico;
 
-    @Column
-    private int QtdMembros;
 
 }
