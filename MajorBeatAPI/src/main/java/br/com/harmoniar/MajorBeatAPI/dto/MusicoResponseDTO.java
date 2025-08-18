@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record MusicoResponseDTO(
-        Long id,
+        Long idMusico,
         String nome,
         String apelido,
         String email,

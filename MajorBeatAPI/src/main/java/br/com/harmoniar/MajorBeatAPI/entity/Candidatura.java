@@ -16,7 +16,7 @@ public class Candidatura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private Long id;
+    private Long idCandidatura;
 
     @Column
     private LocalDateTime dataEnvio;

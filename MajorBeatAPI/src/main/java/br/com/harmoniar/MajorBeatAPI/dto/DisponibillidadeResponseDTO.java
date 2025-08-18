@@ -3,7 +3,7 @@ package br.com.harmoniar.MajorBeatAPI.dto;
 import java.time.LocalDateTime;
 
 public record DisponibillidadeResponseDTO(
-        Long id,
+        Long idDisponibilidade,
         LocalDateTime inicioDispo,
         LocalDateTime fimDispo
 ) {

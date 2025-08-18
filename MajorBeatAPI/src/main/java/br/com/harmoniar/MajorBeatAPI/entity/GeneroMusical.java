@@ -13,7 +13,7 @@ public class GeneroMusical {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private Long id;
+    private Long idGeneroMusical;
 
     @Enumerated
     @Column

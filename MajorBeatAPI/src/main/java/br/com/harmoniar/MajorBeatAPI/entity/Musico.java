@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Table
 @Entity
@@ -16,7 +17,7 @@ public class Musico{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private Long id;
+    private Long idMusico;
 
     @Column
     private String nome;
@@ -58,5 +59,29 @@ public class Musico{
     @Enumerated
     private TipoMusico tipoMusico;
 
+    @ManyToMany
+    @JoinTable(name = "MusicoEvento",
+            joinColumns = @JoinColumn(name = "idMusico"),
+            inverseJoinColumns = @JoinColumn(name = "idEvento")
+    )
+    private List<Evento> idEvento;
+
+    @ManyToMany
+    @JoinTable(name = "InstrumentoMusico",
+    joinColumns = @JoinColumn(name = "idMusico"),
+    inverseJoinColumns = @JoinColumn(name = "idInstrumento"))
+    private List<Instrumento> idInstrumento;
+
+    @ManyToMany
+    @JoinTable(name = "DisponibilidadeMusico",
+    joinColumns = @JoinColumn(name = "idMusico"),
+    inverseJoinColumns = @JoinColumn(name = "idDisponibilidade"))
+    private List<Disponibilidade> idDisponibilidade;
+
+    @ManyToMany
+    @JoinTable(name = "GeneroMusicalMusico",
+    joinColumns = @JoinColumn(name = "idMusico"),
+    inverseJoinColumns = @JoinColumn(name = "idGeneroMusical"))
+    private List<GeneroMusical> idGeneroMusical;
 
 }

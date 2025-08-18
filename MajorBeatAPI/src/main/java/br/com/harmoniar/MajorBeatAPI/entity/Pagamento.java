@@ -15,7 +15,7 @@ public class Pagamento {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idPagamento;
 
     @Column
     private float valor;

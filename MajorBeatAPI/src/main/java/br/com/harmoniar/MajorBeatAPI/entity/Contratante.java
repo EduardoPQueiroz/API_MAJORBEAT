@@ -15,7 +15,7 @@ public class Contratante {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idContratante;
 
     @Column
     private String nome;

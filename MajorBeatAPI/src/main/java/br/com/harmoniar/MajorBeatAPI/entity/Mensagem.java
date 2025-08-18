@@ -17,7 +17,7 @@ public class Mensagem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private Long id;
+    private Long idMensagem;
 
     @Column
     private String texto;
