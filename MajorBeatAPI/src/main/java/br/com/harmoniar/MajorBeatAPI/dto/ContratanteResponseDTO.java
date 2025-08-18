@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record ContratanteResponseDTO(
-        Long id,
+        Long idContratante,
         String nome,
         String senha,
         String telefone,

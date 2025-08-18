@@ -14,7 +14,7 @@ public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private Long id;
+    private Long idChat;
 
     @Column
     private LocalDateTime dataInicio;

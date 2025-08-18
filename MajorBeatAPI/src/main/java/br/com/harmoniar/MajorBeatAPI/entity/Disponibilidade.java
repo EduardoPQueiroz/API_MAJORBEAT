@@ -14,7 +14,7 @@ public class Disponibilidade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private Long id;
+    private Long idDisponibilidade;
 
     @Column
     private LocalDateTime inicioDispo;

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public record MensagemResponseDTO(
-        Long id,
+        Long idMensagem,
         String texto,
         String status,
         LocalDateTime dataEnvio,
