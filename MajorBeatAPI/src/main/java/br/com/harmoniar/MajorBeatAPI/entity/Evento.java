@@ -1,5 +1,7 @@
 package br.com.harmoniar.MajorBeatAPI.entity;
 
+import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
+import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
 import br.com.harmoniar.MajorBeatAPI.enums.StatusEvento;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import jakarta.persistence.*;
@@ -50,16 +52,11 @@ public class Evento {
     @Column
     private String titulo;
 
-    @ManyToMany
-    @JoinTable(name = "InstrumentoEvento",
-    joinColumns = @JoinColumn(name = "idEvento"),
-    inverseJoinColumns = @JoinColumn(name = "idInstrumento"))
-    private List<Instrumento> idInstrumento;
+    @Column
+    @Enumerated
+    private NomeInstrumento nomeInstrumento;
 
-    @ManyToMany
-    @JoinTable(name = "GeneroMusicalEvento",
-    joinColumns = @JoinColumn(name = "idEvento"),
-    inverseJoinColumns = @JoinColumn(name = "idGeneroMusical"))
-    private List<GeneroMusical> idGeneroMusical;
-
+    @Column
+    @Enumerated
+    private NomeGenero nomeGenero;
 }
