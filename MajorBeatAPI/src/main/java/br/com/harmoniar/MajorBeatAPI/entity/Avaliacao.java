@@ -17,7 +17,7 @@ public class Avaliacao {
     private Long idAvaliacao;
 
     @Column
-    private int nota;
+    private Long nota;
 
     @Column
     private String comentario;

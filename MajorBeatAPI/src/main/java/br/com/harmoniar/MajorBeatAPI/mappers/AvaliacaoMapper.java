@@ -11,4 +11,7 @@ import java.util.List;
 public interface AvaliacaoMapper {
     AvaliacaoMapper INSTANCE = Mappers.getMapper(AvaliacaoMapper.class);
     List<AvaliacaoResponseDTO> toResponseDTOList(List<Avaliacao> avaliacoes);
+
+    Avaliacao toEntity(AvaliacaoResponseDTO dto);
+    AvaliacaoResponseDTO toDto(Avaliacao avaliacao);
 }
