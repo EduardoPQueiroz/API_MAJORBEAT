@@ -7,6 +7,9 @@ import br.com.harmoniar.MajorBeatAPI.repositories.AvaliacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class AvaliacaoServices {
 
@@ -24,5 +27,14 @@ public class AvaliacaoServices {
         Avaliacao entity = mapper.toEntity(dto);
         Avaliacao saved = repository.save(entity);
         return mapper.toDto(saved);
+    }
+
+    public List<AvaliacaoResponseDTO> listarAvaliacoes(){
+        return mapper.toResponseDTOList(repository.findAll());
+    }
+
+    public AvaliacaoResponseDTO getAvaliacaoById(Long id){
+        Optional<Avaliacao> entity = repository.findById(id);
+        return mapper.toDto(entity.orElse(null));
     }
 }
