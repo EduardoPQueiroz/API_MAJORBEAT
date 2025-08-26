@@ -69,10 +69,8 @@ public class Musico{
     @Enumerated
     private NomeGenero nomeGenero;
 
-    @ManyToMany
-    @JoinTable(name = "DisponibilidadeMusico",
-    joinColumns = @JoinColumn(name = "idMusico"),
-    inverseJoinColumns = @JoinColumn(name = "idDisponibilidade"))
-    private List<Disponibilidade> idDisponibilidade;
+    @ManyToOne
+    @JoinColumn
+    private Disponibilidade idDisponibilidade;
 
 }

@@ -22,4 +22,7 @@ public class ChatServices {
     public List<ChatResponseDTO> listarChats(){
         return mapper.toResponseDTOList(repository.findAll());
     }
+
+    
+
 }

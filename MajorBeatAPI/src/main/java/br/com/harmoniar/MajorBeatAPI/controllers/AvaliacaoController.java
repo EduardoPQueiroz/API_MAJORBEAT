@@ -28,10 +28,10 @@ public class AvaliacaoController {
     public ResponseEntity<AvaliacaoResponseDTO> getAvaliacaoById(@PathVariable Long id){
         var existe = services.getAvaliacaoById(id);
         if(existe != null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.ok(existe);
         }
         else{
-            return ResponseEntity.ok(existe);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

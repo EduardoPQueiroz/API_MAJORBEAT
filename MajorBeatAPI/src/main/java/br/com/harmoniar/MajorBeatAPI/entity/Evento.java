@@ -59,4 +59,17 @@ public class Evento {
     @Column
     @Enumerated
     private NomeGenero nomeGenero;
+
+    @JoinColumn
+    @OneToMany
+    private Musico musico;
+
+    @OneToMany
+    private Contratante contratante;
+
+    @ManyToMany
+    @JoinTable(name = "AvaliacaoEvento",
+    joinColumns = @JoinColumn(name = "idEvento"),
+    inverseJoinColumns = @JoinColumn(name = "idAvaliacao"))
+    private List<Avaliacao> avaliacoes;
 }

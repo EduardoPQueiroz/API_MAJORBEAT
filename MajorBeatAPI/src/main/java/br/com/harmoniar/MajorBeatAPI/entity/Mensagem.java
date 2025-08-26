@@ -27,4 +27,8 @@ public class Mensagem {
 
     @Column
     private LocalDateTime dataEnvio;
+
+    @JoinColumn
+    @ManyToOne
+    private Chat chat;
 }
