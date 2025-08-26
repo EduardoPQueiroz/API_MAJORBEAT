@@ -1,6 +1,7 @@
 package br.com.harmoniar.MajorBeatAPI.entity;
 
 import jakarta.persistence.*;
+import jdk.jfr.Event;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,4 +19,8 @@ public class Chat {
 
     @Column
     private LocalDateTime dataInicio;
+
+    @JoinColumn
+    @ManyToOne
+    private Evento idEvento;
 }

@@ -26,9 +26,17 @@ public class Avaliacao {
     private LocalDateTime data;
 
     @Column
-    private String avaliador;
+    private Long idAvaliador;
 
     @Column
-    private String recebedor;
+    private Long idRecebedor;
+
+    @JoinColumn
+    @ManyToOne
+    private Musico musico;
+
+    @JoinColumn
+    @ManyToOne
+    private Contratante contratante;
 
 }

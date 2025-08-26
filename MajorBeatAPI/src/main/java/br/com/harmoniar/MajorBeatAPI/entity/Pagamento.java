@@ -28,4 +28,8 @@ public class Pagamento {
 
     @Column
     private boolean status;
+
+    @JoinColumn
+    @ManyToOne
+    private Evento evento;
 }
