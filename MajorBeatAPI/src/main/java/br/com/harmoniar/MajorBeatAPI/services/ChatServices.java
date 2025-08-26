@@ -1,10 +1,10 @@
 package br.com.harmoniar.MajorBeatAPI.services;
 
 import br.com.harmoniar.MajorBeatAPI.dto.ChatResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.entity.Chat;
 import br.com.harmoniar.MajorBeatAPI.mappers.ChatMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +23,9 @@ public class ChatServices {
         return mapper.toResponseDTOList(repository.findAll());
     }
 
-    
+    public List<ChatResponseDTO> listarChatsPorId(Long id){
+        List<Chat> chats = repository.findAllByUserId(id);
+        return mapper.toResponseDTOList(chats);
+    }
 
 }
