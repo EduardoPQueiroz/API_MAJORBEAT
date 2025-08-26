@@ -17,7 +17,7 @@ public class ChatController {
     @Autowired
     private ChatServices services;
 
-    @GetMapping("/{id}")
+    @GetMapping
     public List<ChatResponseDTO> listarChats(){
         return services.listarChats();
     }
