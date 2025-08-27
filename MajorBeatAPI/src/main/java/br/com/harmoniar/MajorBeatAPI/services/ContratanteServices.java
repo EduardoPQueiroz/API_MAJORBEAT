@@ -2,6 +2,7 @@ package br.com.harmoniar.MajorBeatAPI.services;
 
 import br.com.harmoniar.MajorBeatAPI.dto.ContratanteResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
+import br.com.harmoniar.MajorBeatAPI.entity.Evento;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoContratante;
 import br.com.harmoniar.MajorBeatAPI.mappers.ContratanteMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.ContratanteRepository;
@@ -68,9 +69,6 @@ public class ContratanteServices {
     public ContratanteResponseDTO cadastrarContratante(ContratanteResponseDTO dto){
 
         Contratante entity = mapper.toEntity(dto);
-        if (entity.getNomeContratante().equals(repository.getByNome(entity.getNomeContratante()))){
-            throw new IllegalArgumentException("Nome de usuário já existente");
-        }
         if (!entity.getTelefone().matches("\\d{10,11}")){
             throw new IllegalArgumentException("Número de telefone inválido inserido");
         }
@@ -93,6 +91,27 @@ public class ContratanteServices {
         }
         else{
             throw new RuntimeException("Usuário inexistente");
+        }
+    }
+
+    //Métodos PUT
+    public ContratanteResponseDTO editContratanteById(ContratanteResponseDTO dto, Long id){
+        Optional<Contratante> existe = repository.findById(id);
+        Contratante contratante = mapper.toEntity(dto);
+        if (existe.isPresent()){
+            if (!contratante.getTelefone().matches("\\d{10,11}")){
+                throw new IllegalArgumentException("Número de telefone inválido");
+            }
+            if(!contratante.getEmail().matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
+                throw new IllegalArgumentException("Endereço de email inválido inserido!");
+            }
+            else{
+                Contratante saved = repository.save(contratante);
+                return mapper.toDto(saved);
+            }
+        }
+        else{
+            throw new NullPointerException("Não é possível alterar um contratante inexistente");
         }
     }
 

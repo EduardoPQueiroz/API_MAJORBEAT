@@ -53,12 +53,14 @@ public class Evento {
     private String titulo;
 
     @Column
+    @ElementCollection
     @Enumerated
-    private NomeInstrumento nomeInstrumento;
+    private List<NomeInstrumento> nomeInstrumento;
 
     @Column
+    @ElementCollection
     @Enumerated
-    private NomeGenero nomeGenero;
+    private List<NomeGenero> nomeGenero;
 
     @JoinColumn
     @OneToMany
