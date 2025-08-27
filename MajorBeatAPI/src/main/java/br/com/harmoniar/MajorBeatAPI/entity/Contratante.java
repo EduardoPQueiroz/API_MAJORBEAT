@@ -18,7 +18,7 @@ public class Contratante {
     private Long idContratante;
 
     @Column
-    private String nome;
+    private String nomeContratante;
 
     @Column
     private String apelido;
@@ -49,12 +49,6 @@ public class Contratante {
 
     @Column
     private String nomeEmpresa;
-
-    @Column
-    private String cpf;
-
-    @Column
-    private String cnpj;
 
     @Column
     @Enumerated
