@@ -25,7 +25,7 @@ public class ChatServices {
 
     public List<ChatResponseDTO> listarChatsPorId(Long id){
         List<Chat> chats = repository.findAllByUserId(id);
-        return mapper.toResponseDTOList(chats);
+        return mapper.toResponseDTOChatList(chats);
     }
 
 }
