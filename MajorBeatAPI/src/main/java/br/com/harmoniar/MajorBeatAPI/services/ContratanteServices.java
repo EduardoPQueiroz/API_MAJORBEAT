@@ -20,6 +20,7 @@ public class ContratanteServices {
 
     @Autowired
     ContratanteRepository repository;
+
     @Autowired
     ContratanteMapper mapper;
 
