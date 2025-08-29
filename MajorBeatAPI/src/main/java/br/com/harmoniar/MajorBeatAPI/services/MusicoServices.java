@@ -1,4 +1,99 @@
 package br.com.harmoniar.MajorBeatAPI.services;
 
+import br.com.harmoniar.MajorBeatAPI.dto.MusicoResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.entity.Musico;
+import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
+import br.com.harmoniar.MajorBeatAPI.mappers.MusicoMapper;
+import br.com.harmoniar.MajorBeatAPI.repositories.MusicoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
 public class MusicoServices {
+
+    @Autowired
+    private MusicoRepository repository;
+
+    @Autowired
+    private MusicoMapper mapper;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    //Get
+    public List<MusicoResponseDTO> getAllMusicos(){
+        return mapper.toResponseDTOList(repository.findAll());
+    }
+
+    public MusicoResponseDTO getMusicoById(Long id) {
+        Optional<Musico> musico = repository.findById(id);
+        if(musico.isPresent()){
+            return mapper.OptionalToDto(musico);
+        }
+        throw new NullPointerException("Não encontrado músico com esse id! ");
+    }
+    public MusicoResponseDTO getMusicoByNome(String nome){
+        Optional<Musico> musico = repository.getByNome(nome);
+        if (musico.isPresent()){
+            return mapper.OptionalToDto(musico);
+        }
+        throw new NullPointerException("Não existe um músico com esse nome");
+    }
+    public List<MusicoResponseDTO> getMusicoByTipoMusico(TipoMusico tipoMusico){
+        List<Musico> musico = repository.getByTipoMusico(tipoMusico);
+        if (musico.isEmpty()){
+            throw new NullPointerException("Nenhum músico foi encontrado!");
+        }
+        return mapper.toResponseDTOList(musico);
+    }
+
+    //Post
+    public MusicoResponseDTO cadastrarMusico(MusicoResponseDTO dto) {
+        Musico entity = mapper.toEntity(dto);
+
+        if (!entity.getTelefone().matches("\\d{10,11}")) {
+            throw new IllegalArgumentException("Número de telefone inválido!");
+        }
+        if (!entity.getEmail().matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
+            throw new IllegalArgumentException("Email inválido inserido!");
+        }
+        Musico saved = repository.save(entity);
+        return mapper.toDto(saved);
+
+    }
+    //Autenticar Musico...
+
+
+    //Put
+    public MusicoResponseDTO editMusicoById(MusicoResponseDTO dto, Long id) {
+        Optional<Musico> existe = repository.findById(id);
+        Musico musico = mapper.toEntity(dto);
+
+        if (existe.isPresent()) {
+            if (!musico.getTelefone().matches("\\d{10,11}")) {
+                throw new IllegalArgumentException("Número de telefone inválido!");
+            }
+            if (!musico.getEmail().matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+                throw new IllegalArgumentException("Endereço de email inválido!");
+            }
+
+            Musico saved = repository.save(musico);
+            return mapper.toDto(saved);
+        }
+    }
+
+    //Delete
+    public boolean deleteMusicoById(Long id) {
+        Optional<Musico> musico = repository.findById(id);
+        if (musico.isPresent()) {
+            repository.deleteById(id);
+            return true;
+        }
+        throw new RuntimeException("Não é possivel deletar um músico inexistente!");
+    }
 }
+
