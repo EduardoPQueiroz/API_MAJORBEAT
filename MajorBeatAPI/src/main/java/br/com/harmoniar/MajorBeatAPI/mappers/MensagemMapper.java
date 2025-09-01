@@ -11,4 +11,7 @@ import java.util.List;
 public interface MensagemMapper {
     MensagemMapper INSTANCE = Mappers.getMapper(MensagemMapper.class);
     List<MensagemResponseDTO> toResponseDTOList(List<Mensagem> mensagens);
+
+    Mensagem toEntity(MensagemResponseDTO dto);
+    MensagemResponseDTO toDto(Mensagem mensagem);
 }

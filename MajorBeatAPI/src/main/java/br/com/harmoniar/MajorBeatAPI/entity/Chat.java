@@ -23,4 +23,14 @@ public class Chat {
     @JoinColumn
     @ManyToOne
     private Evento idEvento;
+
+    @JoinColumn
+    @ManyToOne
+    private Musico idMusico;
+
+    @JoinColumn
+    @ManyToOne
+    private Contratante idContratante;
+
+
 }
