@@ -31,4 +31,12 @@ public class Mensagem {
     @JoinColumn
     @ManyToOne
     private Chat chat;
+
+    @JoinColumn
+    @ManyToOne
+    private Musico idMusico;
+
+    @JoinColumn
+    @ManyToOne
+    private Musico idContratante;
 }
