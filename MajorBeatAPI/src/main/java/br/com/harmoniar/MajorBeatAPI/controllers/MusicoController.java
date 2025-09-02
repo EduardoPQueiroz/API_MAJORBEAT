@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -54,6 +55,15 @@ public class MusicoController {
         }
     }
 
+    @GetMapping("/GetByEmail/{email}")
+    public ResponseEntity<MusicoResponseDTO> getMusicoByEmail(@PathVariable String email){
+        try{
+            return ResponseEntity.ok(services.getMusicoByEmail(email));
+        }catch(EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/GetByTipoMusico/{tipoMusico}")
     public ResponseEntity<List<MusicoResponseDTO>> getMusicoByTipoMusico(@PathVariable TipoMusico tipoMusico){
         try{
@@ -75,6 +85,15 @@ public class MusicoController {
         }
     }
     //Autenticar Músico...
+    public ResponseEntity<LoginResponseDTO> loginMusico(@RequestBody LoginRequestDTO loginRequestDTO){
+        try{
+            String token = services.autenticarMusico(loginRequestDTO.nome(), loginRequestDTO.email(), loginRequestDTO.senha());
+            return ResponseEntity.ok(new LoginResponseDTO(token));
+        }catch(HttpClientErrorException.Unauthorized e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
 
     //Put
     @PutMapping("/editMusicoById/{id}")

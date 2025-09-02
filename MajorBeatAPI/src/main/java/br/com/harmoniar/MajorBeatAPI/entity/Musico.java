@@ -52,9 +52,6 @@ public class Musico{
     private String links;
 
     @Column
-    private String cpf;
-
-    @Column
     private String generoPrincipal;
 
     @Column
@@ -69,8 +66,5 @@ public class Musico{
     @Enumerated
     private NomeGenero nomeGenero;
 
-    @ManyToOne
-    @JoinColumn
-    private Disponibilidade idDisponibilidade;
 
 }

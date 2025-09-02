@@ -7,6 +7,7 @@ import br.com.harmoniar.MajorBeatAPI.enums.TipoContratante;
 import br.com.harmoniar.MajorBeatAPI.mappers.ContratanteMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.ContratanteRepository;
 import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -80,18 +81,38 @@ public class ContratanteServices {
         return mapper.toDto(saved);
     }
 
-    public String autenticarContratante(String nome, String senhaDigitada){
-        Optional<Contratante> contratante = repository.getByNome(nome);
-        if (contratante.isPresent()){
-            if (passwordEncoder.matches(senhaDigitada, contratante.get().getSenha())){
-                return JwtUtil.gerarToken(nome);
+    public String autenticarContratante(String nome, String email, String senhaDigitada){
+        if(nome.isEmpty()){
+            if (email.isEmpty()){
+                throw new NullPointerException("Insira o nome ou o email para realizar o login");
             }
             else{
-                throw new RuntimeException("Senha incorreta inserida");
+                Optional<Contratante> contratante = repository.getByEmail(email);
+                if(contratante.isPresent()){
+                    if (passwordEncoder.matches(senhaDigitada, contratante.get().getSenha())){
+                        return JwtUtil.gerarToken(nome);
+                    }
+                    else{
+                        throw new RuntimeException("Senha incorreta inserida");
+                    }
+                }
+                else{
+                    throw new EntityNotFoundException("Não foi encontrado um contratante com esse email");
+                }
             }
-        }
-        else{
-            throw new RuntimeException("Usuário inexistente");
+        }else {
+            Optional<Contratante> contratante = repository.getByNome(nome);
+            if (contratante.isPresent()){
+                if (passwordEncoder.matches(senhaDigitada, contratante.get().getSenha())){
+                    return JwtUtil.gerarToken(nome);
+                }
+                else{
+                    throw new RuntimeException("Senha incorreta inserida");
+                }
+            }
+            else{
+                throw new RuntimeException("Usuário inexistente");
+            }
         }
     }
 
