@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@RestController("/Eventos")
+@RestController
+@RequestMapping("/Eventos")
 public class EventoController {
     @Autowired
     EventoServices services;

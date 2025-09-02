@@ -11,9 +11,8 @@ import java.util.List;
 @Repository
 public interface MensagemRepository extends JpaRepository<Mensagem, Long> {
 
-    List<Mensagem> findAllByIdMusico(Long idMusico);
+    List<Mensagem> findAllByIdMusico_IdMusico(Long idMusico);
 
-    List<Mensagem> findAllByIdContratante(Long idContratante);
-
+    List<Mensagem> findAllByIdContratante_IdContratante(Long idContratante);
 
 }

@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/Contratante")
+@RestController
+@RequestMapping("/Contratante")
 public class ContratanteController {
     @Autowired
     ContratanteServices services;
@@ -73,7 +74,7 @@ public class ContratanteController {
     @PostMapping("/autenticarContratante")
     public ResponseEntity<LoginResponseDTO> LoginContratante(@RequestBody LoginRequestDTO login){
         try{
-            String token = services.autenticarContratante(login.nome(), login.senha());
+            String token = services.autenticarContratante(login.nome(), login.email(), login.senha());
             return ResponseEntity.ok(new LoginResponseDTO(token));
         }
         catch(RuntimeException e){

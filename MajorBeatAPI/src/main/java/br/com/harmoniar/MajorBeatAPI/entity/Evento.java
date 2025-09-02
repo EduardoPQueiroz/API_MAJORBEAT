@@ -63,11 +63,11 @@ public class Evento {
     private List<NomeGenero> nomeGenero;
 
     @JoinColumn
-    @OneToMany
-    private Musico musico;
+    @ManyToOne
+    private Musico idMusico;
 
-    @OneToMany
-    private Contratante contratante;
+    @ManyToOne
+    private Contratante idContratante;
 
     @ManyToMany
     @JoinTable(name = "AvaliacaoEvento",

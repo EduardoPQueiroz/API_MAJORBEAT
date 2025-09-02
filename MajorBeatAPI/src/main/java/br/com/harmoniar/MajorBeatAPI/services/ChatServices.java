@@ -23,9 +23,14 @@ public class ChatServices {
         return mapper.toResponseDTOList(repository.findAll());
     }
 
-    public List<ChatResponseDTO> listarChatsPorId(Long id){
-        List<Chat> chats = repository.findAllByUserId(id);
-        return mapper.toResponseDTOChatList(chats);
+    public List<ChatResponseDTO> listarChatsPorContratanteId(Long id){
+        List<Chat> chats = repository.findAllByIdContratante_IdContratante(id);
+        return mapper.toResponseDTOList(chats);
+    }
+
+    public List<ChatResponseDTO> listarChatsPorMusicoId(Long id){
+        List<Chat> chats = repository.findAllByIdMusico_IdMusico(id);
+        return mapper.toResponseDTOList(chats);
     }
 
 }

@@ -34,11 +34,11 @@ public class EventoServices {
     }
 
     public List<EventoResponseDTO> getEventosByInstrumento(NomeInstrumento instrumento){
-        return mapper.toResponseDTOList(repository.findByInstrumentosContaining(instrumento));
+        return mapper.toResponseDTOList(repository.findByNomeInstrumentoContaining(instrumento));
     }
 
     public List<EventoResponseDTO> getEventosByGenero(NomeGenero genero){
-        return mapper.toResponseDTOList(repository.findByGeneroContaining(genero));
+        return mapper.toResponseDTOList(repository.findByNomeGeneroContaining(genero));
     }
 
     public EventoResponseDTO getEventoByNome(String nome){

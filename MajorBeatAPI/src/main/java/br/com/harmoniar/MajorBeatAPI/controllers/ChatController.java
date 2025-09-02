@@ -23,9 +23,9 @@ public class ChatController {
         return services.listarChats();
     }
 
-    @GetMapping("/{id}")
-    public List<ChatResponseDTO> listarChatsporId(@PathVariable Long id){
-        return  services.listarChatsPorId(id);
+    @GetMapping("/GetByContratanteId/{id}")
+    public List<ChatResponseDTO> listarChatsporIdContratante(@PathVariable Long id){
+        return  services.listarChatsPorContratanteId(id);
     }
 
 }

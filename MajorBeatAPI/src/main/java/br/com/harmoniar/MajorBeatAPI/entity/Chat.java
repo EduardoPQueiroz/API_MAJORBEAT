@@ -1,7 +1,7 @@
 package br.com.harmoniar.MajorBeatAPI.entity;
 
 import jakarta.persistence.*;
-import jdk.jfr.Event;
+import br.com.harmoniar.MajorBeatAPI.entity.Evento;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -37,7 +37,7 @@ public class MensagemServices {
     public List<MensagemResponseDTO> listarMensagensByIdMusico(Long idMusico){
         Optional<Musico> existe = musicoRepository.findById(idMusico);
         if(existe.isPresent()){
-            List<Mensagem> mensagens = repository.findAllByIdMusico(idMusico);
+            List<Mensagem> mensagens = repository.findAllByIdMusico_IdMusico(idMusico);
             if(!mensagens.isEmpty()){
                 return mapper.toResponseDTOList(mensagens);
             }
@@ -53,7 +53,7 @@ public class MensagemServices {
     public List<MensagemResponseDTO> listarMensagensByIdContratante(Long idContratante){
         Optional<Contratante> existe = contratanteRepository.findById(idContratante);
         if (existe.isPresent()){
-            List<Mensagem> mensagens = repository.findAllByIdContratante(idContratante);
+            List<Mensagem> mensagens = repository.findAllByIdContratante_IdContratante(idContratante);
             if (!mensagens.isEmpty()){
                 return mapper.toResponseDTOList(mensagens);
             }

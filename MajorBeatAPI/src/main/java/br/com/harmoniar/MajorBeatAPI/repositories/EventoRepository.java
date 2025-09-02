@@ -14,9 +14,10 @@ import java.util.Optional;
 @Repository
 public interface EventoRepository extends JpaRepository<Evento, Long> {
     List<Evento> findEventoByTipoMusico(TipoMusico tipoMusico);
-    List<Evento> findByInstrumentosContaining(NomeInstrumento instrumento);
+    List<Evento> findByNomeInstrumentoContaining(NomeInstrumento instrumento);
 
-    List<Evento> findByGeneroContaining(NomeGenero genero);
+
+    List<Evento> findByNomeGeneroContaining(NomeGenero genero);
     List<Evento> findByData(LocalDate data);
     List<Evento> findByEndereco(String endereco);
     Optional<Evento> findByNome(String nome);

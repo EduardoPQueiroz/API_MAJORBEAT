@@ -38,5 +38,5 @@ public class Mensagem {
 
     @JoinColumn
     @ManyToOne
-    private Musico idContratante;
+    private Contratante idContratante;
 }

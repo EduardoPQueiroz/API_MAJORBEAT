@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ChatMapper {
     ChatMapper INSTANCE = Mappers.getMapper(ChatMapper.class);
-    List<ChatResponseDTO> toResponseDTOChatList(List<Chat> chats);
-    List<ChatResponseDTO> toResponseDTOList(List<ChatRepository> chats);
+
+    List<ChatResponseDTO> toResponseDTOList(List<Chat> chats);
 
 }

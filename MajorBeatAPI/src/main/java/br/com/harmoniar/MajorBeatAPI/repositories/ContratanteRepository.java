@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface ContratanteRepository extends JpaRepository<Contratante, Long> {
     List<Contratante> getByTipoContratante(TipoContratante tipoContratante);
 
-    Optional<Contratante> getByNome(String nomeContratante);
+    Optional<Contratante> getByNomeContratante(String nomeContratante);
 
     Optional<Contratante> getByEmail(String email);
 

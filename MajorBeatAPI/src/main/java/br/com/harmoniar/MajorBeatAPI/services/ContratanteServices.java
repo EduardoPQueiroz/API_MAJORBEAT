@@ -2,7 +2,6 @@ package br.com.harmoniar.MajorBeatAPI.services;
 
 import br.com.harmoniar.MajorBeatAPI.dto.ContratanteResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
-import br.com.harmoniar.MajorBeatAPI.entity.Evento;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoContratante;
 import br.com.harmoniar.MajorBeatAPI.mappers.ContratanteMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.ContratanteRepository;
@@ -42,7 +41,7 @@ public class ContratanteServices {
     }
 
     public ContratanteResponseDTO getContratanteByNome(String nomeContratante){
-        Optional<Contratante> contratante = repository.getByNome(nomeContratante);
+        Optional<Contratante> contratante = repository.getByNomeContratante(nomeContratante);
         if (contratante.isPresent()){
             return mapper.OptionalToDto(contratante);
         }
@@ -101,7 +100,7 @@ public class ContratanteServices {
                 }
             }
         }else {
-            Optional<Contratante> contratante = repository.getByNome(nome);
+            Optional<Contratante> contratante = repository.getByNomeContratante(nome);
             if (contratante.isPresent()){
                 if (passwordEncoder.matches(senhaDigitada, contratante.get().getSenha())){
                     return JwtUtil.gerarToken(nome);
