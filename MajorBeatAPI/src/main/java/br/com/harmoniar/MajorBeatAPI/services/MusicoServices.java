@@ -1,10 +1,13 @@
 package br.com.harmoniar.MajorBeatAPI.services;
 
+import br.com.harmoniar.MajorBeatAPI.dto.LoginRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.MusicoResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Musico;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import br.com.harmoniar.MajorBeatAPI.mappers.MusicoMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.MusicoRepository;
+import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,22 @@ public class MusicoServices {
         }
         throw new NullPointerException("Não existe um músico com esse nome");
     }
+
+    public MusicoResponseDTO getMusicoByEmail(String email){
+        if (email.matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
+            Optional<Musico> musico = repository.getByEmail(email);
+            if (musico.isPresent()){
+                return mapper.OptionalToDto(musico);
+            }
+            else{
+                throw new EntityNotFoundException("Não foi encontrado um músico com o email informado.");
+            }
+        }
+        else{
+            throw new IllegalArgumentException("Email inválido inserido");
+        }
+    }
+
     public List<MusicoResponseDTO> getMusicoByTipoMusico(TipoMusico tipoMusico){
         List<Musico> musico = repository.getByTipoMusico(tipoMusico);
         if (musico.isEmpty()){
@@ -66,6 +85,42 @@ public class MusicoServices {
 
     }
     //Autenticar Musico...
+    public String autenticarMusico(String nome, String email, String senhaDigitada){
+        if (nome.isEmpty()){
+          if (email.isEmpty()){
+              throw new NullPointerException("Insira um nome ou email para autenticar o usuário");
+          }
+          else{
+              Optional<Musico> musico = repository.getByEmail(email);
+              if (musico.isPresent()){
+                  if (passwordEncoder.matches(senhaDigitada, musico.get().getSenha())){
+                      return JwtUtil.gerarToken(nome);
+                  }
+                  else{
+                      throw new RuntimeException("Senha incorreta.");
+                  }
+              }
+              else {
+                  throw new EntityNotFoundException("não foi encontrado um músico com esse email");
+              }
+          }
+        }
+        else{
+            Optional<Musico> musico = repository.getByNome(nome);
+            if (musico.isPresent()){
+                if (passwordEncoder.matches(senhaDigitada, musico.get().getSenha())){
+                    return JwtUtil.gerarToken(nome);
+                }
+                else{
+                    throw new RuntimeException("Senha incorreta.");
+                }
+            }
+            else {
+                throw new EntityNotFoundException("não foi encontrado um músico com esse nome");
+            }
+        }
+
+    }
 
 
     //Put
@@ -83,6 +138,9 @@ public class MusicoServices {
 
             Musico saved = repository.save(musico);
             return mapper.toDto(saved);
+        }
+        else {
+            throw new EntityNotFoundException("Não é possível editar um músico que ainda não existe");
         }
     }
 

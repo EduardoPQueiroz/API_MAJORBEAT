@@ -13,4 +13,6 @@ public interface MusicoRepository extends JpaRepository<Musico, Long> {
     List<Musico> getByTipoMusico(TipoMusico tipoMusico);
 
     Optional<Musico> getByNome(String nome);
+
+    Optional<Musico> getByEmail(String email);
 }

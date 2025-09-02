@@ -14,5 +14,6 @@ public interface ContratanteRepository extends JpaRepository<Contratante, Long> 
 
     Optional<Contratante> getByNome(String nomeContratante);
 
+    Optional<Contratante> getByEmail(String email);
 
 }
