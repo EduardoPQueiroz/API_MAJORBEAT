@@ -2,6 +2,7 @@ package br.com.harmoniar.MajorBeatAPI.entity;
 
 import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
+import br.com.harmoniar.MajorBeatAPI.enums.Role;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -60,11 +61,15 @@ public class Musico{
 
     @Column
     @Enumerated
-    private NomeInstrumento nomeInstrumento;
+    private List<NomeInstrumento> nomeInstrumento;
 
     @Column
     @Enumerated
-    private NomeGenero nomeGenero;
+    private List<NomeGenero> nomeGenero;
+
+    @Column
+    @Enumerated
+    private Role role;
 
 
 }

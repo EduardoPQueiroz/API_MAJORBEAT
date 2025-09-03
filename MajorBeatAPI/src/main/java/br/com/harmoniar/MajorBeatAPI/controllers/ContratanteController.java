@@ -1,8 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.controllers;
 
-import br.com.harmoniar.MajorBeatAPI.dto.ContratanteResponseDTO;
-import br.com.harmoniar.MajorBeatAPI.dto.LoginRequestDTO;
-import br.com.harmoniar.MajorBeatAPI.dto.LoginResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.*;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoContratante;
 import br.com.harmoniar.MajorBeatAPI.mappers.ContratanteMapper;
 import br.com.harmoniar.MajorBeatAPI.services.ContratanteServices;
@@ -63,12 +61,8 @@ public class ContratanteController {
 
     //POST
     @PostMapping("/cadastrarContratante")
-    public ResponseEntity<ContratanteResponseDTO> cadastrarContratante(@RequestBody ContratanteResponseDTO dto){
-        try{
-            return ResponseEntity.ok(services.cadastrarContratante(dto));
-        }catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<ContratanteResponseDTO> cadastrarContratante(@RequestBody ContratanteRequestDTO dto){
+        return ResponseEntity.ok(services.cadastrarContratante(dto));
     }
 
     @PostMapping("/autenticarContratante")
@@ -86,17 +80,13 @@ public class ContratanteController {
     //POST
 
     @PutMapping("/editContratanteById/{id}")
-    public ResponseEntity<ContratanteResponseDTO> editContratanteById(ContratanteResponseDTO dto, Long id){
-        try {
+    public ResponseEntity<ContratanteResponseDTO> editContratanteById(ContratanteUpdateDTO dto, Long id){
             return ResponseEntity.ok(services.editContratanteById(dto, id));
-        }catch(RuntimeException e){
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     //DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<ContratanteResponseDTO> deleteContratanteById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteContratanteById(@PathVariable Long id){
         if(services.DeleteContratanteById(id) == true){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

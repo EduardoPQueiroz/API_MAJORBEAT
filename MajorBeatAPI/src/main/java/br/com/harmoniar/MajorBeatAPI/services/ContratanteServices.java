@@ -1,17 +1,24 @@
 package br.com.harmoniar.MajorBeatAPI.services;
 
+import br.com.harmoniar.MajorBeatAPI.dto.ContratanteRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.ContratanteResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.ContratanteUpdateDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
+import br.com.harmoniar.MajorBeatAPI.enums.Role;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoContratante;
 import br.com.harmoniar.MajorBeatAPI.mappers.ContratanteMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.ContratanteRepository;
 import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,15 +74,18 @@ public class ContratanteServices {
     }
 
     //Métodos Post
-    public ContratanteResponseDTO cadastrarContratante(ContratanteResponseDTO dto){
+    public ContratanteResponseDTO cadastrarContratante(ContratanteRequestDTO dto){
 
         Contratante entity = mapper.toEntity(dto);
         if (!entity.getTelefone().matches("\\d{10,11}")){
-            throw new IllegalArgumentException("Número de telefone inválido inserido");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Número de telefone inválido");
         }
         if(!entity.getEmail().matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
-            throw new IllegalArgumentException("Email inválido inserido!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email inválido inserido!");
         }
+        entity.setSenha(passwordEncoder.encode(dto.senha()));
+        entity.setRole(Role.CONTRATANTE);
+        entity.setDtCriacao(LocalDate.now());
         Contratante saved = repository.save(entity);
         return mapper.toDto(saved);
     }
@@ -116,24 +126,17 @@ public class ContratanteServices {
     }
 
     //Métodos PUT
-    public ContratanteResponseDTO editContratanteById(ContratanteResponseDTO dto, Long id){
-        Optional<Contratante> existe = repository.findById(id);
-        Contratante contratante = mapper.toEntity(dto);
-        if (existe.isPresent()){
+    public ContratanteResponseDTO editContratanteById(ContratanteUpdateDTO dto, Long id){
+        Contratante contratante = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um contratante com esse id"));
             if (!contratante.getTelefone().matches("\\d{10,11}")){
-                throw new IllegalArgumentException("Número de telefone inválido");
-            }
-            if(!contratante.getEmail().matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
-                throw new IllegalArgumentException("Endereço de email inválido inserido!");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Número de telefone inválido inserido");
             }
             else{
+                mapper.updateFromDto(dto, contratante);
                 Contratante saved = repository.save(contratante);
                 return mapper.toDto(saved);
             }
         }
-        else{
-            throw new NullPointerException("Não é possível alterar um contratante inexistente");
-        }
-    }
-
+        
 }
+

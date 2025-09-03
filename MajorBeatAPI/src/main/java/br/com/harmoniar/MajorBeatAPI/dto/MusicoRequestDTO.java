@@ -1,13 +1,13 @@
 package br.com.harmoniar.MajorBeatAPI.dto;
 
-import br.com.harmoniar.MajorBeatAPI.enums.Role;
+import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
+import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
-public record MusicoResponseDTO(
-        Long idMusico,
+public record MusicoRequestDTO(
         String nome,
         String apelido,
         String email,
@@ -16,12 +16,12 @@ public record MusicoResponseDTO(
         String endereco,
         byte[] fotoPerfil,
         String biografia,
-        LocalDate dtCriacao,
         String links,
-        String cpf,
-        String generoPrincipal,
-        TipoMusico tipoMusico,
 
-        Role role
+        List<NomeInstrumento> nomeInstrumentos,
+
+        List<NomeGenero> nomeGeneros,
+
+        TipoMusico tipoMusico
 ) {
 }

@@ -1,17 +1,23 @@
 package br.com.harmoniar.MajorBeatAPI.services;
 
 import br.com.harmoniar.MajorBeatAPI.dto.LoginRequestDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.MusicoRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.MusicoResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.MusicoUpdateDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Musico;
+import br.com.harmoniar.MajorBeatAPI.enums.Role;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import br.com.harmoniar.MajorBeatAPI.mappers.MusicoMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.MusicoRepository;
 import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,15 +77,18 @@ public class MusicoServices {
     }
 
     //Post
-    public MusicoResponseDTO cadastrarMusico(MusicoResponseDTO dto) {
+    public MusicoResponseDTO cadastrarMusico(MusicoRequestDTO dto) {
         Musico entity = mapper.toEntity(dto);
 
         if (!entity.getTelefone().matches("\\d{10,11}")) {
-            throw new IllegalArgumentException("Número de telefone inválido!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Número de telefone inválido inserido");
         }
         if (!entity.getEmail().matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
-            throw new IllegalArgumentException("Email inválido inserido!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email inválido inserido");
         }
+        entity.setSenha(passwordEncoder.encode(dto.senha()));
+        entity.setDtCriacao(LocalDate.now());
+        entity.setRole(Role.MUSICO);
         Musico saved = repository.save(entity);
         return mapper.toDto(saved);
 
@@ -124,25 +133,20 @@ public class MusicoServices {
 
 
     //Put
-    public MusicoResponseDTO editMusicoById(MusicoResponseDTO dto, Long id) {
-        Optional<Musico> existe = repository.findById(id);
-        Musico musico = mapper.toEntity(dto);
+    public MusicoResponseDTO editMusicoById(MusicoUpdateDTO dto, Long id) {
+        Musico musico = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não é possível editar um músico que ainda não existe"));
 
-        if (existe.isPresent()) {
-            if (!musico.getTelefone().matches("\\d{10,11}")) {
-                throw new IllegalArgumentException("Número de telefone inválido!");
-            }
-            if (!musico.getEmail().matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
-                throw new IllegalArgumentException("Endereço de email inválido!");
-            }
+        if (dto.telefone() != null && !dto.telefone().matches("\\d{10,11}")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Número de telefone inválido inserido!");
+        }
 
-            Musico saved = repository.save(musico);
-            return mapper.toDto(saved);
-        }
-        else {
-            throw new EntityNotFoundException("Não é possível editar um músico que ainda não existe");
-        }
+        mapper.updateFromDto(dto, musico);
+
+        Musico saved = repository.save(musico);
+        return mapper.toDto(saved);
     }
+
 
     //Delete
     public boolean deleteMusicoById(Long id) {
@@ -151,7 +155,7 @@ public class MusicoServices {
             repository.deleteById(id);
             return true;
         }
-        throw new RuntimeException("Não é possivel deletar um músico inexistente!");
+        return false;
     }
 }
 

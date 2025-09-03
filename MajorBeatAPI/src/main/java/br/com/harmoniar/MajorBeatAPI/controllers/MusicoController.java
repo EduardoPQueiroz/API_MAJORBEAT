@@ -1,8 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.controllers;
 
-import br.com.harmoniar.MajorBeatAPI.dto.MusicoResponseDTO;
-import br.com.harmoniar.MajorBeatAPI.dto.LoginRequestDTO;
-import br.com.harmoniar.MajorBeatAPI.dto.LoginResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.*;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import br.com.harmoniar.MajorBeatAPI.mappers.MusicoMapper;
 import br.com.harmoniar.MajorBeatAPI.services.MusicoServices;
@@ -76,7 +74,7 @@ public class MusicoController {
 
     //Post
     @PostMapping("/cadastrarMusico")
-    public ResponseEntity<MusicoResponseDTO> cadastrarMusico(@RequestBody MusicoResponseDTO dto){
+    public ResponseEntity<MusicoResponseDTO> cadastrarMusico(@RequestBody MusicoRequestDTO dto){
         try{
             return ResponseEntity.ok(services.cadastrarMusico(dto));
         }
@@ -97,13 +95,8 @@ public class MusicoController {
 
     //Put
     @PutMapping("/editMusicoById/{id}")
-    public ResponseEntity<MusicoResponseDTO> editMusicoById(@RequestBody MusicoResponseDTO dto, @PathVariable Long id){
-        try {
-            return ResponseEntity.ok(services.editMusicoById(dto, id));
-        }
-        catch(RuntimeException e){
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<MusicoResponseDTO> editMusicoById(@RequestBody MusicoUpdateDTO dto, @PathVariable Long id){
+        return ResponseEntity.ok(services.editMusicoById(dto, id));
     }
 
     //Delete

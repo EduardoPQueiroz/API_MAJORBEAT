@@ -1,5 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.entity;
 
+import br.com.harmoniar.MajorBeatAPI.enums.Role;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoContratante;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -53,4 +54,8 @@ public class Contratante {
     @Column
     @Enumerated
     private TipoContratante tipoContratante;
+
+    @Column
+    @Enumerated
+    private Role role;
 }

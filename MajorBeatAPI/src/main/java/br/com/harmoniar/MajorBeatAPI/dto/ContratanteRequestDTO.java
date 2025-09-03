@@ -1,23 +1,19 @@
 package br.com.harmoniar.MajorBeatAPI.dto;
 
-import br.com.harmoniar.MajorBeatAPI.enums.Role;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoContratante;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-public record ContratanteResponseDTO(
-        Long idContratante,
+public record ContratanteRequestDTO(
         String nome,
+        String senha,
         String telefone,
+        String email,
         String endereco,
         byte[] fotoPerfil,
         String biografia,
-        LocalDate dtCriacao,
         String links,
         String nomeEmpresa,
-        TipoContratante tipoContratante,
-
-        Role role
+        TipoContratante tipoContratante
 ) {
 }
