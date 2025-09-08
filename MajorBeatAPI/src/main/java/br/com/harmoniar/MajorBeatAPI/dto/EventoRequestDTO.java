@@ -8,13 +8,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-public record EventoResponseDTO(
-        Long idEvento,
+public record EventoRequestDTO(
         String nome,
         String tipoMusico,
         LocalDateTime data,
         String endereco,
-        StatusEvento statusEvento,
         byte[] imagemLocalEvento,
         LocalTime horaInicio,
         List<NomeInstrumento> instrumentos,

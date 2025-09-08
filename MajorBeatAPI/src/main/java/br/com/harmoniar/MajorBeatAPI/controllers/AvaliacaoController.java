@@ -1,6 +1,8 @@
 package br.com.harmoniar.MajorBeatAPI.controllers;
 
+import br.com.harmoniar.MajorBeatAPI.dto.AvaliacaoRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.AvaliacaoResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.entity.Avaliacao;
 import br.com.harmoniar.MajorBeatAPI.mappers.AvaliacaoMapper;
 import br.com.harmoniar.MajorBeatAPI.services.AvaliacaoServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +37,17 @@ public class AvaliacaoController {
         }
     }
 
-    @PostMapping
-    public AvaliacaoResponseDTO avaliar(@RequestBody AvaliacaoResponseDTO dto){
-        return services.avaliar(dto);
+    @PostMapping("/avaliar")
+    public ResponseEntity<AvaliacaoResponseDTO> avaliar(
+            @RequestBody AvaliacaoRequestDTO dto,
+            @RequestHeader("Authorization") String authHeader) {
+
+        String token = authHeader.replace("Bearer ", "");
+        AvaliacaoResponseDTO avaliacao = services.avaliar(dto, token);
+
+        return ResponseEntity.ok(avaliacao);
     }
+
 
 
 }

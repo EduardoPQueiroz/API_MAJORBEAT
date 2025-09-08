@@ -33,10 +33,10 @@ public class Avaliacao {
 
     @JoinColumn
     @ManyToOne
-    private Musico musico;
+    private Musico idMusico;
 
     @JoinColumn
     @ManyToOne
-    private Contratante contratante;
+    private Contratante idContratante;
 
 }

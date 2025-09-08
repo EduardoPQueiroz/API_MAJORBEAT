@@ -25,44 +25,26 @@ public class ContratanteController {
 
     @GetMapping("/GetAllContratantes")
     public ResponseEntity<List<ContratanteResponseDTO>> getAllContratantes(){
-        try{
             return ResponseEntity.ok(services.getAllContratantes());
-        }catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @GetMapping("/GetByTipoContratante/{tipoContratante}")
     public ResponseEntity<List<ContratanteResponseDTO>> getContratanteByTipoContratante(@PathVariable TipoContratante tipoContratante){
-        try{
             return ResponseEntity.ok(services.getContratanteByTipoContratante(tipoContratante));
-        }catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
     }
-
     @GetMapping("/GetByNome/{nome}")
-    public ResponseEntity<ContratanteResponseDTO> getContratanteByNome(@PathVariable String nome){
-        try{
+    public ResponseEntity<ContratanteResponseDTO> getContratanteByNome(@PathVariable String nome) {
             return ResponseEntity.ok(services.getContratanteByNome(nome));
-        }catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<ContratanteResponseDTO> getContratanteById(@PathVariable Long id){
-        try {
             return ResponseEntity.ok(services.getContratanteById(id));
-        }catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
     }
 
     //POST
     @PostMapping("/cadastrarContratante")
     public ResponseEntity<ContratanteResponseDTO> cadastrarContratante(@RequestBody ContratanteRequestDTO dto){
-        return ResponseEntity.ok(services.cadastrarContratante(dto));
+            return ResponseEntity.ok(services.cadastrarContratante(dto));
     }
 
     @PostMapping("/autenticarContratante")

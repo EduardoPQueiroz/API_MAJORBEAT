@@ -44,7 +44,7 @@ public class ContratanteServices {
         if (contratante.isPresent()){
             return mapper.OptionalToDto(contratante);
         }
-        throw new NullPointerException("Não existe um contratante com esse Id");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe um contratante com esse Id");
     }
 
     public ContratanteResponseDTO getContratanteByNome(String nomeContratante){
@@ -52,13 +52,13 @@ public class ContratanteServices {
         if (contratante.isPresent()){
             return mapper.OptionalToDto(contratante);
         }
-        throw new NullPointerException("Não existe um contratante com esse nome");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe um contratante com esse nome");
     }
 
     public List<ContratanteResponseDTO> getContratanteByTipoContratante(TipoContratante tipoContratante){
         List<Contratante> contratante = repository.getByTipoContratante(tipoContratante);
         if (contratante.isEmpty()){
-            throw new NullPointerException("Nenhum contratante deste tipo foi encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhum contratante deste tipo foi encontrado");
         }
         return mapper.toResponseDTOList(contratante);
     }
@@ -70,7 +70,7 @@ public class ContratanteServices {
             repository.deleteById(id);
             return true;
         }
-        throw new NullPointerException("Não é possível deletar um contratante que não existe!");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não é possível deletar um contratante que não existe!");
     }
 
     //Métodos Post
@@ -90,44 +90,29 @@ public class ContratanteServices {
         return mapper.toDto(saved);
     }
 
-    public String autenticarContratante(String nome, String email, String senhaDigitada){
-        if(nome.isEmpty()){
-            if (email.isEmpty()){
-                throw new NullPointerException("Insira o nome ou o email para realizar o login");
-            }
-            else{
-                Optional<Contratante> contratante = repository.getByEmail(email);
-                if(contratante.isPresent()){
-                    if (passwordEncoder.matches(senhaDigitada, contratante.get().getSenha())){
-                        return JwtUtil.gerarToken(nome);
-                    }
-                    else{
-                        throw new RuntimeException("Senha incorreta inserida");
-                    }
-                }
-                else{
-                    throw new EntityNotFoundException("Não foi encontrado um contratante com esse email");
-                }
-            }
-        }else {
-            Optional<Contratante> contratante = repository.getByNomeContratante(nome);
-            if (contratante.isPresent()){
-                if (passwordEncoder.matches(senhaDigitada, contratante.get().getSenha())){
-                    return JwtUtil.gerarToken(nome);
-                }
-                else{
-                    throw new RuntimeException("Senha incorreta inserida");
-                }
-            }
-            else{
-                throw new RuntimeException("Usuário inexistente");
-            }
+    public String autenticarContratante(String nome, String email, String senhaDigitada) {
+        Contratante contratante;
+
+        if (nome != null && !nome.isEmpty()) {
+            contratante = repository.getByNomeContratante(nome)
+                    .orElseThrow(() -> new RuntimeException("Usuário inexistente"));
+        } else if (email != null && !email.isEmpty()) {
+            contratante = repository.getByEmail(email)
+                    .orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um contratante com esse email"));
+        } else {
+            throw new NullPointerException("Insira o nome ou o email para realizar o login");
         }
+
+        if (!passwordEncoder.matches(senhaDigitada, contratante.getSenha())) {
+            throw new RuntimeException("Senha incorreta inserida");
+        }
+
+        return JwtUtil.gerarToken(contratante.getIdContratante());
     }
 
     //Métodos PUT
     public ContratanteResponseDTO editContratanteById(ContratanteUpdateDTO dto, Long id){
-        Contratante contratante = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um contratante com esse id"));
+            Contratante contratante = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um contratante com esse id"));
             if (!contratante.getTelefone().matches("\\d{10,11}")){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Número de telefone inválido inserido");
             }

@@ -25,62 +25,33 @@ public class MusicoController {
     //Get
     @GetMapping("/GetAllMusicos")
     public ResponseEntity<List<MusicoResponseDTO>> getAllMusicos(){
-        try{
-            return ResponseEntity.ok(services.getAllMusicos());
-        }
-        catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(services.getAllMusicos());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MusicoResponseDTO> getMusicoById(@PathVariable Long id){
-        try {
-            return ResponseEntity.ok(services.getMusicoById(id));
-        }
-        catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(services.getMusicoById(id));
     }
 
     @GetMapping("/GetByNome/{nome}")
     public ResponseEntity<MusicoResponseDTO> getMusicoByNome(@PathVariable String nome){
-        try{
-            return ResponseEntity.ok(services.getMusicoByNome(nome));
-        }
-        catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(services.getMusicoByNome(nome));
     }
 
     @GetMapping("/GetByEmail/{email}")
     public ResponseEntity<MusicoResponseDTO> getMusicoByEmail(@PathVariable String email){
-        try{
-            return ResponseEntity.ok(services.getMusicoByEmail(email));
-        }catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(services.getMusicoByEmail(email));
     }
 
     @GetMapping("/GetByTipoMusico/{tipoMusico}")
     public ResponseEntity<List<MusicoResponseDTO>> getMusicoByTipoMusico(@PathVariable TipoMusico tipoMusico){
-        try{
-            return ResponseEntity.ok(services.getMusicoByTipoMusico(tipoMusico));
-        }
-        catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(services.getMusicoByTipoMusico(tipoMusico));
     }
 
     //Post
     @PostMapping("/cadastrarMusico")
     public ResponseEntity<MusicoResponseDTO> cadastrarMusico(@RequestBody MusicoRequestDTO dto){
-        try{
-            return ResponseEntity.ok(services.cadastrarMusico(dto));
-        }
-        catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(services.cadastrarMusico(dto));
     }
     //Autenticar Músico...
     public ResponseEntity<LoginResponseDTO> loginMusico(@RequestBody LoginRequestDTO loginRequestDTO){

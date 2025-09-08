@@ -8,8 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-public record EventoResponseDTO(
-        Long idEvento,
+public record EventoUpdateDTO(
         String nome,
         String tipoMusico,
         LocalDateTime data,
