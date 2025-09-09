@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table
@@ -61,11 +62,11 @@ public class Musico{
 
     @Column
     @Enumerated
-    private List<NomeInstrumento> nomeInstrumento;
+    private List<NomeInstrumento> nomeInstrumento = new ArrayList<>();
 
     @Column
     @Enumerated
-    private List<NomeGenero> nomeGenero;
+    private List<NomeGenero> nomeGenero = new ArrayList<>();
 
     @Column
     @Enumerated

@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table
@@ -55,12 +56,12 @@ public class Evento {
     @Column
     @ElementCollection
     @Enumerated
-    private List<NomeInstrumento> nomeInstrumento;
+    private List<NomeInstrumento> nomeInstrumento = new ArrayList<>();
 
     @Column
     @ElementCollection
     @Enumerated
-    private List<NomeGenero> nomeGenero;
+    private List<NomeGenero> nomeGenero = new ArrayList<>();
 
     @JoinColumn
     @ManyToOne

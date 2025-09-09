@@ -1,5 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.services;
 
+import br.com.harmoniar.MajorBeatAPI.dto.MensagemRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.MensagemResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
 import br.com.harmoniar.MajorBeatAPI.entity.Mensagem;
@@ -8,10 +9,14 @@ import br.com.harmoniar.MajorBeatAPI.mappers.MensagemMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.ContratanteRepository;
 import br.com.harmoniar.MajorBeatAPI.repositories.MensagemRepository;
 import br.com.harmoniar.MajorBeatAPI.repositories.MusicoRepository;
+import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,17 +73,40 @@ public class MensagemServices {
 
 
     //Métodos POST
-    public  MensagemResponseDTO enviarMensagem(MensagemResponseDTO dto){
+    public  MensagemResponseDTO enviarMensagem(MensagemRequestDTO dto, String token){
+
+
+
+        Long idRemetente = JwtUtil.extrairUsuarioId(token);
+
         Mensagem entity = mapper.toEntity(dto);
-        if (entity.getTexto().length() > 256){
-            throw new IllegalArgumentException("Número de caracteres máximo superado");
+
+        if (!entity.isProposta()){
+            if (entity.getTexto().length() > 256){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Número de caracteres máximo superado");
+            }
+
+            entity.setIdRemetente(idRemetente);
+            entity.setDataEnvio(LocalDateTime.now());
+            Mensagem saved = repository.save(entity);
+            return mapper.toDto(saved);
         }
-        Mensagem saved = repository.save(entity);
-        return mapper.toDto(saved);
+        else {
+            if(entity.getEvento().equals(null)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A proposta precisa estar atrelada a um evento!");
+            } else if (entity.getValor() < 0) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Valor inferior a 0 informado");
+            }
+            entity.setIdRemetente(idRemetente);
+            entity.setDataEnvio(LocalDateTime.now());
+            Mensagem saved = repository.save(entity);
+            return mapper.toDto(saved);
+        }
+
     }
 
     //Métodos PUT
-    public MensagemResponseDTO editarMensagem(MensagemResponseDTO dto, Long id){
+    public MensagemResponseDTO editarMensagem(MensagemRequestDTO dto, Long id){
         Optional<Mensagem> existe = repository.findById(id);
         if (existe.isPresent()){
             Mensagem entity = mapper.toEntity(dto);

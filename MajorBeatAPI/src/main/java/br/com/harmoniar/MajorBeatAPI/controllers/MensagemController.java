@@ -1,5 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.controllers;
 
+import br.com.harmoniar.MajorBeatAPI.dto.MensagemRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.MensagemResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.mappers.MensagemMapper;
 import br.com.harmoniar.MajorBeatAPI.services.MensagemServices;
@@ -41,19 +42,16 @@ public class MensagemController {
 
 
     //Métodos POST
-    @PostMapping("/enviarMensagem")
-    public ResponseEntity<MensagemResponseDTO> enviarMensagem(@RequestBody MensagemResponseDTO dto){
-        try {
-            return ResponseEntity.ok(services.enviarMensagem(dto));
-        }catch (RuntimeException e){
-            return ResponseEntity.badRequest().build();
-        }
+    @PostMapping("/enviarMensagemComum")
+    public ResponseEntity<MensagemResponseDTO> enviarMensagem(@RequestBody MensagemRequestDTO dto, @RequestHeader("Authorization") String authHeader){
+            String token = authHeader.replace("Bearer ", "");
+            return ResponseEntity.ok(services.enviarMensagemComum(dto, token));
     }
 
     //Métodos PUT
 
     @PutMapping("/editarMensagemById/{id}")
-    public ResponseEntity<MensagemResponseDTO> editarMensagem(@RequestBody MensagemResponseDTO dto, @PathVariable Long id){
+    public ResponseEntity<MensagemResponseDTO> editarMensagem(@RequestBody MensagemRequestDTO dto, @PathVariable Long id){
         try{
             return ResponseEntity.ok(services.editarMensagem(dto, id));
         } catch (RuntimeException e) {
