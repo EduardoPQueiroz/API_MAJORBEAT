@@ -39,6 +39,22 @@ public class MensagemServices {
 
     //Métodos GET
 
+    public List<MensagemResponseDTO> listarMensagensByUsuarioAutenticado(String token){
+        Long idUser = JwtUtil.extrairUsuarioId(token);
+        Optional<Musico> musicoOptional = musicoRepository.findById(idUser);
+        if (musicoOptional.isPresent()){
+            List<Mensagem> mensagens = repository.findAllByIdMusico_IdMusico(idUser);
+            return mapper.toResponseDTOList(mensagens);
+        }
+        Optional<Contratante> contratanteOptional = contratanteRepository.findById(idUser);
+        if (contratanteOptional.isPresent()){
+            List<Mensagem> mensagens = repository.findAllByIdContratante_IdContratante(idUser);
+            return mapper.toResponseDTOList(mensagens);
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhuma mensagem foi encontrada.");
+        }
+    }
+
     public List<MensagemResponseDTO> listarMensagensByIdMusico(Long idMusico){
         Optional<Musico> existe = musicoRepository.findById(idMusico);
         if(existe.isPresent()){
@@ -63,19 +79,17 @@ public class MensagemServices {
                 return mapper.toResponseDTOList(mensagens);
             }
             else{
-                throw new EntityNotFoundException("Não foram encontradas mensagens relacionadas a esse usuário");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foram encontradas mensagens relacionadas a esse usuário");
             }
         }
         else{
-            throw new EntityNotFoundException(("Não foi encontrado um contratante com esse id"));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi encontrado um contratante com esse id");
         }
     }
 
 
     //Métodos POST
     public  MensagemResponseDTO enviarMensagem(MensagemRequestDTO dto, String token){
-
-
 
         Long idRemetente = JwtUtil.extrairUsuarioId(token);
 
@@ -105,22 +119,6 @@ public class MensagemServices {
 
     }
 
-    //Métodos PUT
-    public MensagemResponseDTO editarMensagem(MensagemRequestDTO dto, Long id){
-        Optional<Mensagem> existe = repository.findById(id);
-        if (existe.isPresent()){
-            Mensagem entity = mapper.toEntity(dto);
-            if (entity.getTexto().length() > 256){
-                throw new IllegalArgumentException("Número de caracteres máximo superado");
-            }
-            Mensagem saved = repository.save(entity);
-            return mapper.toDto(saved);
-        }else {
-            throw new EntityNotFoundException(("Impossível editar uma mensagem que não existe"));
-        }
-
-    }
-
     //Métodos DELETE
     public boolean deleteMensagemById(Long id){
         Optional<Mensagem> mensagem = repository.findById(id);
@@ -129,7 +127,7 @@ public class MensagemServices {
             return true;
         }
         else{
-            throw new EntityNotFoundException("Não é possível deletar uma entidade não existente");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível deletar uma entidade não existente");
         }
     }
 

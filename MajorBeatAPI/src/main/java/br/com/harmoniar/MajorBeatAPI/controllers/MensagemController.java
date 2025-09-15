@@ -22,22 +22,18 @@ public class MensagemController {
 
     //Métodos GET
 
+    public ResponseEntity<List<MensagemResponseDTO>> getMensagensByIdUsuarioAutenticado(String token){
+        return ResponseEntity.ok(services.listarMensagensByUsuarioAutenticado(token));
+    }
+
     @GetMapping("/GetByMusicoId/{id}")
     public ResponseEntity<List<MensagemResponseDTO>> getAllMensagensByIdMusico(@PathVariable Long id){
-        try {
-            return ResponseEntity.ok(services.listarMensagensByIdMusico(id));
-        }catch (RuntimeException e){
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(services.listarMensagensByIdMusico(id));
     }
 
     @GetMapping("/GetByContratanteId/{id}")
     public ResponseEntity<List<MensagemResponseDTO>> getAllMensagensByIdContratante(@PathVariable Long id){
-        try {
-            return ResponseEntity.ok(services.listarMensagensByIdContratante(id));
-        }catch (RuntimeException e){
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(services.listarMensagensByIdContratante(id));
     }
 
 
@@ -45,19 +41,9 @@ public class MensagemController {
     @PostMapping("/enviarMensagemComum")
     public ResponseEntity<MensagemResponseDTO> enviarMensagem(@RequestBody MensagemRequestDTO dto, @RequestHeader("Authorization") String authHeader){
             String token = authHeader.replace("Bearer ", "");
-            return ResponseEntity.ok(services.enviarMensagemComum(dto, token));
+            return ResponseEntity.ok(services.enviarMensagem(dto, token));
     }
 
-    //Métodos PUT
-
-    @PutMapping("/editarMensagemById/{id}")
-    public ResponseEntity<MensagemResponseDTO> editarMensagem(@RequestBody MensagemRequestDTO dto, @PathVariable Long id){
-        try{
-            return ResponseEntity.ok(services.editarMensagem(dto, id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
 
     //Métodos DELETE
     @DeleteMapping("/DeleteById/{id}")
