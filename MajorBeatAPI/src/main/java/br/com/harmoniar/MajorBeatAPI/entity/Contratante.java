@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -58,4 +60,10 @@ public class Contratante {
     @Column
     @Enumerated
     private Role role;
+
+    @OneToMany(mappedBy = "contratante", cascade = CascadeType.ALL)
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "contratante", cascade = CascadeType.ALL)
+    private List<Chat> chats = new ArrayList<>();
 }

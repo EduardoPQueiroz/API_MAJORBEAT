@@ -32,7 +32,7 @@ public class AvaliacaoServices {
     private ContratanteRepository contratanteRepository;
 
 
-        public AvaliacaoResponseDTO avaliar(AvaliacaoRequestDTO dto, String token) {
+    public AvaliacaoResponseDTO avaliar(AvaliacaoRequestDTO dto, String token) {
 
             Long idAvaliador = JwtUtil.extrairUsuarioId(token);
 
@@ -65,15 +65,57 @@ public class AvaliacaoServices {
             }
 
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado para este token");
-    }
+}
 
 
-    public List<AvaliacaoResponseDTO> listarAvaliacoes(){
-        return mapper.toResponseDTOList(repository.findAll());
+    public List<AvaliacaoResponseDTO> getAvaliacoesById(Long id){
+        Optional<Musico> musicoOptional = musicoRepository.findById(id);
+        if (musicoOptional.isPresent()){
+            List<Avaliacao> avaliacoes = musicoOptional.get().getAvaliacoes();
+            return mapper.toResponseDTOList(avaliacoes);
+        }else{
+            Optional<Contratante> contratanteOptional = contratanteRepository.findById(id);
+            if (contratanteOptional.isPresent()){
+                List<Avaliacao> avaliacoes = contratanteOptional.get().getAvaliacoes();
+                return mapper.toResponseDTOList(avaliacoes);
+            }
+            else{
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi encontrado um usuário com o id informado");
+            }
+        }
     }
 
-    public AvaliacaoResponseDTO getAvaliacaoById(Long id){
-        Optional<Avaliacao> entity = repository.findById(id);
-        return mapper.toDto(entity.orElse(null));
+    public Double getMediaAvaliacaoByIdUsuario(Long id){
+            Optional<Musico> musicoOpt = musicoRepository.findById(id);
+            if (musicoOpt.isPresent()){
+                List<Avaliacao> avaliacoes = musicoOpt.get().getAvaliacoes();
+                if (avaliacoes.isEmpty() || avaliacoes.equals(null)){
+                    return 0.0;
+                }
+                double soma = 0;
+                for (Avaliacao a: avaliacoes){
+                    soma += a.getNota();
+                }
+                return soma / avaliacoes.size();
+            }
+            else{
+                Optional<Contratante> contratanteOpt = contratanteRepository.findById(id);
+                if (contratanteOpt.isPresent()){
+                    List<Avaliacao> avaliacoes = musicoOpt.get().getAvaliacoes();
+                    if (avaliacoes.isEmpty() || avaliacoes.equals(null)){
+                        return 0.0;
+                    }
+                    double soma = 0;
+                    for (Avaliacao a: avaliacoes){
+                        soma += a.getNota();
+                    }
+                    return soma / avaliacoes.size();
+                }
+                else{
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi encontrado um usuário com o id informado");
+                }
+            }
+
     }
+
 }

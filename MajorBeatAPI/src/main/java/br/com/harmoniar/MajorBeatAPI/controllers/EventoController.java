@@ -3,6 +3,8 @@ package br.com.harmoniar.MajorBeatAPI.controllers;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoUpdateDTO;
+import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
+import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import br.com.harmoniar.MajorBeatAPI.mappers.EventoMapper;
 import br.com.harmoniar.MajorBeatAPI.services.EventoServices;
@@ -52,6 +54,16 @@ public class EventoController {
     @GetMapping("/GetById/{id}")
     public ResponseEntity<EventoResponseDTO> getEventoById(@PathVariable Long id){
             return ResponseEntity.ok(services.getEventoById(id));
+    }
+
+    @GetMapping("/GetByGenero/{nomeGenero}")
+    public ResponseEntity<List<EventoResponseDTO>> getEventoByGenero(@PathVariable NomeGenero nomeGenero){
+        return ResponseEntity.ok(services.getEventosByGenero(nomeGenero));
+    }
+
+    @GetMapping("/GetByInstrumento/{instrumento}")
+    public ResponseEntity<List<EventoResponseDTO>> getEventoByInstrumento(@PathVariable NomeInstrumento instrumento){
+        return ResponseEntity.ok(services.getEventosByInstrumento(instrumento));
     }
 
     //Métodos POST

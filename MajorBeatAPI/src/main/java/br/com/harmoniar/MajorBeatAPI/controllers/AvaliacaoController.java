@@ -2,7 +2,6 @@ package br.com.harmoniar.MajorBeatAPI.controllers;
 
 import br.com.harmoniar.MajorBeatAPI.dto.AvaliacaoRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.AvaliacaoResponseDTO;
-import br.com.harmoniar.MajorBeatAPI.entity.Avaliacao;
 import br.com.harmoniar.MajorBeatAPI.mappers.AvaliacaoMapper;
 import br.com.harmoniar.MajorBeatAPI.services.AvaliacaoServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +20,14 @@ public class AvaliacaoController {
     @Autowired
     AvaliacaoMapper mapper;
 
-    @GetMapping
-    public List<AvaliacaoResponseDTO> listarAvaliacao(){
-        return services.listarAvaliacoes();
+    @GetMapping("/{id}")
+    public ResponseEntity<List<AvaliacaoResponseDTO>> getAvaliacoesByIdUsuario(@PathVariable Long id){
+        return ResponseEntity.ok(services.getAvaliacoesById(id));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AvaliacaoResponseDTO> getAvaliacaoById(@PathVariable Long id){
-        var existe = services.getAvaliacaoById(id);
-        if(existe != null){
-            return ResponseEntity.ok(existe);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/GetMedias/{id}")
+    public ResponseEntity<Double> getMediaAvaliacoesByIdUsuario(@PathVariable Long id){
+        return ResponseEntity.ok(services.getMediaAvaliacaoByIdUsuario(id));
     }
 
     @PostMapping("/avaliar")

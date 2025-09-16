@@ -22,7 +22,8 @@ public class MensagemController {
 
     //Métodos GET
 
-    public ResponseEntity<List<MensagemResponseDTO>> getMensagensByIdUsuarioAutenticado(String token){
+    public ResponseEntity<List<MensagemResponseDTO>> getMensagensByIdUsuarioAutenticado(@RequestHeader("Authorization") String authHeader){
+        String token = authHeader.replace("Bearer ", "");
         return ResponseEntity.ok(services.listarMensagensByUsuarioAutenticado(token));
     }
 
