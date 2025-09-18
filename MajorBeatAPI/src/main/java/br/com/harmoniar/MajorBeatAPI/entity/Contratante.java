@@ -62,8 +62,10 @@ public class Contratante {
     private Role role;
 
     @OneToMany(mappedBy = "contratante", cascade = CascadeType.ALL)
+    @ElementCollection
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 
     @OneToMany(mappedBy = "contratante", cascade = CascadeType.ALL)
+    @ElementCollection
     private List<Chat> chats = new ArrayList<>();
 }

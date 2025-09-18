@@ -1,9 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.entity;
 
-import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
-import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
-import br.com.harmoniar.MajorBeatAPI.enums.StatusEvento;
-import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
+import br.com.harmoniar.MajorBeatAPI.enums.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,6 +49,10 @@ public class Evento {
 
     @Column
     private String titulo;
+
+    @Column
+    @Enumerated
+    private TipoEvento tipoEvento;
 
     @Column
     @ElementCollection

@@ -35,6 +35,7 @@ public class Chat {
     private Contratante idContratante;
 
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
+    @ElementCollection
     private List<Mensagem> mensagens = new ArrayList<>();
 
 

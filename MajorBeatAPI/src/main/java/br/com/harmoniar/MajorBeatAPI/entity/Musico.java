@@ -73,9 +73,11 @@ public class Musico{
     private Role role;
 
     @OneToMany(mappedBy = "musico", cascade = CascadeType.ALL)
+    @ElementCollection
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 
     @OneToMany(mappedBy = "musico", cascade = CascadeType.ALL)
+    @ElementCollection
     private List<Chat> chats = new ArrayList<>();
 
 }
