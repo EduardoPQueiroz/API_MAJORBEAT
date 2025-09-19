@@ -118,4 +118,37 @@ public class AvaliacaoServices {
 
     }
 
+    public Double getMediaAvaliacaoByIdUsuarioAutenticado(String token){
+        Long idUsuario = JwtUtil.extrairUsuarioId(token);
+        Optional<Musico> musicoOpt = musicoRepository.findById(idUsuario);
+        if (musicoOpt.isPresent()){
+            List<Avaliacao> avaliacoes = musicoOpt.get().getAvaliacoes();
+            if (avaliacoes.isEmpty() || avaliacoes.equals(null)){
+                return 0.0;
+            }
+            double soma = 0;
+            for (Avaliacao a: avaliacoes){
+                soma += a.getNota();
+            }
+            return soma / avaliacoes.size();
+        }
+        else{
+            Optional<Contratante> contratanteOpt = contratanteRepository.findById(idUsuario);
+            if (contratanteOpt.isPresent()){
+                List<Avaliacao> avaliacoes = musicoOpt.get().getAvaliacoes();
+                if (avaliacoes.isEmpty() || avaliacoes.equals(null)){
+                    return 0.0;
+                }
+                double soma = 0;
+                for (Avaliacao a: avaliacoes){
+                    soma += a.getNota();
+                }
+                return soma / avaliacoes.size();
+            }
+            else{
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi encontrado um usuário com o id informado");
+            }
+        }
+    }
+
 }

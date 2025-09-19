@@ -63,11 +63,11 @@ public class MensagemServices {
                 return mapper.toResponseDTOList(mensagens);
             }
             else {
-                throw new NullPointerException("Não foram encontradas mensagens desse usuário");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foram encontradas mensagens desse usuário");
             }
         }
         else{
-            throw new EntityNotFoundException("Não foi encontrado um músico com esse id");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi encontrado um músico com esse id");
         }
     }
 
@@ -120,11 +120,10 @@ public class MensagemServices {
     }
 
     //Métodos DELETE
-    public boolean deleteMensagemById(Long id){
+    public void deleteMensagemById(Long id){
         Optional<Mensagem> mensagem = repository.findById(id);
         if (mensagem.isPresent()){
             repository.deleteById(id);
-            return true;
         }
         else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível deletar uma entidade não existente");

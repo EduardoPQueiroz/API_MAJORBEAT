@@ -24,15 +24,11 @@ public class Chat {
 
     @JoinColumn
     @ManyToOne
-    private Evento idEvento;
+    private Musico musico;
 
     @JoinColumn
     @ManyToOne
-    private Musico idMusico;
-
-    @JoinColumn
-    @ManyToOne
-    private Contratante idContratante;
+    private Contratante contratante;
 
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
     @ElementCollection

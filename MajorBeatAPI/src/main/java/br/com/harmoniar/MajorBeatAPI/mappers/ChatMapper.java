@@ -13,5 +13,6 @@ public interface ChatMapper {
     ChatMapper INSTANCE = Mappers.getMapper(ChatMapper.class);
 
     List<ChatResponseDTO> toResponseDTOList(List<Chat> chats);
+    ChatResponseDTO toResponseDto(Chat chat);
 
 }

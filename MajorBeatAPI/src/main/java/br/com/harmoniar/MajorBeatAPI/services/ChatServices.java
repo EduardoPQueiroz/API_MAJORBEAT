@@ -1,5 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.services;
 
+import br.com.harmoniar.MajorBeatAPI.dto.ChatRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.ChatResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Chat;
 import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +53,35 @@ public class ChatServices {
             }
         }else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "id não encontrado");
+        }
+    }
+
+    public ChatResponseDTO criarChat(ChatRequestDTO dto){
+        Long idMusico = dto.musicoId().getIdMusico();
+        Long idContratante = dto.contratanteId().getIdContratante();
+
+        Musico musico = musicoRepository.findById(idMusico).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Musico não encontrado"));
+        Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
+
+        Optional<Chat> existingChat = repository.findByMusicoAndContratante(musico, contratante);
+        if (existingChat.isPresent()){
+            return mapper.toResponseDto(existingChat.get());
+        }
+        Chat chat = new Chat();
+        chat.setContratante(contratante);
+        chat.setMusico(musico);
+        chat.setDataInicio(LocalDateTime.now());
+
+        Chat chatSaved = repository.save(chat);
+        return mapper.toResponseDto(chatSaved);
+    }
+
+    public void deleteChatById(Long id){
+        Optional<Chat> chatOptional = repository.findById(id);
+        if(chatOptional.isPresent()){
+            repository.deleteById(id);
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível excluir o chat pois ele não existe");
         }
     }
 

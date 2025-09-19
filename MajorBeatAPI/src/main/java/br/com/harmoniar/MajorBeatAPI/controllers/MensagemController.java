@@ -49,11 +49,13 @@ public class MensagemController {
     //Métodos DELETE
     @DeleteMapping("/DeleteById/{id}")
     public ResponseEntity<MensagemResponseDTO> excluirMensagemById(@PathVariable Long id){
-        if (services.deleteMensagemById(id) == true){
-            return ResponseEntity.noContent().build();
-        }else{
-            return ResponseEntity.badRequest().build();
-        }
+         try {
+             services.deleteMensagemById(id);
+             return ResponseEntity.noContent().build();
+         }catch (Exception e){
+             return ResponseEntity.badRequest().build();
+         }
+
     }
 
 
