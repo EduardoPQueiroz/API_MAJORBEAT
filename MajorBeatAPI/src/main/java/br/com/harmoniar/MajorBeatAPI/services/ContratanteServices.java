@@ -84,7 +84,7 @@ public class ContratanteServices {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email inválido inserido!");
         }
         entity.setSenha(passwordEncoder.encode(dto.senha()));
-        entity.setRole(Role.CONTRATANTE);
+        entity.setRole(Role.ROLE_CONTRATANTE);
         entity.setDtCriacao(LocalDate.now());
         Contratante saved = repository.save(entity);
         return mapper.toDto(saved);

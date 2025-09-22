@@ -26,42 +26,42 @@ public class EventoController {
     @Autowired
     EventoMapper mapper;
 
-    @GetMapping("/GetAll")
+    @GetMapping("/getAll")
     public ResponseEntity<List<EventoResponseDTO>> getAllEventos(){
             return ResponseEntity.ok(services.getAllEventos());
     }
 
-    @GetMapping("/GetByTipoMusico/{tipoMusico}")
+    @GetMapping("/getByTipoMusico/{tipoMusico}")
     public ResponseEntity<List<EventoResponseDTO>> getEventoByTipoMusico(@PathVariable TipoMusico tipoMusico){
             return ResponseEntity.ok(services.getEventosByTipoMusico(tipoMusico));
     }
 
-    @GetMapping("/GetByData/{data}")
+    @GetMapping("/getByData/{data}")
     public ResponseEntity<List<EventoResponseDTO>> getEventoByData(@PathVariable LocalDate data){
             return ResponseEntity.ok(services.getEventosByData(data));
     }
 
-    @GetMapping("/GetByEndereco/{endereco}")
+    @GetMapping("/getByEndereco/{endereco}")
     public ResponseEntity<List<EventoResponseDTO>> getEventoByEndereco(@PathVariable String endereco){
             return ResponseEntity.ok(services.getEventosByEndereco(endereco));
     }
 
-    @GetMapping("/GetByNome/{nome}")
+    @GetMapping("/getByNome/{nome}")
     public ResponseEntity<EventoResponseDTO> getEventoByNome(@PathVariable String nome){
             return ResponseEntity.ok(services.getEventoByNome(nome));
     }
 
-    @GetMapping("/GetById/{id}")
+    @GetMapping("/getById/{id}")
     public ResponseEntity<EventoResponseDTO> getEventoById(@PathVariable Long id){
             return ResponseEntity.ok(services.getEventoById(id));
     }
 
-    @GetMapping("/GetByGenero/{nomeGenero}")
+    @GetMapping("/getByGenero/{nomeGenero}")
     public ResponseEntity<List<EventoResponseDTO>> getEventoByGenero(@PathVariable NomeGenero nomeGenero){
         return ResponseEntity.ok(services.getEventosByGenero(nomeGenero));
     }
 
-    @GetMapping("/GetByInstrumento/{instrumento}")
+    @GetMapping("/getByInstrumento/{instrumento}")
     public ResponseEntity<List<EventoResponseDTO>> getEventoByInstrumento(@PathVariable NomeInstrumento instrumento){
         return ResponseEntity.ok(services.getEventosByInstrumento(instrumento));
     }

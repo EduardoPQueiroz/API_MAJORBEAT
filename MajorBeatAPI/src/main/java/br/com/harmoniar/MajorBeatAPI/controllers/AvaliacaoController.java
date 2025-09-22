@@ -25,7 +25,7 @@ public class AvaliacaoController {
         return ResponseEntity.ok(services.getAvaliacoesById(id));
     }
 
-    @GetMapping("/GetMedias/{id}")
+    @GetMapping("/getMedias/{id}")
     public ResponseEntity<Double> getMediaAvaliacoesByIdUsuario(@PathVariable Long id){
         return ResponseEntity.ok(services.getMediaAvaliacaoByIdUsuario(id));
     }

@@ -1,7 +1,7 @@
 package br.com.harmoniar.MajorBeatAPI.enums;
 
 public enum Role {
-    MUSICO,
-    CONTRATANTE,
-    ADMIN
+    ROLE_MUSICO,
+    ROLE_CONTRATANTE,
+    ROLE_ADMIN
 }

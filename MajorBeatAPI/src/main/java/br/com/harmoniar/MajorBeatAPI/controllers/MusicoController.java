@@ -23,7 +23,7 @@ public class MusicoController {
     MusicoMapper mapper;
 
     //Get
-    @GetMapping("/GetAllMusicos")
+    @GetMapping("/getAllMusicos")
     public ResponseEntity<List<MusicoResponseDTO>> getAllMusicos(){
         return ResponseEntity.ok(services.getAllMusicos());
     }
@@ -33,27 +33,28 @@ public class MusicoController {
         return ResponseEntity.ok(services.getMusicoById(id));
     }
 
-    @GetMapping("/GetByNome/{nome}")
+    @GetMapping("/getByNome/{nome}")
     public ResponseEntity<MusicoResponseDTO> getMusicoByNome(@PathVariable String nome){
         return ResponseEntity.ok(services.getMusicoByNome(nome));
     }
 
-    @GetMapping("/GetByEmail/{email}")
+    @GetMapping("/getByEmail/{email}")
     public ResponseEntity<MusicoResponseDTO> getMusicoByEmail(@PathVariable String email){
         return ResponseEntity.ok(services.getMusicoByEmail(email));
     }
 
-    @GetMapping("/GetByTipoMusico/{tipoMusico}")
+    @GetMapping("/getByTipoMusico/{tipoMusico}")
     public ResponseEntity<List<MusicoResponseDTO>> getMusicoByTipoMusico(@PathVariable TipoMusico tipoMusico){
         return ResponseEntity.ok(services.getMusicoByTipoMusico(tipoMusico));
     }
 
     //Post
-    @PostMapping("/cadastrarMusico")
+    @PostMapping("/cadastrar")
     public ResponseEntity<MusicoResponseDTO> cadastrarMusico(@RequestBody MusicoRequestDTO dto){
         return ResponseEntity.ok(services.cadastrarMusico(dto));
     }
     //Autenticar Músico...
+    @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> loginMusico(@RequestBody LoginRequestDTO loginRequestDTO){
         try{
             String token = services.autenticarMusico(loginRequestDTO.nome(), loginRequestDTO.email(), loginRequestDTO.senha());

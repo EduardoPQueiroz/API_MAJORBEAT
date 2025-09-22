@@ -23,16 +23,16 @@ public class ContratanteController {
 
     //GET
 
-    @GetMapping("/GetAllContratantes")
+    @GetMapping("/getAllContratantes")
     public ResponseEntity<List<ContratanteResponseDTO>> getAllContratantes(){
             return ResponseEntity.ok(services.getAllContratantes());
     }
 
-    @GetMapping("/GetByTipoContratante/{tipoContratante}")
+    @GetMapping("/getByTipoContratante/{tipoContratante}")
     public ResponseEntity<List<ContratanteResponseDTO>> getContratanteByTipoContratante(@PathVariable TipoContratante tipoContratante){
             return ResponseEntity.ok(services.getContratanteByTipoContratante(tipoContratante));
     }
-    @GetMapping("/GetByNome/{nome}")
+    @GetMapping("/getByNome/{nome}")
     public ResponseEntity<ContratanteResponseDTO> getContratanteByNome(@PathVariable String nome) {
             return ResponseEntity.ok(services.getContratanteByNome(nome));
     }

@@ -14,9 +14,9 @@ import java.util.Optional;
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 
-    List<Chat> findAllByMusico_Musico(Musico musico);
+    List<Chat> findAllByMusico(Musico musico);
 
-    List<Chat> findAllByContratante_Contratante(Contratante contratante);
+    List<Chat> findAllByContratante(Contratante contratante);
 
     @Query("SELECT c FROM Chat c WHERE c.musico = :musico AND c.contratante = :contratante")
     Optional<Chat> findByMusicoAndContratante(@Param("musico") Musico musico,

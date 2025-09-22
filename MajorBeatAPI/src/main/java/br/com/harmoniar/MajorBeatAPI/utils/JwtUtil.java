@@ -1,5 +1,7 @@
 package br.com.harmoniar.MajorBeatAPI.utils;
 
+import br.com.harmoniar.MajorBeatAPI.enums.Role;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -29,6 +31,16 @@ public class JwtUtil {
 
         return Long.parseLong(subject);
     }
+
+    public static String extrairRole(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("role", String.class); // ex: ROLE_MUSICO
+    }
+
 
 
 

@@ -2,15 +2,16 @@ package br.com.harmoniar.MajorBeatAPI.services;
 
 import br.com.harmoniar.MajorBeatAPI.dto.MensagemRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.MensagemResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.entity.Chat;
 import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
 import br.com.harmoniar.MajorBeatAPI.entity.Mensagem;
 import br.com.harmoniar.MajorBeatAPI.entity.Musico;
 import br.com.harmoniar.MajorBeatAPI.mappers.MensagemMapper;
+import br.com.harmoniar.MajorBeatAPI.repositories.ChatRepository;
 import br.com.harmoniar.MajorBeatAPI.repositories.ContratanteRepository;
 import br.com.harmoniar.MajorBeatAPI.repositories.MensagemRepository;
 import br.com.harmoniar.MajorBeatAPI.repositories.MusicoRepository;
 import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class MensagemServices {
     MusicoRepository musicoRepository;
 
     @Autowired
+    ChatRepository chatRepository;
+
+    @Autowired
     ContratanteRepository contratanteRepository;
 
     @Autowired
@@ -43,12 +47,16 @@ public class MensagemServices {
         Long idUser = JwtUtil.extrairUsuarioId(token);
         Optional<Musico> musicoOptional = musicoRepository.findById(idUser);
         if (musicoOptional.isPresent()){
-            List<Mensagem> mensagens = repository.findAllByIdMusico_IdMusico(idUser);
+            Musico musico = musicoOptional.get();
+            List<Chat> chats = chatRepository.findAllByMusico(musico);
+            List<Mensagem> mensagens = repository.findByChatIn(chats);
             return mapper.toResponseDTOList(mensagens);
         }
         Optional<Contratante> contratanteOptional = contratanteRepository.findById(idUser);
         if (contratanteOptional.isPresent()){
-            List<Mensagem> mensagens = repository.findAllByIdContratante_IdContratante(idUser);
+            Contratante contratante = contratanteOptional.get();
+            List<Chat> chats = chatRepository.findAllByContratante(contratante);
+            List<Mensagem> mensagens = repository.findByChatIn(chats);
             return mapper.toResponseDTOList(mensagens);
         }else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhuma mensagem foi encontrada.");

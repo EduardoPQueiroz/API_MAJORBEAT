@@ -18,8 +18,6 @@ public record MusicoResponseDTO(
         String biografia,
         LocalDate dtCriacao,
         String links,
-        String cpf,
-        String generoPrincipal,
         TipoMusico tipoMusico,
 
         Role role

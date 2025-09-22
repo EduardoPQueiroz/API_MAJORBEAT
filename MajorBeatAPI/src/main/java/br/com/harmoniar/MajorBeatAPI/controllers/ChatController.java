@@ -18,7 +18,7 @@ public class ChatController {
     @Autowired
     private ChatServices services;
 
-    @GetMapping("/GetChats")
+    @GetMapping("/getChats")
     public ResponseEntity<List<ChatResponseDTO>> listarChatsPorIdUsuarioAutenticado(@RequestHeader("Authorization") String authHeader){
         String token = authHeader.replace("Bearer ", "");
         return ResponseEntity.ok(services.listarChatsUsuarioAutenticado(token));

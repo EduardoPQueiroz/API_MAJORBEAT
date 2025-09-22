@@ -94,7 +94,7 @@ public class MusicoServices {
         }
         entity.setSenha(passwordEncoder.encode(dto.senha()));
         entity.setDtCriacao(LocalDate.now());
-        entity.setRole(Role.MUSICO);
+        entity.setRole(Role.ROLE_MUSICO);
         Musico saved = repository.save(entity);
         return mapper.toDto(saved);
 

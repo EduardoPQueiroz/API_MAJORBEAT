@@ -27,15 +27,6 @@ public class MensagemController {
         return ResponseEntity.ok(services.listarMensagensByUsuarioAutenticado(token));
     }
 
-    @GetMapping("/GetByMusicoId/{id}")
-    public ResponseEntity<List<MensagemResponseDTO>> getAllMensagensByIdMusico(@PathVariable Long id){
-        return ResponseEntity.ok(services.listarMensagensByIdMusico(id));
-    }
-
-    @GetMapping("/GetByContratanteId/{id}")
-    public ResponseEntity<List<MensagemResponseDTO>> getAllMensagensByIdContratante(@PathVariable Long id){
-        return ResponseEntity.ok(services.listarMensagensByIdContratante(id));
-    }
 
 
     //Métodos POST
@@ -47,7 +38,7 @@ public class MensagemController {
 
 
     //Métodos DELETE
-    @DeleteMapping("/DeleteById/{id}")
+    @DeleteMapping("/deleteById/{id}")
     public ResponseEntity<MensagemResponseDTO> excluirMensagemById(@PathVariable Long id){
          try {
              services.deleteMensagemById(id);
