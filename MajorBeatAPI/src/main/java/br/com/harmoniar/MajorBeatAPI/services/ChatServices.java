@@ -57,8 +57,8 @@ public class ChatServices {
     }
 
     public ChatResponseDTO criarChat(ChatRequestDTO dto){
-        Long idMusico = dto.musicoId().getIdMusico();
-        Long idContratante = dto.contratanteId().getIdContratante();
+        Long idMusico = dto.musico().getIdMusico();
+        Long idContratante = dto.contratante().getIdContratante();
 
         Musico musico = musicoRepository.findById(idMusico).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Musico não encontrado"));
         Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));

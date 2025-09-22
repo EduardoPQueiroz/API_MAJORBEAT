@@ -4,7 +4,7 @@ import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
 import br.com.harmoniar.MajorBeatAPI.entity.Musico;
 
 public record ChatRequestDTO(
-        Musico musicoId,
-        Contratante contratanteId
+        Musico musico,
+        Contratante contratante
 ) {
 }

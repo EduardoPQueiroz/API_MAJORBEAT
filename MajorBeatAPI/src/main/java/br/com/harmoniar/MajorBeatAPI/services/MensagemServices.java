@@ -55,37 +55,8 @@ public class MensagemServices {
         }
     }
 
-    public List<MensagemResponseDTO> listarMensagensByIdMusico(Long idMusico){
-        Optional<Musico> existe = musicoRepository.findById(idMusico);
-        if(existe.isPresent()){
-            List<Mensagem> mensagens = repository.findAllByIdMusico_IdMusico(idMusico);
-            if(!mensagens.isEmpty()){
-                return mapper.toResponseDTOList(mensagens);
-            }
-            else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foram encontradas mensagens desse usuário");
-            }
-        }
-        else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi encontrado um músico com esse id");
-        }
-    }
 
-    public List<MensagemResponseDTO> listarMensagensByIdContratante(Long idContratante){
-        Optional<Contratante> existe = contratanteRepository.findById(idContratante);
-        if (existe.isPresent()){
-            List<Mensagem> mensagens = repository.findAllByIdContratante_IdContratante(idContratante);
-            if (!mensagens.isEmpty()){
-                return mapper.toResponseDTOList(mensagens);
-            }
-            else{
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foram encontradas mensagens relacionadas a esse usuário");
-            }
-        }
-        else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi encontrado um contratante com esse id");
-        }
-    }
+
 
 
     //Métodos POST
