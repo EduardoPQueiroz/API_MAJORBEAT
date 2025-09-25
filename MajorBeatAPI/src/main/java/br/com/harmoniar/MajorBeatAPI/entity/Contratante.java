@@ -1,11 +1,14 @@
 package br.com.harmoniar.MajorBeatAPI.entity;
 
+import br.com.harmoniar.MajorBeatAPI.enums.Role;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoContratante;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -53,4 +56,16 @@ public class Contratante {
     @Column
     @Enumerated
     private TipoContratante tipoContratante;
+
+    @Column
+    @Enumerated
+    private Role role;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @ElementCollection
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @ElementCollection
+    private List<Chat> chats = new ArrayList<>();
 }

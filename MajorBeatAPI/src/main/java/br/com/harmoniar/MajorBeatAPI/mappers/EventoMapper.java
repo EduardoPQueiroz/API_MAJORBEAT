@@ -1,8 +1,13 @@
 package br.com.harmoniar.MajorBeatAPI.mappers;
 
+import br.com.harmoniar.MajorBeatAPI.dto.ContratanteUpdateDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.EventoRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.EventoUpdateDTO;
+import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
 import br.com.harmoniar.MajorBeatAPI.entity.Evento;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -15,7 +20,8 @@ public interface EventoMapper {
 
     EventoResponseDTO OptionaltoDto(Optional<Evento> evento);
 
+    void updateFromDto(EventoUpdateDTO dto, @MappingTarget Evento entity);
     EventoResponseDTO toDto(Evento evento);
 
-    Evento toEntity(EventoResponseDTO dto);
+    Evento toEntity(EventoRequestDTO dto);
 }

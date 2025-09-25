@@ -1,6 +1,10 @@
 package br.com.harmoniar.MajorBeatAPI.controllers;
 
+import br.com.harmoniar.MajorBeatAPI.dto.EventoRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.EventoUpdateDTO;
+import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
+import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import br.com.harmoniar.MajorBeatAPI.mappers.EventoMapper;
 import br.com.harmoniar.MajorBeatAPI.services.EventoServices;
@@ -22,91 +26,64 @@ public class EventoController {
     @Autowired
     EventoMapper mapper;
 
-    @GetMapping("/GetAll")
+    @GetMapping("/getAll")
     public ResponseEntity<List<EventoResponseDTO>> getAllEventos(){
-        try{
             return ResponseEntity.ok(services.getAllEventos());
-        }
-        catch (EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
     }
 
-    @GetMapping("/GetByTipoMusico/{tipoMusico}")
+    @GetMapping("/getByTipoMusico/{tipoMusico}")
     public ResponseEntity<List<EventoResponseDTO>> getEventoByTipoMusico(@PathVariable TipoMusico tipoMusico){
-        try {
             return ResponseEntity.ok(services.getEventosByTipoMusico(tipoMusico));
-        }
-        catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
     }
 
-    @GetMapping("/GetByData/{data}")
+    @GetMapping("/getByData/{data}")
     public ResponseEntity<List<EventoResponseDTO>> getEventoByData(@PathVariable LocalDate data){
-        try{
             return ResponseEntity.ok(services.getEventosByData(data));
-        }
-        catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
     }
 
-    @GetMapping("/GetByEndereco/{endereco}")
+    @GetMapping("/getByEndereco/{endereco}")
     public ResponseEntity<List<EventoResponseDTO>> getEventoByEndereco(@PathVariable String endereco){
-        try{
             return ResponseEntity.ok(services.getEventosByEndereco(endereco));
-        }catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
     }
 
-    @GetMapping("/GetByNome/{nome}")
+    @GetMapping("/getByNome/{nome}")
     public ResponseEntity<EventoResponseDTO> getEventoByNome(@PathVariable String nome){
-        try{
             return ResponseEntity.ok(services.getEventoByNome(nome));
-        }
-        catch (EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
     }
 
-    @GetMapping("/GetById/{id}")
+    @GetMapping("/getById/{id}")
     public ResponseEntity<EventoResponseDTO> getEventoById(@PathVariable Long id){
-        try{
             return ResponseEntity.ok(services.getEventoById(id));
-        }
-        catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+    }
+
+    @GetMapping("/getByGenero/{nomeGenero}")
+    public ResponseEntity<List<EventoResponseDTO>> getEventoByGenero(@PathVariable NomeGenero nomeGenero){
+        return ResponseEntity.ok(services.getEventosByGenero(nomeGenero));
+    }
+
+    @GetMapping("/getByInstrumento/{instrumento}")
+    public ResponseEntity<List<EventoResponseDTO>> getEventoByInstrumento(@PathVariable NomeInstrumento instrumento){
+        return ResponseEntity.ok(services.getEventosByInstrumento(instrumento));
     }
 
     //Métodos POST
 
     @PostMapping("/criarEvento")
-    public ResponseEntity<EventoResponseDTO> criarEvento(@RequestBody EventoResponseDTO dto){
-        try{
+    public ResponseEntity<EventoResponseDTO> criarEvento(@RequestBody EventoRequestDTO dto){
             return ResponseEntity.ok(services.criarEvento(dto));
-        }catch (IllegalArgumentException e){
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     //Métodos PUT
     @PutMapping("/atualizarEvento/{id}")
-    public ResponseEntity<EventoResponseDTO> atualizarEvento(@RequestBody EventoResponseDTO dto, @PathVariable Long id){
-        try{
+    public ResponseEntity<EventoResponseDTO> atualizarEvento(@RequestBody EventoUpdateDTO dto, @PathVariable Long id){
             return ResponseEntity.ok(services.alterarEvento(dto, id));
-        }catch (NullPointerException e){
-            return ResponseEntity.notFound().build();
-        }
     }
 
 
     //Métodos DELETE
 
     @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<EventoResponseDTO> deleteEventoById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteEventoById(@PathVariable Long id){
         if (services.excluirEvento(id) == true){
             return ResponseEntity.noContent().build();
         }

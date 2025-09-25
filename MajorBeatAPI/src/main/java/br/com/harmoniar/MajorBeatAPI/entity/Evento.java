@@ -1,15 +1,13 @@
 package br.com.harmoniar.MajorBeatAPI.entity;
 
-import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
-import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
-import br.com.harmoniar.MajorBeatAPI.enums.StatusEvento;
-import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
+import br.com.harmoniar.MajorBeatAPI.enums.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table
@@ -53,14 +51,18 @@ public class Evento {
     private String titulo;
 
     @Column
-    @ElementCollection
     @Enumerated
-    private List<NomeInstrumento> nomeInstrumento;
+    private TipoEvento tipoEvento;
 
     @Column
     @ElementCollection
     @Enumerated
-    private List<NomeGenero> nomeGenero;
+    private List<NomeInstrumento> nomeInstrumento = new ArrayList<>();
+
+    @Column
+    @ElementCollection
+    @Enumerated
+    private List<NomeGenero> nomeGenero = new ArrayList<>();
 
     @JoinColumn
     @ManyToOne

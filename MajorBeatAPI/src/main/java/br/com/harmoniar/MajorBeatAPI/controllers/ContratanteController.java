@@ -1,8 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.controllers;
 
-import br.com.harmoniar.MajorBeatAPI.dto.ContratanteResponseDTO;
-import br.com.harmoniar.MajorBeatAPI.dto.LoginRequestDTO;
-import br.com.harmoniar.MajorBeatAPI.dto.LoginResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.*;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoContratante;
 import br.com.harmoniar.MajorBeatAPI.mappers.ContratanteMapper;
 import br.com.harmoniar.MajorBeatAPI.services.ContratanteServices;
@@ -25,50 +23,28 @@ public class ContratanteController {
 
     //GET
 
-    @GetMapping("/GetAllContratantes")
+    @GetMapping("/getAllContratantes")
     public ResponseEntity<List<ContratanteResponseDTO>> getAllContratantes(){
-        try{
             return ResponseEntity.ok(services.getAllContratantes());
-        }catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
     }
 
-    @GetMapping("/GetByTipoContratante/{tipoContratante}")
+    @GetMapping("/getByTipoContratante/{tipoContratante}")
     public ResponseEntity<List<ContratanteResponseDTO>> getContratanteByTipoContratante(@PathVariable TipoContratante tipoContratante){
-        try{
             return ResponseEntity.ok(services.getContratanteByTipoContratante(tipoContratante));
-        }catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
     }
-
-    @GetMapping("/GetByNome/{nome}")
-    public ResponseEntity<ContratanteResponseDTO> getContratanteByNome(@PathVariable String nome){
-        try{
+    @GetMapping("/getByNome/{nome}")
+    public ResponseEntity<ContratanteResponseDTO> getContratanteByNome(@PathVariable String nome) {
             return ResponseEntity.ok(services.getContratanteByNome(nome));
-        }catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<ContratanteResponseDTO> getContratanteById(@PathVariable Long id){
-        try {
             return ResponseEntity.ok(services.getContratanteById(id));
-        }catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
     }
 
     //POST
     @PostMapping("/cadastrarContratante")
-    public ResponseEntity<ContratanteResponseDTO> cadastrarContratante(@RequestBody ContratanteResponseDTO dto){
-        try{
+    public ResponseEntity<ContratanteResponseDTO> cadastrarContratante(@RequestBody ContratanteRequestDTO dto){
             return ResponseEntity.ok(services.cadastrarContratante(dto));
-        }catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @PostMapping("/autenticarContratante")
@@ -86,17 +62,13 @@ public class ContratanteController {
     //POST
 
     @PutMapping("/editContratanteById/{id}")
-    public ResponseEntity<ContratanteResponseDTO> editContratanteById(ContratanteResponseDTO dto, Long id){
-        try {
+    public ResponseEntity<ContratanteResponseDTO> editContratanteById(ContratanteUpdateDTO dto, Long id){
             return ResponseEntity.ok(services.editContratanteById(dto, id));
-        }catch(RuntimeException e){
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     //DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<ContratanteResponseDTO> deleteContratanteById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteContratanteById(@PathVariable Long id){
         if(services.DeleteContratanteById(id) == true){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

@@ -1,5 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.controllers;
 
+import br.com.harmoniar.MajorBeatAPI.dto.AvaliacaoRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.AvaliacaoResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.mappers.AvaliacaoMapper;
 import br.com.harmoniar.MajorBeatAPI.services.AvaliacaoServices;
@@ -19,26 +20,27 @@ public class AvaliacaoController {
     @Autowired
     AvaliacaoMapper mapper;
 
-    @GetMapping
-    public List<AvaliacaoResponseDTO> listarAvaliacao(){
-        return services.listarAvaliacoes();
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<AvaliacaoResponseDTO> getAvaliacaoById(@PathVariable Long id){
-        var existe = services.getAvaliacaoById(id);
-        if(existe != null){
-            return ResponseEntity.ok(existe);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<List<AvaliacaoResponseDTO>> getAvaliacoesByIdUsuario(@PathVariable Long id){
+        return ResponseEntity.ok(services.getAvaliacoesById(id));
     }
 
-    @PostMapping
-    public AvaliacaoResponseDTO avaliar(@RequestBody AvaliacaoResponseDTO dto){
-        return services.avaliar(dto);
+    @GetMapping("/getMedias/{id}")
+    public ResponseEntity<Double> getMediaAvaliacoesByIdUsuario(@PathVariable Long id){
+        return ResponseEntity.ok(services.getMediaAvaliacaoByIdUsuario(id));
     }
+
+    @PostMapping("/avaliar")
+    public ResponseEntity<AvaliacaoResponseDTO> avaliar(
+            @RequestBody AvaliacaoRequestDTO dto,
+            @RequestHeader("Authorization") String authHeader) {
+
+        String token = authHeader.replace("Bearer ", "");
+        AvaliacaoResponseDTO avaliacao = services.avaliar(dto, token);
+
+        return ResponseEntity.ok(avaliacao);
+    }
+
 
 
 }

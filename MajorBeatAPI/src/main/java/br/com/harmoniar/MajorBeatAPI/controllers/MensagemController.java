@@ -1,5 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.controllers;
 
+import br.com.harmoniar.MajorBeatAPI.dto.MensagemRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.MensagemResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.mappers.MensagemMapper;
 import br.com.harmoniar.MajorBeatAPI.services.MensagemServices;
@@ -21,54 +22,31 @@ public class MensagemController {
 
     //Métodos GET
 
-    @GetMapping("/GetByMusicoId/{id}")
-    public ResponseEntity<List<MensagemResponseDTO>> getAllMensagensByIdMusico(@PathVariable Long id){
-        try {
-            return ResponseEntity.ok(services.listarMensagensByIdMusico(id));
-        }catch (RuntimeException e){
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<List<MensagemResponseDTO>> getMensagensByIdUsuarioAutenticado(@RequestHeader("Authorization") String authHeader){
+        String token = authHeader.replace("Bearer ", "");
+        return ResponseEntity.ok(services.listarMensagensByUsuarioAutenticado(token));
     }
 
-    @GetMapping("/GetByContratanteId/{id}")
-    public ResponseEntity<List<MensagemResponseDTO>> getAllMensagensByIdContratante(@PathVariable Long id){
-        try {
-            return ResponseEntity.ok(services.listarMensagensByIdContratante(id));
-        }catch (RuntimeException e){
-            return ResponseEntity.notFound().build();
-        }
-    }
 
 
     //Métodos POST
-    @PostMapping("/enviarMensagem")
-    public ResponseEntity<MensagemResponseDTO> enviarMensagem(@RequestBody MensagemResponseDTO dto){
-        try {
-            return ResponseEntity.ok(services.enviarMensagem(dto));
-        }catch (RuntimeException e){
-            return ResponseEntity.badRequest().build();
-        }
+    @PostMapping("/enviarMensagemComum")
+    public ResponseEntity<MensagemResponseDTO> enviarMensagem(@RequestBody MensagemRequestDTO dto, @RequestHeader("Authorization") String authHeader){
+            String token = authHeader.replace("Bearer ", "");
+            return ResponseEntity.ok(services.enviarMensagem(dto, token));
     }
 
-    //Métodos PUT
-
-    @PutMapping("/editarMensagemById/{id}")
-    public ResponseEntity<MensagemResponseDTO> editarMensagem(@RequestBody MensagemResponseDTO dto, @PathVariable Long id){
-        try{
-            return ResponseEntity.ok(services.editarMensagem(dto, id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
 
     //Métodos DELETE
-    @DeleteMapping("/DeleteById/{id}")
+    @DeleteMapping("/deleteById/{id}")
     public ResponseEntity<MensagemResponseDTO> excluirMensagemById(@PathVariable Long id){
-        if (services.deleteMensagemById(id) == true){
-            return ResponseEntity.noContent().build();
-        }else{
-            return ResponseEntity.badRequest().build();
-        }
+         try {
+             services.deleteMensagemById(id);
+             return ResponseEntity.noContent().build();
+         }catch (Exception e){
+             return ResponseEntity.badRequest().build();
+         }
+
     }
 
 

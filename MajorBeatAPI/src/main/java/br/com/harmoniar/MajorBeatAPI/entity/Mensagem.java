@@ -23,20 +23,22 @@ public class Mensagem {
     private String texto;
 
     @Column
-    private String status;
+    private LocalDateTime dataEnvio;
 
     @Column
-    private LocalDateTime dataEnvio;
+    private boolean proposta;
+
+    @Column
+    private double valor;
+
+    @JoinColumn
+    @ManyToOne
+    private Evento evento;
 
     @JoinColumn
     @ManyToOne
     private Chat chat;
 
-    @JoinColumn
-    @ManyToOne
-    private Musico idMusico;
-
-    @JoinColumn
-    @ManyToOne
-    private Contratante idContratante;
+    @Column
+    private Long idRemetente;
 }

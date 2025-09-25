@@ -1,8 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.controllers;
 
-import br.com.harmoniar.MajorBeatAPI.dto.MusicoResponseDTO;
-import br.com.harmoniar.MajorBeatAPI.dto.LoginRequestDTO;
-import br.com.harmoniar.MajorBeatAPI.dto.LoginResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.*;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import br.com.harmoniar.MajorBeatAPI.mappers.MusicoMapper;
 import br.com.harmoniar.MajorBeatAPI.services.MusicoServices;
@@ -25,66 +23,38 @@ public class MusicoController {
     MusicoMapper mapper;
 
     //Get
-    @GetMapping("/GetAllMusicos")
+    @GetMapping("/getAllMusicos")
     public ResponseEntity<List<MusicoResponseDTO>> getAllMusicos(){
-        try{
-            return ResponseEntity.ok(services.getAllMusicos());
-        }
-        catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(services.getAllMusicos());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MusicoResponseDTO> getMusicoById(@PathVariable Long id){
-        try {
-            return ResponseEntity.ok(services.getMusicoById(id));
-        }
-        catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(services.getMusicoById(id));
     }
 
-    @GetMapping("/GetByNome/{nome}")
+    @GetMapping("/getByNome/{nome}")
     public ResponseEntity<MusicoResponseDTO> getMusicoByNome(@PathVariable String nome){
-        try{
-            return ResponseEntity.ok(services.getMusicoByNome(nome));
-        }
-        catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(services.getMusicoByNome(nome));
     }
 
-    @GetMapping("/GetByEmail/{email}")
+    @GetMapping("/getByEmail/{email}")
     public ResponseEntity<MusicoResponseDTO> getMusicoByEmail(@PathVariable String email){
-        try{
-            return ResponseEntity.ok(services.getMusicoByEmail(email));
-        }catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(services.getMusicoByEmail(email));
     }
 
-    @GetMapping("/GetByTipoMusico/{tipoMusico}")
+    @GetMapping("/getByTipoMusico/{tipoMusico}")
     public ResponseEntity<List<MusicoResponseDTO>> getMusicoByTipoMusico(@PathVariable TipoMusico tipoMusico){
-        try{
-            return ResponseEntity.ok(services.getMusicoByTipoMusico(tipoMusico));
-        }
-        catch(EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(services.getMusicoByTipoMusico(tipoMusico));
     }
 
     //Post
-    @PostMapping("/cadastrarMusico")
-    public ResponseEntity<MusicoResponseDTO> cadastrarMusico(@RequestBody MusicoResponseDTO dto){
-        try{
-            return ResponseEntity.ok(services.cadastrarMusico(dto));
-        }
-        catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().build();
-        }
+    @PostMapping("/cadastrar")
+    public ResponseEntity<MusicoResponseDTO> cadastrarMusico(@RequestBody MusicoRequestDTO dto){
+        return ResponseEntity.ok(services.cadastrarMusico(dto));
     }
     //Autenticar Músico...
+    @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> loginMusico(@RequestBody LoginRequestDTO loginRequestDTO){
         try{
             String token = services.autenticarMusico(loginRequestDTO.nome(), loginRequestDTO.email(), loginRequestDTO.senha());
@@ -97,13 +67,8 @@ public class MusicoController {
 
     //Put
     @PutMapping("/editMusicoById/{id}")
-    public ResponseEntity<MusicoResponseDTO> editMusicoById(@RequestBody MusicoResponseDTO dto, @PathVariable Long id){
-        try {
-            return ResponseEntity.ok(services.editMusicoById(dto, id));
-        }
-        catch(RuntimeException e){
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<MusicoResponseDTO> editMusicoById(@RequestBody MusicoUpdateDTO dto, @PathVariable Long id){
+        return ResponseEntity.ok(services.editMusicoById(dto, id));
     }
 
     //Delete

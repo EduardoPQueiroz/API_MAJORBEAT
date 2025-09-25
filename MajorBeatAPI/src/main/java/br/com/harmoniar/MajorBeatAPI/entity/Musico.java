@@ -2,6 +2,7 @@ package br.com.harmoniar.MajorBeatAPI.entity;
 
 import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
+import br.com.harmoniar.MajorBeatAPI.enums.Role;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table
@@ -60,11 +62,22 @@ public class Musico{
 
     @Column
     @Enumerated
-    private NomeInstrumento nomeInstrumento;
+    private List<NomeInstrumento> nomeInstrumento = new ArrayList<>();
 
     @Column
     @Enumerated
-    private NomeGenero nomeGenero;
+    private List<NomeGenero> nomeGenero = new ArrayList<>();
 
+    @Column
+    @Enumerated
+    private Role role;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @ElementCollection
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @ElementCollection
+    private List<Chat> chats = new ArrayList<>();
 
 }

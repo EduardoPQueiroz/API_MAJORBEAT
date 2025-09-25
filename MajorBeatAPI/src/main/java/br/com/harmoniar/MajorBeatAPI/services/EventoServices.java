@@ -1,15 +1,21 @@
 package br.com.harmoniar.MajorBeatAPI.services;
 
+import br.com.harmoniar.MajorBeatAPI.dto.EventoRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.EventoUpdateDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Evento;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
+import br.com.harmoniar.MajorBeatAPI.enums.StatusEvento;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import br.com.harmoniar.MajorBeatAPI.mappers.EventoMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.EventoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.swing.text.html.Option;
 import java.time.LocalDate;
@@ -26,19 +32,36 @@ public class EventoServices {
 
     //Métodos GET
     public List<EventoResponseDTO> getAllEventos(){
-        return mapper.toResponseDTOList(repository.findAll());
+
+        try {
+            return mapper.toResponseDTOList(repository.findAll());
+        }catch (ResponseStatusException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     public List<EventoResponseDTO> getEventosByTipoMusico(TipoMusico tipoMusico){
-        return mapper.toResponseDTOList(repository.findEventoByTipoMusico(tipoMusico));
+        try{
+            return mapper.toResponseDTOList(repository.findEventoByTipoMusico(tipoMusico));
+        }catch(ResponseStatusException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     public List<EventoResponseDTO> getEventosByInstrumento(NomeInstrumento instrumento){
-        return mapper.toResponseDTOList(repository.findByNomeInstrumentoContaining(instrumento));
+        try{
+            return mapper.toResponseDTOList(repository.findByNomeInstrumentoContaining(instrumento));
+        }catch(ResponseStatusException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     public List<EventoResponseDTO> getEventosByGenero(NomeGenero genero){
-        return mapper.toResponseDTOList(repository.findByNomeGeneroContaining(genero));
+       try{
+           return mapper.toResponseDTOList(repository.findByNomeGeneroContaining(genero));
+       }catch(ResponseStatusException e){
+           throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+       }
     }
 
     public EventoResponseDTO getEventoByNome(String nome){
@@ -47,7 +70,7 @@ public class EventoServices {
             return mapper.OptionaltoDto(evento);
         }
         else{
-            throw new NullPointerException("Não existe um Evento criado com esse nome");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe um Evento criado com esse nome");
         }
     }
 
@@ -57,7 +80,7 @@ public class EventoServices {
             return mapper.OptionaltoDto(evento);
         }
         else{
-            throw new NullPointerException("Id inválido");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id não encontrado.");
         }
     }
 
@@ -70,32 +93,28 @@ public class EventoServices {
 
 
     //MÉTODOS POST
-    public EventoResponseDTO criarEvento(EventoResponseDTO dto){
+    public EventoResponseDTO criarEvento(EventoRequestDTO dto){
         Evento entity = mapper.toEntity(dto);
         if (entity.getHoraInicio().isAfter(entity.getHoraFim())){
-            throw new IllegalArgumentException("O evento precisa começar antes de terminar!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O evento precisa começar antes de terminar!");
         }
         else{
+            entity.setStatus(StatusEvento.NAO_PREENCHIDO);
             Evento saved  = repository.save(entity);
             return mapper.toDto(saved);
         }
     }
 
     //Métodos PUT
-    public EventoResponseDTO alterarEvento(EventoResponseDTO dto, Long id){
-        Evento evento = mapper.toEntity(dto);
-        Optional<Evento> existe = repository.findById(id);
-        if (existe.isPresent()){
-            if (evento.getHoraInicio().isAfter(evento.getHoraFim())) {
-                Evento saved = repository.save(evento);
-                return mapper.toDto(saved);
-            }
-            else{
-                throw new IllegalArgumentException("o evento precisa começar antes de terminar");
-            }
+    public EventoResponseDTO alterarEvento(EventoUpdateDTO dto, Long id){
+        Evento evento = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id de evento não encontrado."));
+        if (evento.getHoraInicio().isAfter(evento.getHoraFim())) {
+            mapper.updateFromDto(dto, evento);
+            Evento saved = repository.save(evento);
+            return mapper.toDto(saved);
         }
         else{
-            throw new NullPointerException("Você não pode alterar um evento inexistente");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "o evento precisa começar antes de terminar");
         }
     }
 
@@ -109,7 +128,7 @@ public class EventoServices {
             return true;
         }
         else{
-            throw new NullPointerException("Você não pode excluir um evento inexistente!");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Você não pode excluir um evento inexistente!");
         }
     }
 

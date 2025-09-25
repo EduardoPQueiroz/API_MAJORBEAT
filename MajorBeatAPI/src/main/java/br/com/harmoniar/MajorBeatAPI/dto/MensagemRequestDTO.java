@@ -6,10 +6,8 @@ import jakarta.annotation.Nullable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public record MensagemResponseDTO(
-        Long idMensagem,
+public record MensagemRequestDTO(
         String texto,
-        LocalDateTime dataEnvio,
 
         @Nullable
         boolean proposta,

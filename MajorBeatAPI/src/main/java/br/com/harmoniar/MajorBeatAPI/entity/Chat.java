@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -22,15 +24,15 @@ public class Chat {
 
     @JoinColumn
     @ManyToOne
-    private Evento idEvento;
+    private Musico musico;
 
     @JoinColumn
     @ManyToOne
-    private Musico idMusico;
+    private Contratante contratante;
 
-    @JoinColumn
-    @ManyToOne
-    private Contratante idContratante;
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
+    @ElementCollection
+    private List<Mensagem> mensagens = new ArrayList<>();
 
 
 }
