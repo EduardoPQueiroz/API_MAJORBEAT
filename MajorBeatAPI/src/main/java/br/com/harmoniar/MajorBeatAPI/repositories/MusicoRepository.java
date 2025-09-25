@@ -10,9 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface MusicoRepository extends JpaRepository<Musico, Long> {
-    List<Musico> getByTipoMusico(TipoMusico tipoMusico);
+    List<Musico> findByTipoMusico(TipoMusico tipoMusico);
 
-    Optional<Musico> getByNome(String nome);
+    Optional<Musico> findByNome(String nome);
 
-    Optional<Musico> getByEmail(String email);
+    Optional<Musico> findByEmail(String email);
 }

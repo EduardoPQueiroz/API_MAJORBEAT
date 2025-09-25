@@ -107,7 +107,7 @@ public class ContratanteServices {
             throw new RuntimeException("Senha incorreta inserida");
         }
 
-        return JwtUtil.gerarToken(contratante.getIdContratante());
+        return JwtUtil.gerarToken(contratante.getIdContratante(), Role.ROLE_CONTRATANTE);
     }
 
     //Métodos PUT

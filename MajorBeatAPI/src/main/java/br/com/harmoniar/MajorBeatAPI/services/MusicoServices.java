@@ -45,29 +45,19 @@ public class MusicoServices {
     }
 
     public MusicoResponseDTO getMusicoById(Long id) {
-        Optional<Musico> musico = repository.findById(id);
-        if(musico.isPresent()){
-            return mapper.OptionalToDto(musico);
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado músico com esse id! ");
+        Musico musico = repository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Musico não encontrado"));
+        return mapper.toDto(musico);
     }
+
     public MusicoResponseDTO getMusicoByNome(String nome){
-        Optional<Musico> musico = repository.getByNome(nome);
-        if (musico.isPresent()){
-            return mapper.OptionalToDto(musico);
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe um músico com esse nome");
+        Musico musico = repository.findByNome(nome).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Musico não encontrado"));
+        return mapper.toDto(musico);
     }
 
     public MusicoResponseDTO getMusicoByEmail(String email){
         if (email.matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
-            Optional<Musico> musico = repository.getByEmail(email);
-            if (musico.isPresent()){
-                return mapper.OptionalToDto(musico);
-            }
-            else{
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi encontrado um músico com o email informado.");
-            }
+            Musico musico = repository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Musico não encontrado!"));
+                return mapper.toDto(musico);
         }
         else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email inválido inserido");
@@ -75,7 +65,7 @@ public class MusicoServices {
     }
 
     public List<MusicoResponseDTO> getMusicoByTipoMusico(TipoMusico tipoMusico){
-        List<Musico> musico = repository.getByTipoMusico(tipoMusico);
+        List<Musico> musico = repository.findByTipoMusico(tipoMusico);
         if (musico.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhum músico foi encontrado!");
         }
@@ -104,10 +94,10 @@ public class MusicoServices {
         Musico musico;
 
         if (nome != null && !nome.isEmpty()) {
-            musico = repository.getByNome(nome)
+            musico = repository.findByNome(nome)
                     .orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um músico com esse nome"));
         } else if (email != null && !email.isEmpty()) {
-            musico = repository.getByEmail(email)
+            musico = repository.findByEmail(email)
                     .orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um músico com esse email"));
         } else {
             throw new NullPointerException("Insira um nome ou email para autenticar o usuário");
@@ -117,7 +107,7 @@ public class MusicoServices {
             throw new RuntimeException("Senha incorreta.");
         }
 
-        return JwtUtil.gerarToken(musico.getIdMusico());
+        return JwtUtil.gerarToken(musico.getIdMusico(), Role.ROLE_MUSICO);
     }
 
 

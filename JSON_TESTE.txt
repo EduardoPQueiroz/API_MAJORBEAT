@@ -1,0 +1,14 @@
+{
+  "nome": "Tadeu",
+  "apelido": "Tadeus",
+  "email": "tadeu@gmail.com",
+  "senha": "tadeu123",
+  "telefone": "11912345678",
+  "endereco": "av.tadeualenda 756",
+  "fotoPerfil": null,
+  "biografia": "Eu amo musica, não gosto de trabalhar, TADEUS",
+  "links": "",
+  "nomeInstrumentos": ["VIOLAO", "GUITARRA", "TECLADO"],
+  "nomeGeneros": ["ROCK", "BLUES", "METAL"],
+  "tipoMusico": "SOLO"
+}

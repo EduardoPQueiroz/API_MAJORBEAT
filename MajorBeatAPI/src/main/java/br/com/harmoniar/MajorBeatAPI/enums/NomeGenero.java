@@ -8,6 +8,7 @@ public enum NomeGenero {
     SAMBA,
     JAZZ,
     RAP,
+    METAL,
     REGGAE,
     BLUES,
     FORRÓ,

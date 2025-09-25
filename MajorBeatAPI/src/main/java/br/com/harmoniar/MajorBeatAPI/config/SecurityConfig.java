@@ -30,19 +30,34 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
+    // @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf(csrf -> csrf.disable()) // se não usar CSRF (API REST)
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/Musico/cadastrar").permitAll()// liberar cadastro público
+//                        .requestMatchers("/Musico/login").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//        return http.build();
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // se não usar CSRF (API REST)
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/Musico/cadastrar").permitAll()// liberar cadastro público
-                        .requestMatchers("/Musico/login").permitAll()
+                        .requestMatchers("/Musico/cadastrar", "/Musico/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
+
+
+
 }

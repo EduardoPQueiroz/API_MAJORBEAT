@@ -28,7 +28,7 @@ public class MusicoController {
         return ResponseEntity.ok(services.getAllMusicos());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getById/{id}")
     public ResponseEntity<MusicoResponseDTO> getMusicoById(@PathVariable Long id){
         return ResponseEntity.ok(services.getMusicoById(id));
     }
