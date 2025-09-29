@@ -48,7 +48,8 @@ public class Contratante {
     private LocalDate dtCriacao;
 
     @Column
-    private String links;
+    @ElementCollection
+    private List<String> links;
 
     @Column
     private String nomeEmpresa;
@@ -60,6 +61,10 @@ public class Contratante {
     @Column
     @Enumerated
     private Role role;
+
+    @Column
+    @ElementCollection
+    private List<String> mediaUrl = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @ElementCollection

@@ -3,6 +3,7 @@ package br.com.harmoniar.MajorBeatAPI.dto;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoContratante;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record ContratanteRequestDTO(
         String nome,
@@ -12,7 +13,7 @@ public record ContratanteRequestDTO(
         String endereco,
         byte[] fotoPerfil,
         String biografia,
-        String links,
+        List<String> links,
         String nomeEmpresa,
         TipoContratante tipoContratante
 ) {

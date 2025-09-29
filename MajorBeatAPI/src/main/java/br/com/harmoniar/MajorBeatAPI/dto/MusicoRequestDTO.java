@@ -16,12 +16,14 @@ public record MusicoRequestDTO(
         String endereco,
         byte[] fotoPerfil,
         String biografia,
-        String links,
+        List<String> links,
 
         List<NomeInstrumento> nomeInstrumentos,
 
         List<NomeGenero> nomeGeneros,
 
-        TipoMusico tipoMusico
+        TipoMusico tipoMusico,
+
+        List<String> mediaUrl
 ) {
 }

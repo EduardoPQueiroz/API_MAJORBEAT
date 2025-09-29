@@ -66,6 +66,14 @@ public class ContratanteController {
             return ResponseEntity.ok(services.editContratanteById(dto, id));
     }
 
+    //PATCH
+    @PatchMapping("/addMedia")
+    public ResponseEntity<Void> adicionarMediaUrl(@RequestHeader("Authorization") String authHeader, @RequestBody MediaUrlRequestDTO dto){
+        String token = authHeader.replace("Bearer", "");
+        services.adicionarMediaUrl(token, dto);
+        return ResponseEntity.ok().build();
+    }
+
     //DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContratanteById(@PathVariable Long id){
@@ -75,6 +83,13 @@ public class ContratanteController {
         else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @DeleteMapping("/deleteMedia")
+    public ResponseEntity<Void> deleteMedia(@RequestHeader("Authorization") String authHeader, @RequestBody MediaUrlRequestDTO dto){
+        String token = authHeader.replace("Bearer", "");
+        services.DeleteMediaUrl(token, dto);
+        return ResponseEntity.ok().build();
     }
 
 }

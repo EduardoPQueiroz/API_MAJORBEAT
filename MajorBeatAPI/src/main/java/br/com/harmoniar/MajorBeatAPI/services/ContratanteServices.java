@@ -3,7 +3,9 @@ package br.com.harmoniar.MajorBeatAPI.services;
 import br.com.harmoniar.MajorBeatAPI.dto.ContratanteRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.ContratanteResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.ContratanteUpdateDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.MediaUrlRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
+import br.com.harmoniar.MajorBeatAPI.entity.Musico;
 import br.com.harmoniar.MajorBeatAPI.enums.Role;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoContratante;
 import br.com.harmoniar.MajorBeatAPI.mappers.ContratanteMapper;
@@ -63,16 +65,6 @@ public class ContratanteServices {
         return mapper.toResponseDTOList(contratante);
     }
 
-    //Métodos DELETE
-    public boolean DeleteContratanteById(Long id){
-        Optional<Contratante> contratante = repository.findById(id);
-        if (contratante.isPresent()){
-            repository.deleteById(id);
-            return true;
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não é possível deletar um contratante que não existe!");
-    }
-
     //Métodos Post
     public ContratanteResponseDTO cadastrarContratante(ContratanteRequestDTO dto){
 
@@ -122,6 +114,32 @@ public class ContratanteServices {
                 return mapper.toDto(saved);
             }
         }
-        
+
+    //Patch
+    public void adicionarMediaUrl(String token, MediaUrlRequestDTO dto){
+        Long idContratante = JwtUtil.extrairUsuarioId(token);
+        Contratante contratante = repository.findById(idContratante).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
+        contratante.getMediaUrl().add(dto.mediaUrl());
+        repository.save(contratante);
+    }
+
+    //Métodos DELETE
+    public boolean DeleteContratanteById(Long id){
+        Optional<Contratante> contratante = repository.findById(id);
+        if (contratante.isPresent()){
+            repository.deleteById(id);
+            return true;
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não é possível deletar um contratante que não existe!");
+    }
+
+    public void DeleteMediaUrl(String token, MediaUrlRequestDTO dto){
+        Long idContratante = JwtUtil.extrairUsuarioId(token);
+        Contratante contratante = repository.findById(idContratante).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
+        boolean removed = contratante.getMediaUrl().remove(dto.mediaUrl());
+        if (!removed){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Url não encontrada");
+        }
+    }
 }
 

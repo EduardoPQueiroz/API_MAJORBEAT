@@ -51,7 +51,8 @@ public class Musico{
     private LocalDate dtCriacao;
 
     @Column
-    private String links;
+    @ElementCollection
+    private List<String> links = new ArrayList<>();
 
     @Column
     private String generoPrincipal;
@@ -71,6 +72,10 @@ public class Musico{
     @Column
     @Enumerated
     private Role role;
+
+    @Column
+    @ElementCollection
+    private List<String> mediaUrl = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @ElementCollection

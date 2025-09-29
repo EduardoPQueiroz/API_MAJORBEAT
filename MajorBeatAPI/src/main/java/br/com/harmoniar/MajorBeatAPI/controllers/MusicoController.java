@@ -53,6 +53,7 @@ public class MusicoController {
     public ResponseEntity<MusicoResponseDTO> cadastrarMusico(@RequestBody MusicoRequestDTO dto){
         return ResponseEntity.ok(services.cadastrarMusico(dto));
     }
+
     //Autenticar Músico...
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> loginMusico(@RequestBody LoginRequestDTO loginRequestDTO){
@@ -71,6 +72,14 @@ public class MusicoController {
         return ResponseEntity.ok(services.editMusicoById(dto, id));
     }
 
+    //Patch
+    @PatchMapping("/addMedia")
+    public ResponseEntity<Void> adicionarMediaUrl(@RequestHeader("Authorization") String authHeader, @RequestBody MediaUrlRequestDTO dto){
+        String token = authHeader.replace("Bearer", "");
+        services.adicionarMediaUrl(token, dto);
+        return ResponseEntity.ok().build();
+    }
+
     //Delete
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMusicoById(@PathVariable Long id){
@@ -81,4 +90,12 @@ public class MusicoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @DeleteMapping("/deleteMedia")
+    public ResponseEntity<Void> deleteMedia(@RequestHeader("Authorization") String authHeader, @RequestBody MediaUrlRequestDTO dto){
+        String token = authHeader.replace("Bearer", "");
+        services.deleteMediaUrl(dto, token);
+        return ResponseEntity.ok().build();
+    }
+
 }

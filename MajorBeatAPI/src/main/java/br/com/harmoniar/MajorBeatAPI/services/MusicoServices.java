@@ -1,9 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.services;
 
-import br.com.harmoniar.MajorBeatAPI.dto.LoginRequestDTO;
-import br.com.harmoniar.MajorBeatAPI.dto.MusicoRequestDTO;
-import br.com.harmoniar.MajorBeatAPI.dto.MusicoResponseDTO;
-import br.com.harmoniar.MajorBeatAPI.dto.MusicoUpdateDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.*;
 import br.com.harmoniar.MajorBeatAPI.entity.Musico;
 import br.com.harmoniar.MajorBeatAPI.enums.Role;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
@@ -11,6 +8,7 @@ import br.com.harmoniar.MajorBeatAPI.mappers.MusicoMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.MusicoRepository;
 import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
@@ -126,6 +124,13 @@ public class MusicoServices {
         return mapper.toDto(saved);
     }
 
+    //Patch
+    public void adicionarMediaUrl(String token, MediaUrlRequestDTO dto){
+        Long idMusico = JwtUtil.extrairUsuarioId(token);
+        Musico musico = repository.findById(idMusico).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Músico nao encontrado"));
+        musico.getMediaUrl().add(dto.mediaUrl());
+        repository.save(musico);
+    }
 
     //Delete
     public boolean deleteMusicoById(Long id) {
@@ -136,5 +141,16 @@ public class MusicoServices {
         }
         return false;
     }
+
+    public void deleteMediaUrl(MediaUrlRequestDTO dto, String token){
+        Long idMusico = JwtUtil.extrairUsuarioId(token);
+        Musico musico = repository.findById(idMusico).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Musico nao encontrado"));
+        boolean removed = musico.getMediaUrl().remove(dto.mediaUrl());
+        if (!removed){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Url não encontrada");
+        }
+    }
+
+
 }
 
