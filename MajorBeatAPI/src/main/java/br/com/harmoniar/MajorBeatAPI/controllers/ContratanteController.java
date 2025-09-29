@@ -61,9 +61,10 @@ public class ContratanteController {
 
     //POST
 
-    @PutMapping("/editContratanteById/{id}")
-    public ResponseEntity<ContratanteResponseDTO> editContratanteById(ContratanteUpdateDTO dto, Long id){
-            return ResponseEntity.ok(services.editContratanteById(dto, id));
+    @PutMapping("/editContratanteById")
+    public ResponseEntity<ContratanteResponseDTO> editContratanteById(ContratanteUpdateDTO dto, @RequestHeader("Authorization") String authHeader){
+            String token = authHeader.replace("Bearer", "");
+            return ResponseEntity.ok(services.editContratanteById(dto, token));
     }
 
     //PATCH
@@ -75,9 +76,10 @@ public class ContratanteController {
     }
 
     //DELETE
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteContratanteById(@PathVariable Long id){
-        if(services.DeleteContratanteById(id) == true){
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteContratanteById(@RequestHeader("Authorization" ) String authHeader){
+        String token = authHeader.replace("Bearer", "");
+        if(services.DeleteContratanteById(token) == true){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         else{

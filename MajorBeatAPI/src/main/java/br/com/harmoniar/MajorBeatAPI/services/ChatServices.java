@@ -76,7 +76,8 @@ public class ChatServices {
         return mapper.toResponseDto(chatSaved);
     }
 
-    public void deleteChatById(Long id){
+    public void deleteChatById(String token){
+        Long id = JwtUtil.extrairUsuarioId(token);
         Optional<Chat> chatOptional = repository.findById(id);
         if(chatOptional.isPresent()){
             repository.deleteById(id);

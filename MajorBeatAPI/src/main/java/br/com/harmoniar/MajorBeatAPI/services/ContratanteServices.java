@@ -103,7 +103,8 @@ public class ContratanteServices {
     }
 
     //Métodos PUT
-    public ContratanteResponseDTO editContratanteById(ContratanteUpdateDTO dto, Long id){
+    public ContratanteResponseDTO editContratanteById(ContratanteUpdateDTO dto, String token){
+            Long id = JwtUtil.extrairUsuarioId(token);
             Contratante contratante = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um contratante com esse id"));
             if (!contratante.getTelefone().matches("\\d{10,11}")){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Número de telefone inválido inserido");
@@ -124,7 +125,8 @@ public class ContratanteServices {
     }
 
     //Métodos DELETE
-    public boolean DeleteContratanteById(Long id){
+    public boolean DeleteContratanteById(String token){
+        Long id = JwtUtil.extrairUsuarioId(token);
         Optional<Contratante> contratante = repository.findById(id);
         if (contratante.isPresent()){
             repository.deleteById(id);

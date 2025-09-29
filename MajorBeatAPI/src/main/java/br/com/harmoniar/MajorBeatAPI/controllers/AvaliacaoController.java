@@ -25,9 +25,21 @@ public class AvaliacaoController {
         return ResponseEntity.ok(services.getAvaliacoesById(id));
     }
 
+    @GetMapping("/findByUAuth")
+    public ResponseEntity<List<AvaliacaoResponseDTO>> getAvaliacoesByUAuth(@RequestHeader("Authorization") String authHeader){
+        String token = authHeader.replace("Bearer", "");
+        return ResponseEntity.ok(services.getAvaliacoesByUAuth(token));
+    }
+
     @GetMapping("/getMedias/{id}")
     public ResponseEntity<Double> getMediaAvaliacoesByIdUsuario(@PathVariable Long id){
         return ResponseEntity.ok(services.getMediaAvaliacaoByIdUsuario(id));
+    }
+
+    @GetMapping("/GetMediaByUAuth")
+    public ResponseEntity<Double> getMediarAvaliacoesByIdUsuarioAutenticado(@RequestHeader("Authorization") String authHeader){
+        String token = authHeader.replace("Bearer", "");
+        return ResponseEntity.ok(services.getMediaAvaliacaoByIdUsuarioAutenticado(token));
     }
 
     @PostMapping("/avaliar")

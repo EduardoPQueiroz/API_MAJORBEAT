@@ -99,7 +99,8 @@ public class MensagemServices {
     }
 
     //Métodos DELETE
-    public void deleteMensagemById(Long id){
+    public void deleteMensagemById(String token){
+        Long id = JwtUtil.extrairUsuarioId(token);
         Optional<Mensagem> mensagem = repository.findById(id);
         if (mensagem.isPresent()){
             repository.deleteById(id);

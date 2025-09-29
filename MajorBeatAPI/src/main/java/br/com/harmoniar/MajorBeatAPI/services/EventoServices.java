@@ -10,6 +10,7 @@ import br.com.harmoniar.MajorBeatAPI.enums.StatusEvento;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import br.com.harmoniar.MajorBeatAPI.mappers.EventoMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.EventoRepository;
+import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +107,8 @@ public class EventoServices {
     }
 
     //Métodos PUT
-    public EventoResponseDTO alterarEvento(EventoUpdateDTO dto, Long id){
+    public EventoResponseDTO alterarEvento(EventoUpdateDTO dto, String token){
+        Long id = JwtUtil.extrairUsuarioId(token);
         Evento evento = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id de evento não encontrado."));
         if (evento.getHoraInicio().isAfter(evento.getHoraFim())) {
             mapper.updateFromDto(dto, evento);
@@ -121,7 +123,8 @@ public class EventoServices {
 
 
     //Métodos DELETE
-    public boolean excluirEvento(Long id){
+    public boolean excluirEvento(String token){
+        Long id = JwtUtil.extrairUsuarioId(token);
         Optional<Evento> evento = repository.findById(id);
         if (evento.isPresent()){
             repository.deleteById(id);

@@ -22,6 +22,7 @@ public class MensagemController {
 
     //Métodos GET
 
+    @GetMapping("/GetMensagens")
     public ResponseEntity<List<MensagemResponseDTO>> getMensagensByIdUsuarioAutenticado(@RequestHeader("Authorization") String authHeader){
         String token = authHeader.replace("Bearer ", "");
         return ResponseEntity.ok(services.listarMensagensByUsuarioAutenticado(token));
@@ -38,10 +39,11 @@ public class MensagemController {
 
 
     //Métodos DELETE
-    @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<MensagemResponseDTO> excluirMensagemById(@PathVariable Long id){
+    @DeleteMapping("/deleteById")
+    public ResponseEntity<MensagemResponseDTO> excluirMensagemById(@RequestHeader("Authorization") String authHeader){
+        String token = authHeader.replace("Bearer", "");
          try {
-             services.deleteMensagemById(id);
+             services.deleteMensagemById(token);
              return ResponseEntity.noContent().build();
          }catch (Exception e){
              return ResponseEntity.badRequest().build();

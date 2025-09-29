@@ -85,6 +85,24 @@ public class AvaliacaoServices {
         }
     }
 
+    public List<AvaliacaoResponseDTO> getAvaliacoesByUAuth(String token){
+        Long id = JwtUtil.extrairUsuarioId(token);
+        Optional<Musico> musico = musicoRepository.findById(id);
+        if (musico.isPresent()){
+            List<Avaliacao> avaliacoes = musico.get().getAvaliacoes();
+            return mapper.toResponseDTOList(avaliacoes);
+        }else{
+            Optional<Contratante> contratanteOptional = contratanteRepository.findById(id);
+            if (contratanteOptional.isPresent()){
+                List<Avaliacao> avaliacoes = contratanteOptional.get().getAvaliacoes();
+                return mapper.toResponseDTOList(avaliacoes);
+            }
+            else{
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi encontrado um usuário com o id informado");
+            }
+        }
+    }
+
     public Double getMediaAvaliacaoByIdUsuario(Long id){
             Optional<Musico> musicoOpt = musicoRepository.findById(id);
             if (musicoOpt.isPresent()){

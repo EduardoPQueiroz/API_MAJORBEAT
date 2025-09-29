@@ -110,7 +110,8 @@ public class MusicoServices {
 
 
     //Put
-    public MusicoResponseDTO editMusicoById(MusicoUpdateDTO dto, Long id) {
+    public MusicoResponseDTO editMusicoById(MusicoUpdateDTO dto, String token) {
+        Long id = JwtUtil.extrairUsuarioId(token);
         Musico musico = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Não é possível editar um músico que ainda não existe"));
 
@@ -133,7 +134,8 @@ public class MusicoServices {
     }
 
     //Delete
-    public boolean deleteMusicoById(Long id) {
+    public boolean deleteMusicoById(String token) {
+        Long id = JwtUtil.extrairUsuarioId(token);
         Optional<Musico> musico = repository.findById(id);
         if (musico.isPresent()) {
             repository.deleteById(id);

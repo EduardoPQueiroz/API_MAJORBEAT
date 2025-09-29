@@ -31,9 +31,10 @@ public class ChatController {
     }
 
     @DeleteMapping
-    public ResponseEntity deleteChatById(@PathVariable Long id){
+    public ResponseEntity deleteChatById(@RequestHeader("Authorization") String authHeader){
+        String token = authHeader.replace("Bearer", "");
         try {
-            services.deleteChatById(id);
+            services.deleteChatById(token);
             return ResponseEntity.noContent().build();
         }catch (Exception e){
             return ResponseEntity.badRequest().build();

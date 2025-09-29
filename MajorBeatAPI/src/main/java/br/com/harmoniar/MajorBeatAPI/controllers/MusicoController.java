@@ -68,8 +68,9 @@ public class MusicoController {
 
     //Put
     @PutMapping("/editMusicoById/{id}")
-    public ResponseEntity<MusicoResponseDTO> editMusicoById(@RequestBody MusicoUpdateDTO dto, @PathVariable Long id){
-        return ResponseEntity.ok(services.editMusicoById(dto, id));
+    public ResponseEntity<MusicoResponseDTO> editMusicoById(@RequestBody MusicoUpdateDTO dto, @RequestHeader("Authorization") String authHeader){
+        String token = authHeader.replace("Bearer", "");
+        return ResponseEntity.ok(services.editMusicoById(dto, token));
     }
 
     //Patch
@@ -81,9 +82,10 @@ public class MusicoController {
     }
 
     //Delete
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMusicoById(@PathVariable Long id){
-        if(services.deleteMusicoById(id) == true){
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteMusicoById(@RequestHeader("Authorization") String authHeader){
+        String token = authHeader.replace("Bearer", "");
+        if(services.deleteMusicoById(token) == true){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         else{

@@ -74,17 +74,19 @@ public class EventoController {
     }
 
     //Métodos PUT
-    @PutMapping("/atualizarEvento/{id}")
-    public ResponseEntity<EventoResponseDTO> atualizarEvento(@RequestBody EventoUpdateDTO dto, @PathVariable Long id){
-            return ResponseEntity.ok(services.alterarEvento(dto, id));
+    @PutMapping("/atualizarEvento")
+    public ResponseEntity<EventoResponseDTO> atualizarEvento(@RequestBody EventoUpdateDTO dto, @RequestHeader("Authorization") String authHeader){
+            String token = authHeader.replace("Bearer", "");
+            return ResponseEntity.ok(services.alterarEvento(dto, token));
     }
 
 
     //Métodos DELETE
 
-    @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<Void> deleteEventoById(@PathVariable Long id){
-        if (services.excluirEvento(id) == true){
+    @DeleteMapping("/deleteById")
+    public ResponseEntity<Void> deleteEventoById(@RequestHeader("Authorization") String authHeader){
+        String token = authHeader.replace("Bearer", "");
+        if (services.excluirEvento(token) == true){
             return ResponseEntity.noContent().build();
         }
         else{
