@@ -13,7 +13,7 @@ public record MusicoUpdateDTO(
         String endereco,
         byte[] fotoPerfil,
         String biografia,
-        String links,
+        List<String> links,
         List<NomeInstrumento> nomeInstrumentos,
         List<NomeGenero> nomeGeneros
 ) {

@@ -15,6 +15,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -117,6 +118,7 @@ public class ContratanteServices {
         }
 
     //Patch
+    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
     public void adicionarMediaUrl(String token, MediaUrlRequestDTO dto){
         Long idContratante = JwtUtil.extrairUsuarioId(token);
         Contratante contratante = repository.findById(idContratante).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
@@ -135,6 +137,7 @@ public class ContratanteServices {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não é possível deletar um contratante que não existe!");
     }
 
+    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
     public void DeleteMediaUrl(String token, MediaUrlRequestDTO dto){
         Long idContratante = JwtUtil.extrairUsuarioId(token);
         Contratante contratante = repository.findById(idContratante).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));

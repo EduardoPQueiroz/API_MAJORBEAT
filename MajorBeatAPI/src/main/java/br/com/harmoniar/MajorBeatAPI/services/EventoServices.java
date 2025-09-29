@@ -15,6 +15,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -94,6 +95,7 @@ public class EventoServices {
 
 
     //MÉTODOS POST
+    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
     public EventoResponseDTO criarEvento(EventoRequestDTO dto){
         Evento entity = mapper.toEntity(dto);
         if (entity.getHoraInicio().isAfter(entity.getHoraFim())){
@@ -107,6 +109,7 @@ public class EventoServices {
     }
 
     //Métodos PUT
+    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
     public EventoResponseDTO alterarEvento(EventoUpdateDTO dto, String token){
         Long id = JwtUtil.extrairUsuarioId(token);
         Evento evento = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id de evento não encontrado."));
@@ -123,6 +126,7 @@ public class EventoServices {
 
 
     //Métodos DELETE
+    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
     public boolean excluirEvento(String token){
         Long id = JwtUtil.extrairUsuarioId(token);
         Optional<Evento> evento = repository.findById(id);
