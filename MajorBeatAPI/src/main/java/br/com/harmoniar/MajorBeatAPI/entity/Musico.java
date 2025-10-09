@@ -55,9 +55,6 @@ public class Musico{
     private List<String> links = new ArrayList<>();
 
     @Column
-    private String generoPrincipal;
-
-    @Column
     @Enumerated
     private TipoMusico tipoMusico;
 

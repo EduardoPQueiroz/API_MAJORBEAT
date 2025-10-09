@@ -51,7 +51,7 @@ public class ContratanteServices {
     }
 
     public ContratanteResponseDTO getContratanteByNome(String nomeContratante){
-        Optional<Contratante> contratante = repository.getByNomeContratante(nomeContratante);
+        Optional<Contratante> contratante = repository.getByNome(nomeContratante);
         if (contratante.isPresent()){
             return mapper.OptionalToDto(contratante);
         }
@@ -87,7 +87,7 @@ public class ContratanteServices {
         Contratante contratante;
 
         if (nome != null && !nome.isEmpty()) {
-            contratante = repository.getByNomeContratante(nome)
+            contratante = repository.getByNome(nome)
                     .orElseThrow(() -> new RuntimeException("Usuário inexistente"));
         } else if (email != null && !email.isEmpty()) {
             contratante = repository.getByEmail(email)

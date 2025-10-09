@@ -42,12 +42,12 @@ public class ContratanteController {
     }
 
     //POST
-    @PostMapping("/cadastrarContratante")
+    @PostMapping("/cadastrar")
     public ResponseEntity<ContratanteResponseDTO> cadastrarContratante(@RequestBody ContratanteRequestDTO dto){
             return ResponseEntity.ok(services.cadastrarContratante(dto));
     }
 
-    @PostMapping("/autenticarContratante")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> LoginContratante(@RequestBody LoginRequestDTO login){
         try{
             String token = services.autenticarContratante(login.nome(), login.email(), login.senha());

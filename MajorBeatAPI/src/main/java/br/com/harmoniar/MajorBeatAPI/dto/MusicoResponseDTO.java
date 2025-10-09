@@ -22,7 +22,6 @@ public record MusicoResponseDTO(
          String biografia,
          LocalDate dtCriacao,
          List<String> links,
-         String generoPrincipal,
          TipoMusico tipoMusico,
          List<NomeInstrumento> nomeInstrumento,
          List<NomeGenero> nomeGenero,

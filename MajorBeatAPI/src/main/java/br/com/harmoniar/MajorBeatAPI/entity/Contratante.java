@@ -21,7 +21,7 @@ public class Contratante {
     private Long idContratante;
 
     @Column
-    private String nomeContratante;
+    private String nome;
 
     @Column
     private String apelido;

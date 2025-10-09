@@ -1,8 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.utils;
 
-import br.com.harmoniar.MajorBeatAPI.enums.Role;
 import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
-import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,44 +12,53 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import java.io.IOException;
 import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-        return path.equals("/Musico/login") || path.equals("/Musico/cadastrar");
+        boolean ignore = path.equals("/Musico/login")
+                || path.equals("/Musico/cadastrar")
+                || path.equals("/Contratante/login")
+                || path.equals("/Contratante/cadastrar");
+        System.out.println("shouldNotFilter " + path + " = " + ignore);
+        return ignore;
     }
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException, java.io.IOException {
+                                    FilterChain filterChain) throws ServletException, IOException {
 
         String header = request.getHeader("Authorization");
 
-        if (header != null && header.startsWith("Bearer ")) {
-            String token = header.substring(7);
+        // 🔹 Se não tiver token, apenas segue o fluxo (sem lançar erro)
+        if (header == null || !header.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-            try {
-                Long userId = JwtUtil.extrairUsuarioId(token);
-                String roleName = JwtUtil.extrairRole(token);
+        String token = header.substring(7);
 
-                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(roleName));
+        try {
+            Long userId = JwtUtil.extrairUsuarioId(token);
+            String roleName = JwtUtil.extrairRole(token);
 
-                // Autentica o usuário, sem aplicar nenhuma role explícita
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userId, null, List.of());
+            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(roleName));
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(userId, null, authorities);
 
-            } catch (Exception e) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido");
-                return;
-            }
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido");
+            return;
         }
 
         filterChain.doFilter(request, response);

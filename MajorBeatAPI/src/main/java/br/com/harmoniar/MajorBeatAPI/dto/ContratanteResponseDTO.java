@@ -11,7 +11,7 @@ import java.util.List;
 
 public record ContratanteResponseDTO(
         Long idContratante,
-        String nomeContratante,
+        String nome,
         String apelido,
         String email,
         String telefone,
