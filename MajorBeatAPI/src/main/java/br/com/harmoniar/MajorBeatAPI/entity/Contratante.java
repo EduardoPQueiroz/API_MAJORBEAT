@@ -67,10 +67,8 @@ public class Contratante {
     private List<String> mediaUrl = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @ElementCollection
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @ElementCollection
     private List<Chat> chats = new ArrayList<>();
 }

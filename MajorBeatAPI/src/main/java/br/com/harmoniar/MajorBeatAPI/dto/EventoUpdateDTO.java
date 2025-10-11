@@ -14,7 +14,7 @@ public record EventoUpdateDTO(
         LocalDateTime data,
         String endereco,
         StatusEvento statusEvento,
-        byte[] imagemLocalEvento,
+        List<byte[]> imagemLocalEvento,
         LocalTime horaInicio,
         List<NomeInstrumento> instrumentos,
         List<NomeGenero> generos,

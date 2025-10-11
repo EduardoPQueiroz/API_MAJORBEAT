@@ -31,7 +31,6 @@ public class Chat {
     private Contratante contratante;
 
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
-    @ElementCollection
     private List<Mensagem> mensagens = new ArrayList<>();
 
 

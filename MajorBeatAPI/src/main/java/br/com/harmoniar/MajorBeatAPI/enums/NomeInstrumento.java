@@ -2,6 +2,7 @@ package br.com.harmoniar.MajorBeatAPI.enums;
 
 public enum NomeInstrumento {
 
+    VOZ,
     VIOLAO,
     GUITARRA,
     BAIXO,

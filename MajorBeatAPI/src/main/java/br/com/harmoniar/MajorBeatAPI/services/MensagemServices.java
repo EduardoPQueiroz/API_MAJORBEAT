@@ -1,5 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.services;
 
+import br.com.harmoniar.MajorBeatAPI.dto.ChatRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.MensagemRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.MensagemResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Chat;
@@ -61,6 +62,11 @@ public class MensagemServices {
         }else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhuma mensagem foi encontrada.");
         }
+    }
+
+
+    public List<MensagemResponseDTO> listarMensagensByChat(Long idChat){
+        return mapper.toResponseDTOList(repository.findByChat_IdChat(idChat));
     }
 
 

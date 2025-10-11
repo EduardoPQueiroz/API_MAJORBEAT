@@ -14,5 +14,7 @@ public interface MensagemRepository extends JpaRepository<Mensagem, Long> {
 
     List<Mensagem> findByChatIn(List<Chat> chats);
 
+    List<Mensagem> findByChat_IdChat(Long idChat);
+
 
 }

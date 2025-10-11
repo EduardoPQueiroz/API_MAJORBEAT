@@ -59,10 +59,12 @@ public class Musico{
     private TipoMusico tipoMusico;
 
     @Column
+    @ElementCollection
     @Enumerated
     private List<NomeInstrumento> nomeInstrumento = new ArrayList<>();
 
     @Column
+    @ElementCollection
     @Enumerated
     private List<NomeGenero> nomeGenero = new ArrayList<>();
 
@@ -75,11 +77,9 @@ public class Musico{
     private List<String> mediaUrl = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @ElementCollection
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @ElementCollection
     private List<Chat> chats = new ArrayList<>();
 
 }

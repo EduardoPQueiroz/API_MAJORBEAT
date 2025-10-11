@@ -28,10 +28,14 @@ public class MensagemController {
         return ResponseEntity.ok(services.listarMensagensByUsuarioAutenticado(token));
     }
 
+    @GetMapping("/GetByChat/{idChat}")
+    public ResponseEntity<List<MensagemResponseDTO>> getMensagensByChat(@PathVariable Long idChat){
+        return ResponseEntity.ok(services.listarMensagensByChat(idChat));
+    }
 
 
     //Métodos POST
-    @PostMapping("/enviarMensagemComum")
+    @PostMapping("/enviarMensagem")
     public ResponseEntity<MensagemResponseDTO> enviarMensagem(@RequestBody MensagemRequestDTO dto, @RequestHeader("Authorization") String authHeader){
             String token = authHeader.replace("Bearer ", "");
             return ResponseEntity.ok(services.enviarMensagem(dto, token));
