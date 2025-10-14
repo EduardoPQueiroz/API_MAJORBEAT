@@ -1,5 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.dto;
 
+import br.com.harmoniar.MajorBeatAPI.entity.Chat;
 import br.com.harmoniar.MajorBeatAPI.entity.Evento;
 import jakarta.annotation.Nullable;
 
@@ -16,6 +17,8 @@ public record MensagemRequestDTO(
         double valor,
 
         @Nullable
-        Evento evento
+        Evento evento,
+
+        Chat chat
 ) {
 }

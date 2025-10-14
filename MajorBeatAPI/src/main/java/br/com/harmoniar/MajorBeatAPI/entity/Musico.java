@@ -61,12 +61,12 @@ public class Musico{
     @Column
     @ElementCollection
     @Enumerated
-    private List<NomeInstrumento> nomeInstrumento = new ArrayList<>();
+    private List<NomeInstrumento> nomeInstrumentos = new ArrayList<>();
 
     @Column
     @ElementCollection
     @Enumerated
-    private List<NomeGenero> nomeGenero = new ArrayList<>();
+    private List<NomeGenero> nomeGeneros = new ArrayList<>();
 
     @Column
     @Enumerated

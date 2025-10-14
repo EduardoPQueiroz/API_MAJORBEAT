@@ -23,8 +23,8 @@ public record MusicoResponseDTO(
          LocalDate dtCriacao,
          List<String> links,
          TipoMusico tipoMusico,
-         List<NomeInstrumento> nomeInstrumento,
-         List<NomeGenero> nomeGenero,
+         List<NomeInstrumento> nomeInstrumentos,
+         List<NomeGenero> nomeGeneros,
          Role role,
          List<String> mediaUrl,
 
