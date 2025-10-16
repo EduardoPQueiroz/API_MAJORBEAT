@@ -55,11 +55,11 @@ public class Contratante {
     private String nomeEmpresa;
 
     @Column
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private TipoContratante tipoContratante;
 
     @Column
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column

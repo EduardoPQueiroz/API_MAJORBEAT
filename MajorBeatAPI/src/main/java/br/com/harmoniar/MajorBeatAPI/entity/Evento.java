@@ -24,6 +24,7 @@ public class Evento {
     private String nome;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private TipoMusico tipoMusico;
 
     @Column
@@ -32,7 +33,7 @@ public class Evento {
     @Column
     private String endereco;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private StatusEvento status;
 
     @Column
@@ -52,17 +53,17 @@ public class Evento {
     private String titulo;
 
     @Column
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private TipoEvento tipoEvento;
 
     @Column
     @ElementCollection
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private List<NomeInstrumento> nomeInstrumento = new ArrayList<>();
 
     @Column
     @ElementCollection
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private List<NomeGenero> nomeGenero = new ArrayList<>();
 
     @JoinColumn

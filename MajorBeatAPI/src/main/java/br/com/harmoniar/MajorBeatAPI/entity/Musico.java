@@ -55,21 +55,21 @@ public class Musico{
     private List<String> links = new ArrayList<>();
 
     @Column
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private TipoMusico tipoMusico;
 
     @Column
     @ElementCollection
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private List<NomeInstrumento> nomeInstrumentos = new ArrayList<>();
 
     @Column
     @ElementCollection
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private List<NomeGenero> nomeGeneros = new ArrayList<>();
 
     @Column
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column
