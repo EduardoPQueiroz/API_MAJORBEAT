@@ -56,15 +56,13 @@ public class Evento {
     @Enumerated(EnumType.STRING)
     private TipoEvento tipoEvento;
 
-    @Column
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    private List<NomeInstrumento> nomeInstrumento = new ArrayList<>();
+    private List<NomeInstrumento> instrumentos = new ArrayList<>();
 
-    @Column
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    private List<NomeGenero> nomeGenero = new ArrayList<>();
+    private List<NomeGenero> generos = new ArrayList<>();
 
     @JoinColumn
     @ManyToOne

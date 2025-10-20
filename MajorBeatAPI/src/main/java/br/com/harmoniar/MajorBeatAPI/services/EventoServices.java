@@ -52,7 +52,7 @@ public class EventoServices {
 
     public List<EventoResponseDTO> getEventosByInstrumento(NomeInstrumento instrumento){
         try{
-            return mapper.toResponseDTOList(repository.findByNomeInstrumentoContaining(instrumento));
+            return mapper.toResponseDTOList(repository.findByInstrumentosContaining(instrumento));
         }catch(ResponseStatusException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -60,7 +60,7 @@ public class EventoServices {
 
     public List<EventoResponseDTO> getEventosByGenero(NomeGenero genero){
        try{
-           return mapper.toResponseDTOList(repository.findByNomeGeneroContaining(genero));
+           return mapper.toResponseDTOList(repository.findByGenerosContaining(genero));
        }catch(ResponseStatusException e){
            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
        }
@@ -102,7 +102,6 @@ public class EventoServices {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O evento precisa começar antes de terminar!");
         }
         else{
-            entity.setStatus(StatusEvento.NAO_PREENCHIDO);
             Evento saved  = repository.save(entity);
             return mapper.toDto(saved);
         }
