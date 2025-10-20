@@ -2,6 +2,8 @@ package br.com.harmoniar.MajorBeatAPI.services;
 
 import br.com.harmoniar.MajorBeatAPI.dto.*;
 import br.com.harmoniar.MajorBeatAPI.entity.Musico;
+import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
+import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
 import br.com.harmoniar.MajorBeatAPI.enums.Role;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import br.com.harmoniar.MajorBeatAPI.mappers.MusicoMapper;
@@ -45,6 +47,22 @@ public class MusicoServices {
     public MusicoResponseDTO getMusicoById(Long id) {
         Musico musico = repository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Musico não encontrado"));
         return mapper.toDto(musico);
+    }
+
+    public List<MusicoResponseDTO> getMusicoByGenero(NomeGenero genero){
+        List<Musico> musicos = repository.findByNomeGenerosContaining(genero);
+        if (musicos.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Músicos com esse genero não encontrados!");
+        }
+        return mapper.toResponseDTOList(musicos);
+    }
+
+    public List<MusicoResponseDTO> getMusicoByInstrumento(NomeInstrumento instrumento){
+        List<Musico> musicos = repository.findByNomeInstrumentosContaining(instrumento);
+        if (musicos.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Músicos com esse instrumento não encontrados!");
+        }
+        return mapper.toResponseDTOList(musicos);
     }
 
     public MusicoResponseDTO getMusicoByNome(String nome){

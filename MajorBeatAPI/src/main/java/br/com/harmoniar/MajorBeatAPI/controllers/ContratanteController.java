@@ -23,7 +23,7 @@ public class ContratanteController {
 
     //GET
 
-    @GetMapping("/getAllContratantes")
+    @GetMapping("/getAll")
     public ResponseEntity<List<ContratanteResponseDTO>> getAllContratantes(){
             return ResponseEntity.ok(services.getAllContratantes());
     }

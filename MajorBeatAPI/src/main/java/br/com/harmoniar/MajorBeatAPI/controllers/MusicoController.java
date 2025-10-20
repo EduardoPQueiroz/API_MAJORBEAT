@@ -1,6 +1,8 @@
 package br.com.harmoniar.MajorBeatAPI.controllers;
 
 import br.com.harmoniar.MajorBeatAPI.dto.*;
+import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
+import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import br.com.harmoniar.MajorBeatAPI.mappers.MusicoMapper;
 import br.com.harmoniar.MajorBeatAPI.services.MusicoServices;
@@ -24,23 +26,33 @@ public class MusicoController {
 
     //Get
     @GetMapping("/getAllMusicos")
-    public ResponseEntity<List<MusicoResponseDTO>> getAllMusicos(){
+    public ResponseEntity<List<MusicoResponseDTO>> getAll(){
         return ResponseEntity.ok(services.getAllMusicos());
     }
 
     @GetMapping("/getById/{id}")
-    public ResponseEntity<MusicoResponseDTO> getMusicoById(@PathVariable Long id){
+    public ResponseEntity<MusicoResponseDTO> getById(@PathVariable Long id){
         return ResponseEntity.ok(services.getMusicoById(id));
     }
 
     @GetMapping("/getByNome/{nome}")
-    public ResponseEntity<MusicoResponseDTO> getMusicoByNome(@PathVariable String nome){
+    public ResponseEntity<MusicoResponseDTO> getByNome(@PathVariable String nome){
         return ResponseEntity.ok(services.getMusicoByNome(nome));
     }
 
     @GetMapping("/getByEmail/{email}")
-    public ResponseEntity<MusicoResponseDTO> getMusicoByEmail(@PathVariable String email){
+    public ResponseEntity<MusicoResponseDTO> getByEmail(@PathVariable String email){
         return ResponseEntity.ok(services.getMusicoByEmail(email));
+    }
+
+    @GetMapping("getByGenero/{genero}")
+    public ResponseEntity<List<MusicoResponseDTO>> getByGenero(@PathVariable NomeGenero genero){
+        return ResponseEntity.ok(services.getMusicoByGenero(genero));
+    }
+
+    @GetMapping("getByInstrumento/{instrumento}")
+    public ResponseEntity<List<MusicoResponseDTO>> getByInstrumento(@PathVariable NomeInstrumento instrumento){
+        return ResponseEntity.ok(services.getMusicoByInstrumento(instrumento));
     }
 
     @GetMapping("/getByTipoMusico/{tipoMusico}")
@@ -67,7 +79,7 @@ public class MusicoController {
 
 
     //Put
-    @PutMapping("/editMusicoById/{id}")
+    @PutMapping("/editById/{id}")
     public ResponseEntity<MusicoResponseDTO> editMusicoById(@RequestBody MusicoUpdateDTO dto, @RequestHeader("Authorization") String authHeader){
         String token = authHeader.replace("Bearer", "");
         return ResponseEntity.ok(services.editMusicoById(dto, token));

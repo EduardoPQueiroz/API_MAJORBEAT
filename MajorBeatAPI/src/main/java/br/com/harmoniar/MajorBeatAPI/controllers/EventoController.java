@@ -68,13 +68,13 @@ public class EventoController {
 
     //Métodos POST
 
-    @PostMapping("/criarEvento")
+    @PostMapping("/criar")
     public ResponseEntity<EventoResponseDTO> criarEvento(@RequestBody EventoRequestDTO dto){
             return ResponseEntity.ok(services.criarEvento(dto));
     }
 
     //Métodos PUT
-    @PutMapping("/atualizarEvento")
+    @PutMapping("/atualizar")
     public ResponseEntity<EventoResponseDTO> atualizarEvento(@RequestBody EventoUpdateDTO dto, @RequestHeader("Authorization") String authHeader){
             String token = authHeader.replace("Bearer", "");
             return ResponseEntity.ok(services.alterarEvento(dto, token));
@@ -83,7 +83,7 @@ public class EventoController {
 
     //Métodos DELETE
 
-    @DeleteMapping("/deleteById")
+    @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteEventoById(@RequestHeader("Authorization") String authHeader){
         String token = authHeader.replace("Bearer", "");
         if (services.excluirEvento(token) == true){

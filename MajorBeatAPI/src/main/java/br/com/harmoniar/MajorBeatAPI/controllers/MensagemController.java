@@ -22,20 +22,20 @@ public class MensagemController {
 
     //Métodos GET
 
-    @GetMapping("/GetMensagens")
+    @GetMapping("/getMensagens")
     public ResponseEntity<List<MensagemResponseDTO>> getMensagensByIdUsuarioAutenticado(@RequestHeader("Authorization") String authHeader){
         String token = authHeader.replace("Bearer ", "");
         return ResponseEntity.ok(services.listarMensagensByUsuarioAutenticado(token));
     }
 
-    @GetMapping("/GetByChat/{idChat}")
+    @GetMapping("/getByChat/{idChat}")
     public ResponseEntity<List<MensagemResponseDTO>> getMensagensByChat(@PathVariable Long idChat){
         return ResponseEntity.ok(services.listarMensagensByChat(idChat));
     }
 
 
     //Métodos POST
-    @PostMapping("/enviarMensagem")
+    @PostMapping("/enviar")
     public ResponseEntity<MensagemResponseDTO> enviarMensagem(@RequestBody MensagemRequestDTO dto, @RequestHeader("Authorization") String authHeader){
             String token = authHeader.replace("Bearer ", "");
             return ResponseEntity.ok(services.enviarMensagem(dto, token));
@@ -43,7 +43,7 @@ public class MensagemController {
 
 
     //Métodos DELETE
-    @DeleteMapping("/deleteById")
+    @DeleteMapping("/delete")
     public ResponseEntity<MensagemResponseDTO> excluirMensagemById(@RequestHeader("Authorization") String authHeader){
         String token = authHeader.replace("Bearer", "");
          try {
