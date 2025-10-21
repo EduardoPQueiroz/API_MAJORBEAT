@@ -1,4 +1,6 @@
 
+use MajorBeatDB
+
 INSERT INTO musico (nome, apelido, email, senha, telefone, endereco, biografia, tipo_musico) VALUES 
 ('João Silva', 'JSilva', 'joao.silva@example.com', 'senhaSegura123', '11912345678', 'Rua das Flores, 123 - São Paulo, SP', 'Músico apaixonado por jazz e música instrumental. Atua há mais de 10 anos.', 'SOLO');
 
@@ -92,11 +94,11 @@ INSERT INTO contratante (nome, senha, telefone, email, endereco, biografia, nome
 INSERT INTO contratante (nome, senha, telefone, email, endereco, biografia, nome_empresa, tipo_contratante) VALUES ('Eduardo Lima', 'EduLima@2025', '11995554433', 'eduardo.lima@aurafest.com', 'Av. Paulista, 2000 - São Paulo, SP', 'CEO da AuraFest, empresa especializada em grandes eventos e festivais de música eletrônica.', 'AuraFest Produções', 'ESTABELECIMENTO');
 
 -- INSERTS: EVENTO
-INSERT INTO evento (nome, tipo_musico, data, endereco, hora_inicio, hora_fim, descricao, titulo) VALUES ('Noite Acústica no Terraço', 'solo', '2025-11-10 20:00:00', 'Av. Paulista, 1500 - São Paulo, SP', '20:00:00', '23:00:00', 'Evento intimista com artistas locais apresentando repertório acústico.', 'Noite Acústica');
-INSERT INTO evento (nome, tipo_musico, data, endereco, hora_inicio, hora_fim, descricao, titulo) VALUES ('Festival Rock na Praça', 'banda', '2025-12-05 18:00:00', 'Praça da Liberdade - Belo Horizonte, MG', '18:00:00', '23:59:00', 'Festival gratuito com bandas de rock e metal independentes.', 'Rock na Praça');
-INSERT INTO evento (nome, tipo_musico, data, endereco, hora_inicio, hora_fim, descricao, titulo) VALUES ('Jazz & Wine Experience', 'banda', '2025-11-22 19:30:00', 'Rua das Palmeiras, 250 - Campinas, SP', '19:30:00', '23:30:00', 'Uma noite sofisticada de jazz acompanhada por uma degustação de vinhos selecionados.', 'Jazz & Wine Experience');
-INSERT INTO evento (nome, tipo_musico, data, endereco, hora_inicio, hora_fim, descricao, titulo) VALUES ('Sunset Eletrônico', 'solo', '2025-12-20 17:00:00', 'Praia de Copacabana - Rio de Janeiro, RJ', '17:00:00', '22:00:00', 'Festa sunset com DJs renomados e clima de verão à beira-mar.', 'Sunset Eletrônico');
-INSERT INTO evento (nome, tipo_musico, data, endereco, hora_inicio, hora_fim, descricao, titulo) VALUES ('Sertanejo Night', 'banda', '2025-11-30 21:00:00', 'Arena Goiânia - Goiânia, GO', '21:00:00', '02:00:00', 'A maior noite sertaneja da região com duplas de destaque e muito agito.', 'Sertanejo Night');
+INSERT INTO evento (nome, tipo_musico, data, endereco, hora_inicio, hora_fim, descricao, titulo) VALUES ('Noite Acústica no Terraço', 'SOLO', '2025-11-10 20:00:00', 'Av. Paulista, 1500 - São Paulo, SP', '20:00:00', '23:00:00', 'Evento intimista com artistas locais apresentando repertório acústico.', 'Noite Acústica');
+INSERT INTO evento (nome, tipo_musico, data, endereco, hora_inicio, hora_fim, descricao, titulo) VALUES ('Festival Rock na Praça', 'BANDA', '2025-12-05 18:00:00', 'Praça da Liberdade - Belo Horizonte, MG', '18:00:00', '23:59:00', 'Festival gratuito com bandas de rock e metal independentes.', 'Rock na Praça');
+INSERT INTO evento (nome, tipo_musico, data, endereco, hora_inicio, hora_fim, descricao, titulo) VALUES ('Jazz & Wine Experience', 'BANDA', '2025-11-22 19:30:00', 'Rua das Palmeiras, 250 - Campinas, SP', '19:30:00', '23:30:00', 'Uma noite sofisticada de jazz acompanhada por uma degustação de vinhos selecionados.', 'Jazz & Wine Experience');
+INSERT INTO evento (nome, tipo_musico, data, endereco, hora_inicio, hora_fim, descricao, titulo) VALUES ('Sunset Eletrônico', 'SOLO', '2025-12-20 17:00:00', 'Praia de Copacabana - Rio de Janeiro, RJ', '17:00:00', '22:00:00', 'Festa sunset com DJs renomados e clima de verão à beira-mar.', 'Sunset Eletrônico');
+INSERT INTO evento (nome, tipo_musico, data, endereco, hora_inicio, hora_fim, descricao, titulo) VALUES ('Sertanejo Night', 'BANDA', '2025-11-30 21:00:00', 'Arena Goiânia - Goiânia, GO', '21:00:00', '02:00:00', 'A maior noite sertaneja da região com duplas de destaque e muito agito.', 'Sertanejo Night');
 
 -- INSERTS: CHAT
 INSERT INTO chat (musico_id_musico, contratante_id_contratante) VALUES (1, 2);
@@ -122,9 +124,9 @@ INSERT INTO avaliacao (nota, comentario, id_recebedor) VALUES (5, 'Baita apresen
 
 
 INSERT INTO musico_avaliacoes (musico_id_musico, avaliacoes_id_avaliacao) VALUES
---(2, 1),  -- João Silva recebeu a avaliação 1
---(3, 2),  -- Maria Oliveira recebeu a avaliação 2
---(4, 3),  -- Lucas Andrade recebeu a avaliação 3
---(5, 4),  -- Ana Costa recebeu a avaliação 4
---(6, 5),  -- Pedro Rocha recebeu a avaliação 5
+(2, 1),  -- João Silva recebeu a avaliação 1
+(3, 2),  -- Maria Oliveira recebeu a avaliação 2
+(4, 3),  -- Lucas Andrade recebeu a avaliação 3
+(5, 4),  -- Ana Costa recebeu a avaliação 4
+(6, 5),  -- Pedro Rocha recebeu a avaliação 5
 (6, 6);
