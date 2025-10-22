@@ -120,7 +120,7 @@ public class MusicoController {
         String token = authHeader.replace("Bearer", "");
         return ResponseEntity.ok(services.editMusicoById(dto, token));
     }
-    
+
     //Delete
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteMusicoById(@RequestHeader("Authorization") String authHeader){
