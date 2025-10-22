@@ -114,6 +114,74 @@ public class MusicoController {
         }
     }
 
+    @PostMapping("/uploadTemp")
+    public ResponseEntity<Map<String, String>> uploadTempMedia(
+            @RequestParam("file") MultipartFile file) {
+
+        try {
+            // Faz upload do arquivo no Azure e pega a URL SAS
+            String url = blobStorageService.uploadFile(
+                    file.getInputStream(),
+                    file.getSize(),
+                    file.getContentType(),
+                    "temp" // você pode usar "temp" ou outro diretório temporário
+            );
+
+            // Retorna a URL apenas
+            return ResponseEntity.ok(Map.of("url", url));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", "Falha ao enviar arquivo"));
+        }
+    }
+
+
+    @PostMapping("/uploadMulti")
+    public ResponseEntity<?> uploadMultiplasMidias(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestParam("files") List<MultipartFile> files) {
+
+        String token = authHeader.replace("Bearer", "").trim();
+        Long idMusico = JwtUtil.extrairUsuarioId(token);
+
+        try {
+            // Faz upload de todas as imagens
+            List<String> urls = blobStorageService.uploadMultipleFiles(files, idMusico.toString());
+
+            // Salva todas as URLs no banco (usando o mesmo método ou adaptando)
+            for (String url : urls) {
+                services.adicionarMediaUrl(token, new MediaUrlRequestDTO(url));
+            }
+
+            // Retorna todas as URLs pro app
+            return ResponseEntity.ok(Map.of("urls", urls));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", "Falha ao enviar múltiplos arquivos"));
+        }
+    }
+
+    @PostMapping("/uploadTempMulti")
+    public ResponseEntity<Map<String, List<String>>> uploadTempMultiplasMidias(
+            @RequestParam("files") List<MultipartFile> files) {
+
+        try {
+            List<String> urls = blobStorageService.uploadMultipleTempFiles(files);
+
+            return ResponseEntity.ok(Map.of("urls", urls));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", List.of("Falha ao enviar múltiplos arquivos")) );
+        }
+    }
+
+
     //Put
     @PutMapping("/editById/{id}")
     public ResponseEntity<MusicoResponseDTO> editMusicoById(@RequestBody MusicoUpdateDTO dto, @RequestHeader("Authorization") String authHeader){
