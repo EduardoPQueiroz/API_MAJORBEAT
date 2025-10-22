@@ -5,21 +5,28 @@ import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import br.com.harmoniar.MajorBeatAPI.mappers.MusicoMapper;
+import br.com.harmoniar.MajorBeatAPI.services.BlobStorageService;
 import br.com.harmoniar.MajorBeatAPI.services.MusicoServices;
+import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/Musico")
 public class MusicoController {
     @Autowired
     MusicoServices services;
+
+    @Autowired
+    BlobStorageService blobStorageService;
 
     @Autowired
     MusicoMapper mapper;
@@ -77,6 +84,35 @@ public class MusicoController {
         }
     }
 
+    @PostMapping("/uploadMedia")
+    public ResponseEntity<Map<String, String>> uploadMedia(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestParam("file") MultipartFile file) {
+
+        String token = authHeader.replace("Bearer", "").trim();
+        Long idMusico = JwtUtil.extrairUsuarioId(token);
+
+        try {
+            // Faz upload no Azure
+            String url = blobStorageService.uploadFile(
+                    file.getInputStream(),
+                    file.getSize(),
+                    file.getContentType(),
+                    idMusico.toString()
+            );
+
+            // Adiciona URL ao músico no banco
+            services.adicionarMediaUrl(token, new MediaUrlRequestDTO(url));
+
+            // Retorna a URL para o app MAUI
+            return ResponseEntity.ok(Map.of("url", url));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", "Falha ao enviar arquivo"));
+        }
+    }
 
     //Put
     @PutMapping("/editById/{id}")
@@ -84,15 +120,7 @@ public class MusicoController {
         String token = authHeader.replace("Bearer", "");
         return ResponseEntity.ok(services.editMusicoById(dto, token));
     }
-
-    //Patch
-    @PatchMapping("/addMedia")
-    public ResponseEntity<Void> adicionarMediaUrl(@RequestHeader("Authorization") String authHeader, @RequestBody MediaUrlRequestDTO dto){
-        String token = authHeader.replace("Bearer", "");
-        services.adicionarMediaUrl(token, dto);
-        return ResponseEntity.ok().build();
-    }
-
+    
     //Delete
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteMusicoById(@RequestHeader("Authorization") String authHeader){
