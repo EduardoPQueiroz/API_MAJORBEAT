@@ -1,81 +1,62 @@
 name: Build and deploy JAR app to Azure Web App - majorbeat
 
-# ... (on, jobs, runs-on, permissions, steps)
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read # This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
+      
+      # ETAPA CRÍTICA DE DEBUG: ESTA ETAPA VAI MOSTRAR ONDE ESTÁ O pom.xml
+      - name: Debug - Listar diretórios para encontrar o pom.xml
+        # O comando 'ls -R' lista todos os arquivos recursivamente
+        run: |
+          echo "Current Directory (deve ser a raiz do checkout):"
+          pwd
+          echo "Repository Files (Lista de arquivos e pastas):"
+          ls -R
+          echo "--- End Debug ---"
 
-      # ... (Set up Java version)
+      - name: Set up Java version
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
 
       - name: Build with Maven
         run: mvn clean install
-        # ------------------------------------------------------------------
-        # AJUSTE: Tentando apenas o nome da pasta do projeto, sem o prefixo API_MAJORBEAT
-        working-directory: ./MajorBeatAPI 
-        # ------------------------------------------------------------------
+        # O BUILD VAI FALHAR AQUI, MAS O DEBUG JÁ FOI EXECUTADO.
+        # NÃO ADICIONE O working-directory AQUI AINDA.
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          # Ajuste no path para o JAR
-          path: '${{ github.workspace }}/MajorBeatAPI/target/*.jar' 
+          path: '${{ github.workspace }}/target/*.jar' 
 
-# ... (deploy job)
-```
-
----
-
-## 2. Solução Definitiva (Forçar Debug)
-
-Se o erro persistir, você deve inserir a etapa de debug abaixo para **confirmar o nome da pasta que contém o `pom.xml`**.
-
-**Instrução:** Edite o seu arquivo `.yml` e adicione esta etapa **antes** da etapa `Build with Maven`:
-
-```yaml
-      - uses: actions/checkout@v4
-
-      - name: Debug - Listar diretórios
-        run: |
-          echo "Current Directory:"
-          pwd
-          echo "Repository Files:"
-          ls -R
-          echo "--- End Debug ---"
-```
-
-**Onde Adicionar:**
-
-```yaml
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: java-app
       
-      # ADICIONE AQUI:
-      - name: Debug - Listar diretórios
-        run: |
-          echo "Current Directory:"
-          pwd
-          echo "Repository Files:"
-          ls -R
-          echo "--- End Debug ---"
-          
-      - name: Set up Java version
-      # ... o resto do seu arquivo
-```
-
-Depois de rodar o pipeline com essa etapa de Debug, clique no log **`Debug - Listar diretórios`** e me diga exatamente qual é o caminho mostrado que contém o arquivo **`pom.xml`**. Por exemplo, se o log mostrar:
-
-```
-./
-./.github
-./MajorBeatAPI/
-./MajorBeatAPI/pom.xml  <-- ESTE É O QUE PRECISAMOS
-```
-
-Então o `working-directory` é **`./MajorBeatAPI`**. Se o log mostrar:
-
-```
-./
-./API_MAJOREAT/
-./API_MAJOREAT/MajorBeatAPI/
-./API_MAJOREAT/MajorBeatAPI/pom.xml <-- ESTE É O QUE PRECISAMOS
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'majorbeat'
+          slot-name: 'Production'
+          package: '*.jar'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B51C4FAFF1AF43B0A884B23E0F870806 }}
