@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read # This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
@@ -24,16 +24,17 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
         # ------------------------------------------------------------------
-        # AJUSTE CRÍTICO: Mudar o diretório de trabalho para a pasta MajorBeatAPI
-        working-directory: ./MajorBeatAPI 
+        # AJUSTE CRÍTICO: Mudar o diretório de trabalho para o caminho aninhado
+        # Com base no log D:\a\API_MAJOREAT\API_MAJORBEAT e na sua informação (MajorBeatAPI)
+        working-directory: ./API_MAJORBEAT/MajorBeatAPI 
         # ------------------------------------------------------------------
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          # Ajuste no caminho para o JAR gerado (agora está dentro da MajorBeatAPI)
-          path: '${{ github.workspace }}/MajorBeatAPI/target/*.jar' 
+          # Ajuste no caminho para o JAR gerado
+          path: '${{ github.workspace }}/API_MAJORBEAT/MajorBeatAPI/target/*.jar' 
 
 
   deploy:
