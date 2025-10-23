@@ -3,6 +3,8 @@ package br.com.harmoniar.MajorBeatAPI.services;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoUpdateDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.MediaUrlRequestDTO;
+import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
 import br.com.harmoniar.MajorBeatAPI.entity.Evento;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
@@ -122,7 +124,12 @@ public class EventoServices {
         }
     }
 
-
+    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
+    public void adicionarMediaUrl(Long idEvento, MediaUrlRequestDTO dto){
+        Evento evento = repository.findById(idEvento).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
+        evento.getMediaUrl().add(dto.mediaUrl());
+        repository.save(evento);
+    }
 
     //Métodos DELETE
     @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
@@ -135,6 +142,15 @@ public class EventoServices {
         }
         else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Você não pode excluir um evento inexistente!");
+        }
+    }
+
+    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
+    public void DeleteMediaUrl(Long idEvento, MediaUrlRequestDTO dto){
+        Evento evento = repository.findById(idEvento).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
+        boolean removed = evento.getMediaUrl().remove(dto.mediaUrl());
+        if (!removed){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Url não encontrada");
         }
     }
 

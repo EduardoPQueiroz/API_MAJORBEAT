@@ -71,6 +71,10 @@ public class Evento {
     @ManyToOne
     private Contratante idContratante;
 
+    @Column
+    @ElementCollection
+    private List<String> mediaUrl = new ArrayList<>();
+
     @ManyToMany
     @JoinTable(name = "AvaliacaoEvento",
     joinColumns = @JoinColumn(name = "idEvento"),

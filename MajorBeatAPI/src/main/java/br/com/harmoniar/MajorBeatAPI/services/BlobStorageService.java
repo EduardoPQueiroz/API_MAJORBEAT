@@ -47,8 +47,8 @@ public class BlobStorageService {
         }
     }
 
-    public String uploadFile(InputStream inputStream, long length, String contentType, String userId) {
-        String blobName = "musicos/" + userId + "/" + UUID.randomUUID();
+    public String uploadFile(InputStream inputStream, long length, String contentType, String userId, String folderName) {
+        String blobName = folderName + "/" + userId + "/" + UUID.randomUUID();
         BlobClient blobClient = containerClient.getBlobClient(blobName);
 
         blobClient.upload(inputStream, length, true);
@@ -76,7 +76,7 @@ public class BlobStorageService {
     }
 
 
-    public List<String> uploadMultipleFiles(List<MultipartFile> files, String userId) {
+    public List<String> uploadMultipleFiles(List<MultipartFile> files, String userId, String folderName) {
         List<String> urls = new ArrayList<>();
 
         for (MultipartFile file : files) {
@@ -85,7 +85,8 @@ public class BlobStorageService {
                         inputStream,
                         file.getSize(),
                         file.getContentType(),
-                        userId
+                        userId,
+                        folderName
                 );
                 urls.add(url);
             } catch (Exception e) {
@@ -96,26 +97,19 @@ public class BlobStorageService {
         return urls;
     }
 
-    public List<String> uploadMultipleTempFiles(List<MultipartFile> files) {
+    public List<String> uploadMultipleFilesInFolder(List<MultipartFile> files, String folderName) {
         List<String> urls = new ArrayList<>();
-
         for (MultipartFile file : files) {
             try (InputStream inputStream = file.getInputStream()) {
-                // Pasta temporária "temp"
-                String url = uploadFile(
-                        inputStream,
-                        file.getSize(),
-                        file.getContentType(),
-                        "temp" // usar "temp" como diretório
-                );
+                String url = uploadFile(inputStream, file.getSize(), file.getContentType(), "temp",  folderName);
                 urls.add(url);
             } catch (Exception e) {
                 throw new RuntimeException("Erro ao enviar arquivo: " + file.getOriginalFilename(), e);
             }
         }
-
         return urls;
     }
+
 
 
 }

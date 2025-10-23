@@ -3,26 +3,33 @@ package br.com.harmoniar.MajorBeatAPI.controllers;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoUpdateDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.MediaUrlRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import br.com.harmoniar.MajorBeatAPI.mappers.EventoMapper;
+import br.com.harmoniar.MajorBeatAPI.services.BlobStorageService;
 import br.com.harmoniar.MajorBeatAPI.services.EventoServices;
+import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/Eventos")
 public class EventoController {
     @Autowired
     EventoServices services;
+    @Autowired
+    BlobStorageService blobStorageService;
     @Autowired
     EventoMapper mapper;
 
@@ -73,6 +80,105 @@ public class EventoController {
             return ResponseEntity.ok(services.criarEvento(dto));
     }
 
+    @PostMapping("/uploadMediaEvento")
+    public ResponseEntity<Map<String, String>> uploadMediaEvento(
+            Long idEvento,
+            @RequestParam("file") MultipartFile file) {
+
+        String folderName = "evento";
+
+        try {
+            // Faz upload no Azure
+            String url = blobStorageService.uploadFile(
+                    file.getInputStream(),
+                    file.getSize(),
+                    file.getContentType(),
+                    idEvento.toString(),
+                    folderName
+            );
+
+            // Adiciona URL ao evento no banco (crie método equivalente no service)
+            services.adicionarMediaUrl(idEvento, new MediaUrlRequestDTO(url));
+
+            // Retorna a URL para o app
+            return ResponseEntity.ok(Map.of("url", url));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", "Falha ao enviar arquivo"));
+        }
+    }
+
+
+    @PostMapping("/uploadTempEvento")
+    public ResponseEntity<Map<String, String>> uploadTempMediaEvento(
+            @RequestParam("file") MultipartFile file) {
+
+        String folderName = "evento";
+
+        try {
+            String url = blobStorageService.uploadFile(
+                    file.getInputStream(),
+                    file.getSize(),
+                    file.getContentType(),
+                    "temp",
+                    folderName
+            );
+
+            return ResponseEntity.ok(Map.of("url", url));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", "Falha ao enviar arquivo"));
+        }
+    }
+
+
+    @PostMapping("/uploadMultiEvento")
+    public ResponseEntity<?> uploadMultiplasMidiasEvento(
+            Long idEvento,
+            @RequestParam("files") List<MultipartFile> files) {
+        String folderName = "evento";
+
+        try {
+            List<String> urls = blobStorageService.uploadMultipleFiles(files, idEvento.toString(), folderName);
+
+            // Salva todas as URLs no banco (crie método equivalente)
+            for (String url : urls) {
+                services.adicionarMediaUrl(idEvento, new MediaUrlRequestDTO(url));
+            }
+
+            return ResponseEntity.ok(Map.of("urls", urls));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", "Falha ao enviar múltiplos arquivos"));
+        }
+    }
+
+
+    @PostMapping("/uploadTempMultiEvento")
+    public ResponseEntity<Map<String, List<String>>> uploadTempMultiplasMidiasEvento(
+            @RequestParam("files") List<MultipartFile> files) {
+
+        String folderName = "evento";
+
+        try {
+            List<String> urls = blobStorageService.uploadMultipleFilesInFolder(files, folderName);
+
+            return ResponseEntity.ok(Map.of("urls", urls));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", List.of("Falha ao enviar múltiplos arquivos")));
+        }
+    }
+
+
     //Métodos PUT
     @PutMapping("/atualizar")
     public ResponseEntity<EventoResponseDTO> atualizarEvento(@RequestBody EventoUpdateDTO dto, @RequestHeader("Authorization") String authHeader){
@@ -80,6 +186,13 @@ public class EventoController {
             return ResponseEntity.ok(services.alterarEvento(dto, token));
     }
 
+
+    //PATCH
+    @PatchMapping("/addMedia")
+    public ResponseEntity<Void> adicionarMediaUrl(Long idEvento, @RequestBody MediaUrlRequestDTO dto){
+        services.adicionarMediaUrl(idEvento, dto);
+        return ResponseEntity.ok().build();
+    }
 
     //Métodos DELETE
 
@@ -94,6 +207,12 @@ public class EventoController {
         }
     }
 
+
+    @DeleteMapping("/deleteMedia")
+    public ResponseEntity<Void> deleteMedia(Long idEvento, @RequestBody MediaUrlRequestDTO dto){
+        services.DeleteMediaUrl(idEvento, dto);
+        return ResponseEntity.ok().build();
+    }
 
 
 

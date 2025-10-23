@@ -91,14 +91,15 @@ public class MusicoController {
 
         String token = authHeader.replace("Bearer", "").trim();
         Long idMusico = JwtUtil.extrairUsuarioId(token);
-
+        String folderName = "musico";
         try {
             // Faz upload no Azure
             String url = blobStorageService.uploadFile(
                     file.getInputStream(),
                     file.getSize(),
                     file.getContentType(),
-                    idMusico.toString()
+                    idMusico.toString(),
+                    folderName
             );
 
             // Adiciona URL ao músico no banco
@@ -118,13 +119,16 @@ public class MusicoController {
     public ResponseEntity<Map<String, String>> uploadTempMedia(
             @RequestParam("file") MultipartFile file) {
 
+        String folderName = "musico";
         try {
             // Faz upload do arquivo no Azure e pega a URL SAS
             String url = blobStorageService.uploadFile(
                     file.getInputStream(),
                     file.getSize(),
                     file.getContentType(),
-                    "temp" // você pode usar "temp" ou outro diretório temporário
+                    "temp",
+                    folderName
+                     /// você pode usar "temp" ou outro diretório temporário
             );
 
             // Retorna a URL apenas
@@ -145,10 +149,12 @@ public class MusicoController {
 
         String token = authHeader.replace("Bearer", "").trim();
         Long idMusico = JwtUtil.extrairUsuarioId(token);
+        String folderName = "musico";
+
 
         try {
             // Faz upload de todas as imagens
-            List<String> urls = blobStorageService.uploadMultipleFiles(files, idMusico.toString());
+            List<String> urls = blobStorageService.uploadMultipleFiles(files, idMusico.toString(), folderName);
 
             // Salva todas as URLs no banco (usando o mesmo método ou adaptando)
             for (String url : urls) {
@@ -169,8 +175,10 @@ public class MusicoController {
     public ResponseEntity<Map<String, List<String>>> uploadTempMultiplasMidias(
             @RequestParam("files") List<MultipartFile> files) {
 
+        String folderName = "musicos";
+
         try {
-            List<String> urls = blobStorageService.uploadMultipleTempFiles(files);
+            List<String> urls = blobStorageService.uploadMultipleFilesInFolder(files, folderName);
 
             return ResponseEntity.ok(Map.of("urls", urls));
 
