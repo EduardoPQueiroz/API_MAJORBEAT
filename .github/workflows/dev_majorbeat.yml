@@ -10,18 +10,16 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read # This is required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
-      
-      # ETAPA CRÍTICA DE DEBUG: ESTA ETAPA VAI MOSTRAR ONDE ESTÁ O pom.xml
+
       - name: Debug - Listar diretórios para encontrar o pom.xml
-        # O comando 'ls -R' lista todos os arquivos recursivamente
         run: |
-          echo "Current Directory (deve ser a raiz do checkout):"
+          echo "Current Directory:"
           pwd
-          echo "Repository Files (Lista de arquivos e pastas):"
+          echo "Files:"
           ls -R
           echo "--- End Debug ---"
 
@@ -33,25 +31,24 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
-        # O BUILD VAI FALHAR AQUI, MAS O DEBUG JÁ FOI EXECUTADO.
-        # NÃO ADICIONE O working-directory AQUI AINDA.
+        working-directory: MajorBeatAPI
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.jar' 
+          path: '${{ github.workspace }}/MajorBeatAPI/target/*.jar'
 
   deploy:
     runs-on: windows-latest
     needs: build
-    
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
-      
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
