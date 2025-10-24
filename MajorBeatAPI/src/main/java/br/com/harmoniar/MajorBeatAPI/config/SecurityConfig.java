@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/Musico/login", "/Musico/cadastrar", "/Musico/uploadTemp", "/Musico/uploadTempMulti",
-                                "/Contratante/login", "/Contratante/cadastrar").permitAll()
+                                "/Contratante/login", "/Contratante/cadastrar","/Contratante/uploadTemp","/Contratante/uploadMedia","/Musico/uploadTemp","/Musico/uploadMedia").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
