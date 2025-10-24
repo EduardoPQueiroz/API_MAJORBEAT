@@ -6,10 +6,7 @@ import br.com.harmoniar.MajorBeatAPI.dto.EventoUpdateDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.MediaUrlRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
 import br.com.harmoniar.MajorBeatAPI.entity.Evento;
-import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
-import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
-import br.com.harmoniar.MajorBeatAPI.enums.StatusEvento;
-import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
+import br.com.harmoniar.MajorBeatAPI.enums.*;
 import br.com.harmoniar.MajorBeatAPI.mappers.EventoMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.EventoRepository;
 import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
@@ -47,6 +44,14 @@ public class EventoServices {
     public List<EventoResponseDTO> getEventosByTipoMusico(TipoMusico tipoMusico){
         try{
             return mapper.toResponseDTOList(repository.findEventoByTipoMusico(tipoMusico));
+        }catch(ResponseStatusException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public List<EventoResponseDTO> getEventosByTipoEvento(TipoEvento tipoEvento){
+        try{
+            return mapper.toResponseDTOList(repository.findEventoByTipoEvento(tipoEvento));
         }catch(ResponseStatusException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }

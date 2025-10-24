@@ -6,6 +6,7 @@ import br.com.harmoniar.MajorBeatAPI.dto.EventoUpdateDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.MediaUrlRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
+import br.com.harmoniar.MajorBeatAPI.enums.TipoEvento;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import br.com.harmoniar.MajorBeatAPI.mappers.EventoMapper;
 import br.com.harmoniar.MajorBeatAPI.services.BlobStorageService;
@@ -41,6 +42,11 @@ public class EventoController {
     @GetMapping("/getByTipoMusico/{tipoMusico}")
     public ResponseEntity<List<EventoResponseDTO>> getEventoByTipoMusico(@PathVariable TipoMusico tipoMusico){
             return ResponseEntity.ok(services.getEventosByTipoMusico(tipoMusico));
+    }
+
+    @GetMapping("/getByTipoMusico/{tipoEvento}")
+    public ResponseEntity<List<EventoResponseDTO>> getEventoByTipoEvento(@PathVariable TipoEvento tipoEvento){
+        return ResponseEntity.ok(services.getEventosByTipoEvento(tipoEvento));
     }
 
     @GetMapping("/getByData/{data}")

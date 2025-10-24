@@ -3,6 +3,7 @@ package br.com.harmoniar.MajorBeatAPI.repositories;
 import br.com.harmoniar.MajorBeatAPI.entity.Evento;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
+import br.com.harmoniar.MajorBeatAPI.enums.TipoEvento;
 import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,8 @@ import java.util.Optional;
 @Repository
 public interface EventoRepository extends JpaRepository<Evento, Long> {
     List<Evento> findEventoByTipoMusico(TipoMusico tipoMusico);
+    List<Evento> findEventoByTipoEvento(TipoEvento tipoEvento);
+
     List<Evento> findByInstrumentosContaining(NomeInstrumento instrumento);
 
 
