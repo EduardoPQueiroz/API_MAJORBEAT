@@ -44,7 +44,7 @@ public class EventoController {
             return ResponseEntity.ok(services.getEventosByTipoMusico(tipoMusico));
     }
 
-    @GetMapping("/getByTipoMusico/{tipoEvento}")
+    @GetMapping("/getByTipoEvento/{tipoEvento}")
     public ResponseEntity<List<EventoResponseDTO>> getEventoByTipoEvento(@PathVariable TipoEvento tipoEvento){
         return ResponseEntity.ok(services.getEventosByTipoEvento(tipoEvento));
     }
