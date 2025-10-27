@@ -17,7 +17,7 @@ public record EventoResponseDTO(
         LocalDate data,
         String endereco,
         TipoEvento tipoEvento,
-        List<byte[]> imagemLocalEvento,
+        List<String> mediaUrl,
         LocalTime horaInicio,
         List<NomeInstrumento> instrumentos,
         List<NomeGenero> generos,

@@ -15,7 +15,7 @@ public record EventoRequestDTO(
         String tipoMusico,
         LocalDate data,
         String endereco,
-        List<byte[]> imagemLocalEvento,
+        List<String> mediaUrl,
         LocalTime horaInicio,
         TipoEvento tipoEvento,
         List<NomeInstrumento> instrumentos,

@@ -37,10 +37,6 @@ public class Evento {
     private StatusEvento status;
 
     @Column
-    @ElementCollection
-    private List<byte[]> imagemLocalEvento = new ArrayList<>();
-
-    @Column
     private LocalTime horaInicio;
 
     @Column

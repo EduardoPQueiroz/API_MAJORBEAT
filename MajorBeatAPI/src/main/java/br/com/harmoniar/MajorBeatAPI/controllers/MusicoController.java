@@ -175,7 +175,7 @@ public class MusicoController {
     public ResponseEntity<Map<String, List<String>>> uploadTempMultiplasMidias(
             @RequestParam("files") List<MultipartFile> files) {
 
-        String folderName = "musicos";
+        String folderName = "musico";
 
         try {
             List<String> urls = blobStorageService.uploadMultipleFilesInFolder(files, folderName);
