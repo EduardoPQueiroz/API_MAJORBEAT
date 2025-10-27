@@ -9,35 +9,22 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    permissions:
-      contents: read
 
     steps:
-      # Clona o repositório
       - uses: actions/checkout@v4
 
-      # Mostra estrutura de diretórios para debug
-      - name: Debug - Listar diretórios
-        run: |
-          echo "📂 Estrutura de diretórios:"
-          dir
-          echo "--- Fim do Debug ---"
-
-      # Configura o Java
       - name: Set up Java version
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'microsoft'
 
-      # Compila o projeto e pula os testes
       - name: Build with Maven (skip tests)
         run: |
           cd MajorBeatAPI
           mvn clean package -DskipTests
 
-      # Envia o JAR como artefato
-      - name: Upload artifact for deployment job
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: java-app
@@ -48,15 +35,12 @@ jobs:
     needs: build
 
     steps:
-      # Baixa o artefato do job anterior
-      - name: Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: java-app
 
-      # Faz o deploy no Azure Web App
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'majorbeat'
