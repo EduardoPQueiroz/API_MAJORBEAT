@@ -13,42 +13,48 @@ jobs:
       contents: read
 
     steps:
+      # Clona o repositório
       - uses: actions/checkout@v4
 
-      - name: Debug - Listar diretórios para encontrar o pom.xml
+      # Mostra estrutura de diretórios para debug
+      - name: Debug - Listar diretórios
         run: |
-          echo "Current Directory:"
-          pwd
-          echo "Files:"
-          ls -R
-          echo "--- End Debug ---"
+          echo "📂 Estrutura de diretórios:"
+          dir
+          echo "--- Fim do Debug ---"
 
+      # Configura o Java
       - name: Set up Java version
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'microsoft'
 
+      # Compila o projeto e pula os testes
       - name: Build with Maven (skip tests)
-        run: mvn clean package -DskipTests
-        working-directory: ./MajorBeatAPI   # 👈 caminho relativo correto
+        run: |
+          cd MajorBeatAPI
+          mvn clean package -DskipTests
 
+      # Envia o JAR como artefato
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: './MajorBeatAPI/target/*.jar'   # 👈 caminho relativo ao repositório raiz
+          path: './MajorBeatAPI/target/*.jar'
 
   deploy:
     runs-on: windows-latest
     needs: build
 
     steps:
+      # Baixa o artefato do job anterior
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
 
+      # Faz o deploy no Azure Web App
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
