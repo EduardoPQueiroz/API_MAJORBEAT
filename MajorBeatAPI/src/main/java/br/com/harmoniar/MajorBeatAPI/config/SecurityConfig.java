@@ -51,7 +51,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/Musico/login", "/Musico/cadastrar", "/Musico/uploadTemp", "/Musico/uploadTempMulti",
+                        .requestMatchers("/Musico/login", "/Musico/cadastrar", "/Musico/uploadTemp", "/Musico/uploadTempMulti",
                                 "/Contratante/login", "/Contratante/cadastrar","/Contratante/uploadTemp","/Contratante/uploadMedia","/Musico/uploadTemp","/Musico/uploadMedia").permitAll()
                         .anyRequest().authenticated()
                 )
