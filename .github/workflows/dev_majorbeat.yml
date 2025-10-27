@@ -13,10 +13,8 @@ jobs:
       contents: read
 
     steps:
-      # Clona o repositório
       - uses: actions/checkout@v4
 
-      # Etapa opcional: debug pra confirmar que o pom.xml está no lugar certo
       - name: Debug - Listar diretórios para encontrar o pom.xml
         run: |
           echo "Current Directory:"
@@ -25,42 +23,37 @@ jobs:
           ls -R
           echo "--- End Debug ---"
 
-      # Configura o Java 21
       - name: Set up Java version
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'microsoft'
 
-      # Builda o projeto e pula os testes (evita o erro do surefire)
       - name: Build with Maven (skip tests)
         run: mvn clean package -DskipTests
-        working-directory: MajorBeatAPI
+        working-directory: ./MajorBeatAPI   # 👈 caminho relativo correto
 
-      # Salva o artefato (arquivo .jar) gerado no build
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: '${{ github.workspace }}/MajorBeatAPI/target/*.jar'
+          path: './MajorBeatAPI/target/*.jar'   # 👈 caminho relativo ao repositório raiz
 
   deploy:
     runs-on: windows-latest
     needs: build
 
     steps:
-      # Baixa o artefato gerado no job anterior
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
 
-      # Faz o deploy direto pro Azure Web App
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'majorbeat'  # nome do seu App Service no Azure
+          app-name: 'majorbeat'
           slot-name: 'Production'
           package: '*.jar'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B51C4FAFF1AF43B0A884B23E0F870806 }}
