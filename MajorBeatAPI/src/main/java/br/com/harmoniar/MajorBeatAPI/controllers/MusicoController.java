@@ -78,7 +78,7 @@ public class MusicoController {
     public ResponseEntity<LoginResponseDTO> loginMusico(@RequestBody LoginRequestDTO loginRequestDTO){
         try{
             String token = services.autenticarMusico(loginRequestDTO.nome(), loginRequestDTO.email(), loginRequestDTO.senha());
-            return ResponseEntity.ok(new LoginResponseDTO(token));
+            return ResponseEntity.ok(new LoginResponseDTO(token, JwtUtil.extrairUsuarioId(token)));
         }catch(HttpClientErrorException.Unauthorized e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

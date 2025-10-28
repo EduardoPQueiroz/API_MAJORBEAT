@@ -57,7 +57,7 @@ public class ContratanteController {
     public ResponseEntity<LoginResponseDTO> LoginContratante(@RequestBody LoginRequestDTO login){
         try{
             String token = services.autenticarContratante(login.nome(), login.email(), login.senha());
-            return ResponseEntity.ok(new LoginResponseDTO(token));
+            return ResponseEntity.ok(new LoginResponseDTO(token, JwtUtil.extrairUsuarioId(token)));
         }
         catch(RuntimeException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
