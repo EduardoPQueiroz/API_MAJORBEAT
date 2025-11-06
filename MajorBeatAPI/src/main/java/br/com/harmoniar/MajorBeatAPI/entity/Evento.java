@@ -71,9 +71,4 @@ public class Evento {
     @ElementCollection
     private List<String> mediaUrl = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "AvaliacaoEvento",
-    joinColumns = @JoinColumn(name = "idEvento"),
-    inverseJoinColumns = @JoinColumn(name = "idAvaliacao"))
-    private List<Avaliacao> avaliacoes;
 }
