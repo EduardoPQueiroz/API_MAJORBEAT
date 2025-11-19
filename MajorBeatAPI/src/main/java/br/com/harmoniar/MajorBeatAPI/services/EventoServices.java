@@ -74,23 +74,13 @@ public class EventoServices {
     }
 
     public EventoResponseDTO getEventoByNome(String nome){
-        Optional<Evento> evento = repository.findByNome(nome);
-        if (evento.isPresent()){
-            return mapper.OptionaltoDto(evento);
-        }
-        else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe um Evento criado com esse nome");
-        }
+        Evento evento = repository.findByNome(nome).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Um Evento com esse NOME não encontrado"));
+        return mapper.toDto(evento);
     }
 
     public EventoResponseDTO getEventoById(Long id){
-        Optional<Evento> evento = repository.findById(id);
-        if (evento.isPresent()){
-            return mapper.OptionaltoDto(evento);
-        }
-        else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Id não encontrado.");
-        }
+        Evento evento = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Um Evento com esse ID não foi encontrado"));
+        return mapper.toDto(evento);
     }
 
     public List<EventoResponseDTO> getEventosByEndereco(String endereco){

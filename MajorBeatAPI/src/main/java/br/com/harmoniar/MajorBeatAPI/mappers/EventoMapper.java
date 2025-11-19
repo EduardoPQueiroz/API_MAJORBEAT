@@ -18,8 +18,6 @@ public interface EventoMapper {
     EventoMapper INSTANCE = Mappers.getMapper(EventoMapper.class);
     List<EventoResponseDTO> toResponseDTOList(List<Evento> eventos);
 
-    EventoResponseDTO OptionaltoDto(Optional<Evento> evento);
-
     void updateFromDto(EventoUpdateDTO dto, @MappingTarget Evento entity);
     EventoResponseDTO toDto(Evento evento);
 
