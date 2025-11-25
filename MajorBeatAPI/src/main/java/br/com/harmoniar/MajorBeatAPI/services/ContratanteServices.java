@@ -43,19 +43,13 @@ public class ContratanteServices {
     }
 
     public ContratanteResponseDTO getContratanteById(Long id){
-        Optional<Contratante> contratante = repository.findById(id);
-        if (contratante.isPresent()){
-            return mapper.OptionalToDto(contratante);
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe um contratante com esse Id");
+        Contratante contratante = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante com esse ID não encontrado!"));;
+        return mapper.toDto(contratante);
     }
 
     public ContratanteResponseDTO getContratanteByNome(String nomeContratante){
-        Optional<Contratante> contratante = repository.getByNome(nomeContratante);
-        if (contratante.isPresent()){
-            return mapper.OptionalToDto(contratante);
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe um contratante com esse nome");
+        Contratante contratante = repository.getByNome(nomeContratante).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante com esse NOME não encontrado!"));
+        return mapper.toDto(contratante);
     }
 
     public List<ContratanteResponseDTO> getContratanteByTipoContratante(TipoContratante tipoContratante){

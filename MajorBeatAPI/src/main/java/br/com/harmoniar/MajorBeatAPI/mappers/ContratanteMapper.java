@@ -25,6 +25,5 @@ public interface ContratanteMapper {
 
     ContratanteResponseDTO toDto(Contratante contratante);
 
-    ContratanteResponseDTO OptionalToDto(Optional<Contratante> contratante);
 
 }
