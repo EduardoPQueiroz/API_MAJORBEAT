@@ -82,8 +82,9 @@ public class EventoController {
     //Métodos POST
 
     @PostMapping("/criar")
-    public ResponseEntity<EventoResponseDTO> criarEvento(@RequestBody EventoRequestDTO dto){
-            return ResponseEntity.ok(services.criarEvento(dto));
+    public ResponseEntity<EventoResponseDTO> criarEvento(@RequestBody EventoRequestDTO dto, @RequestHeader String authHeader){
+            String token = authHeader.replace("Bearer", "");
+            return ResponseEntity.ok(services.criarEvento(dto, token));
     }
 
     @PostMapping("/uploadMediaEvento")
@@ -187,11 +188,16 @@ public class EventoController {
 
     //Métodos PUT
     @PutMapping("/atualizar")
-    public ResponseEntity<EventoResponseDTO> atualizarEvento(@RequestBody EventoUpdateDTO dto, @RequestHeader("Authorization") String authHeader){
+    public ResponseEntity<EventoResponseDTO> atualizarEvento(@RequestBody EventoUpdateDTO dto, @PathVariable Long idEvento, @RequestHeader("Authorization") String authHeader){
             String token = authHeader.replace("Bearer", "");
-            return ResponseEntity.ok(services.alterarEvento(dto, token));
+            return ResponseEntity.ok(services.alterarEvento(dto, idEvento, token));
     }
 
+    @PutMapping("/addMusico/{idEvento}/{idMusico}")
+    public ResponseEntity<EventoResponseDTO> addMusico(@RequestBody EventoUpdateDTO dto, @PathVariable Long idEvento, @PathVariable Long idMusico, @RequestHeader("Authorization") String authHeader){
+        String token = authHeader.replace("Bearer", "");
+        return ResponseEntity.ok(services.addMusico(dto, idMusico, idEvento, token));
+    }
 
     //PATCH
     @PatchMapping("/addMedia")

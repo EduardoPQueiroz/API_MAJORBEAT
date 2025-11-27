@@ -6,9 +6,12 @@ import br.com.harmoniar.MajorBeatAPI.dto.EventoUpdateDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.MediaUrlRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
 import br.com.harmoniar.MajorBeatAPI.entity.Evento;
+import br.com.harmoniar.MajorBeatAPI.entity.Musico;
 import br.com.harmoniar.MajorBeatAPI.enums.*;
 import br.com.harmoniar.MajorBeatAPI.mappers.EventoMapper;
+import br.com.harmoniar.MajorBeatAPI.repositories.ContratanteRepository;
 import br.com.harmoniar.MajorBeatAPI.repositories.EventoRepository;
+import br.com.harmoniar.MajorBeatAPI.repositories.MusicoRepository;
 import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.mapstruct.Mapper;
@@ -28,6 +31,12 @@ public class EventoServices {
 
     @Autowired
     EventoRepository repository;
+
+    @Autowired
+    ContratanteRepository contratanteRepository;
+
+    @Autowired
+    MusicoRepository musicoRepository;
     @Autowired
     EventoMapper mapper;
 
@@ -93,8 +102,12 @@ public class EventoServices {
 
     //MÉTODOS POST
     @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
-    public EventoResponseDTO criarEvento(EventoRequestDTO dto){
+    public EventoResponseDTO criarEvento(EventoRequestDTO dto, String token){
         Evento entity = mapper.toEntity(dto);
+        Long idContratante = JwtUtil.extrairUsuarioId(token);
+        Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
+        entity.setIdContratante(contratante);
+
         if (entity.getHoraInicio().isAfter(entity.getHoraFim())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O evento precisa começar antes de terminar!");
         }
@@ -106,17 +119,47 @@ public class EventoServices {
 
     //Métodos PUT
     @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
-    public EventoResponseDTO alterarEvento(EventoUpdateDTO dto, String token){
-        Long id = JwtUtil.extrairUsuarioId(token);
-        Evento evento = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id de evento não encontrado."));
-        if (evento.getHoraInicio().isAfter(evento.getHoraFim())) {
-            mapper.updateFromDto(dto, evento);
-            Evento saved = repository.save(evento);
-            return mapper.toDto(saved);
+    public EventoResponseDTO alterarEvento(EventoUpdateDTO dto, Long idEvento, String token){
+        Long idContratante = JwtUtil.extrairUsuarioId(token);
+        Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
+        Evento evento = repository.findById(idEvento).orElseThrow(() -> new EntityNotFoundException("Id de evento não encontrado."));
+        if (evento.getIdContratante() == contratante){
+            if (evento.getHoraInicio().isAfter(evento.getHoraFim())) {
+                mapper.updateFromDto(dto, evento);
+                Evento saved = repository.save(evento);
+                return mapper.toDto(saved);
+            }
+            else{
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "o evento precisa começar antes de terminar");
+            }
         }
         else{
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "o evento precisa começar antes de terminar");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Somente o dono desse evento pode alterá-lo");
         }
+
+    }
+
+    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
+    public EventoResponseDTO addMusico(EventoUpdateDTO dto, Long idMusico, Long idEvento, String token){
+        Long idContratante = JwtUtil.extrairUsuarioId(token);
+        Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
+        Evento evento = repository.findById(idEvento).orElseThrow(() -> new EntityNotFoundException("Id de evento não encontrado."));
+        Musico musico = musicoRepository.findById(idMusico).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Musico não encontrado"));
+        if (evento.getIdContratante() == contratante){
+            if (evento.getHoraInicio().isAfter(evento.getHoraFim())) {
+                evento.setIdMusico(musico);
+                mapper.updateFromDto(dto, evento);
+                Evento saved = repository.save(evento);
+                return mapper.toDto(saved);
+            }
+            else{
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "o evento precisa começar antes de terminar");
+            }
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Somente o dono desse evento pode alterá-lo");
+        }
+
     }
 
     @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
