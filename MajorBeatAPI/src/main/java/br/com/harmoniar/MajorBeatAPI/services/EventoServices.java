@@ -85,7 +85,7 @@ public class EventoServices {
     public List<EventoResponseDTO> getEventosByContratanteId(Long idContratante){
         Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
         try{
-            return mapper.toResponseDTOList(repository.findEventoByContratante(contratante));
+            return mapper.toResponseDTOList(repository.findByContratante(contratante));
         }catch (ResponseStatusException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foram encontrados eventos associados a esse contratante");
         }

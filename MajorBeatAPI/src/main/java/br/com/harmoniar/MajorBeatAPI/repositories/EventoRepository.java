@@ -20,7 +20,7 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
 
     List<Evento> findByInstrumentosContaining(NomeInstrumento instrumento);
 
-    List<Evento> findEventoByContratante(Contratante contratante);
+    List<Evento> findByContratante(Contratante contratante);
     List<Evento> findByGenerosContaining(NomeGenero genero);
     List<Evento> findByData(LocalDate data);
     List<Evento> findByEndereco(String endereco);
