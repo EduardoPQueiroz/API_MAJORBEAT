@@ -15,7 +15,6 @@ import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface EventoMapper {
-    EventoMapper INSTANCE = Mappers.getMapper(EventoMapper.class);
     List<EventoResponseDTO> toResponseDTOList(List<Evento> eventos);
 
     void updateFromDto(EventoUpdateDTO dto, @MappingTarget Evento entity);
