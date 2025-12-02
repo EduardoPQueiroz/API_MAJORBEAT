@@ -1,5 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.repositories;
 
+import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
 import br.com.harmoniar.MajorBeatAPI.entity.Evento;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
 import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
@@ -19,7 +20,7 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
 
     List<Evento> findByInstrumentosContaining(NomeInstrumento instrumento);
 
-
+    List<Evento> findByIdContratante(Contratante contratante);
     List<Evento> findByGenerosContaining(NomeGenero genero);
     List<Evento> findByData(LocalDate data);
     List<Evento> findByEndereco(String endereco);

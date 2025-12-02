@@ -79,6 +79,11 @@ public class EventoController {
         return ResponseEntity.ok(services.getEventosByInstrumento(instrumento));
     }
 
+    @GetMapping("/getByIdContratante/{idContratante}")
+    public ResponseEntity<List<EventoResponseDTO>> getEventoByIdContratante(@PathVariable Long idContratante){
+        return ResponseEntity.ok(services.getEventosByContratanteId(idContratante));
+    }
+
     //Métodos POST
 
     @PostMapping("/criar")
