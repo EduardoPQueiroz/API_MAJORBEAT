@@ -1,5 +1,7 @@
 package br.com.harmoniar.MajorBeatAPI.dto;
 
+import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
+import br.com.harmoniar.MajorBeatAPI.entity.Musico;
 import br.com.harmoniar.MajorBeatAPI.enums.*;
 
 import java.time.LocalDate;
@@ -18,6 +20,10 @@ public record EventoResponseDTO(
         LocalTime horaInicio,
         List<NomeInstrumento> instrumentos,
         List<NomeGenero> generos,
+
+        Contratante contratante,
+
+        Musico musico,
         LocalTime horaFim,
         String descricao
 ) {
