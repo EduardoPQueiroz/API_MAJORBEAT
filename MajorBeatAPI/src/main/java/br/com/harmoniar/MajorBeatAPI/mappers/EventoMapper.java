@@ -14,7 +14,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 import java.util.Optional;
 
-@Mapper(componentModel = "spring", uses = { ContratanteMapper.class, MusicoMapper.class })
+@Mapper(componentModel = "spring", uses = { ContratanteMapper.class, MusicoMapper.class, AvaliacaoMapper.class, ChatMapper.class })
 public interface EventoMapper {
     List<EventoResponseDTO> toResponseDTOList(List<Evento> eventos);
 
