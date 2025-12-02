@@ -7,6 +7,7 @@ import br.com.harmoniar.MajorBeatAPI.dto.EventoUpdateDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
 import br.com.harmoniar.MajorBeatAPI.entity.Evento;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
@@ -18,6 +19,7 @@ public interface EventoMapper {
     List<EventoResponseDTO> toResponseDTOList(List<Evento> eventos);
 
     void updateFromDto(EventoUpdateDTO dto, @MappingTarget Evento entity);
+    @Mapping(target = "contratante", source = "contratante")
     EventoResponseDTO toDto(Evento evento);
 
     Evento toEntity(EventoRequestDTO dto);
