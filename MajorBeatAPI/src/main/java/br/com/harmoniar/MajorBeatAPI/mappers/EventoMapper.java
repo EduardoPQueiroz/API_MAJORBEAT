@@ -14,12 +14,14 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 import java.util.Optional;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { ContratanteMapper.class, MusicoMapper.class })
 public interface EventoMapper {
     List<EventoResponseDTO> toResponseDTOList(List<Evento> eventos);
 
     void updateFromDto(EventoUpdateDTO dto, @MappingTarget Evento entity);
     @Mapping(target = "contratante", source = "contratante")
+    @Mapping(target = "musico", source = "musico")
+
     EventoResponseDTO toDto(Evento evento);
 
     Evento toEntity(EventoRequestDTO dto);
