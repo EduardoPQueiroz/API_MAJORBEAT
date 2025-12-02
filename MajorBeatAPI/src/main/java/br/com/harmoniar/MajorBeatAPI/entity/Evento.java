@@ -62,11 +62,11 @@ public class Evento {
 
     @JoinColumn
     @ManyToOne
-    private Musico idMusico;
+    private Musico musico;
 
     @JoinColumn
     @ManyToOne
-    private Contratante idContratante;
+    private Contratante contratante;
 
     @Column
     @ElementCollection

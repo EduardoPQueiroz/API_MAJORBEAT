@@ -85,7 +85,7 @@ public class EventoServices {
     public List<EventoResponseDTO> getEventosByContratanteId(Long idContratante){
         Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
         try{
-            return mapper.toResponseDTOList(repository.findEventoByIdContratante(contratante));
+            return mapper.toResponseDTOList(repository.findEventoByContratante(contratante));
         }catch (ResponseStatusException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foram encontrados eventos associados a esse contratante");
         }
@@ -115,7 +115,7 @@ public class EventoServices {
         Evento entity = mapper.toEntity(dto);
         Long idContratante = JwtUtil.extrairUsuarioId(token);
         Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
-        entity.setIdContratante(contratante);
+        entity.setContratante(contratante);
 
         if (entity.getHoraInicio().isAfter(entity.getHoraFim())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O evento precisa começar antes de terminar!");
@@ -132,7 +132,7 @@ public class EventoServices {
         Long idContratante = JwtUtil.extrairUsuarioId(token);
         Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
         Evento evento = repository.findById(idEvento).orElseThrow(() -> new EntityNotFoundException("Id de evento não encontrado."));
-        if (evento.getIdContratante() == contratante){
+        if (evento.getContratante() == contratante){
             if (evento.getHoraInicio().isAfter(evento.getHoraFim())) {
                 mapper.updateFromDto(dto, evento);
                 Evento saved = repository.save(evento);
@@ -154,9 +154,9 @@ public class EventoServices {
         Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
         Evento evento = repository.findById(idEvento).orElseThrow(() -> new EntityNotFoundException("Id de evento não encontrado."));
         Musico musico = musicoRepository.findById(idMusico).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Musico não encontrado"));
-        if (evento.getIdContratante() == contratante){
+        if (evento.getContratante() == contratante){
             if (evento.getHoraInicio().isAfter(evento.getHoraFim())) {
-                evento.setIdMusico(musico);
+                evento.setMusico(musico);
                 mapper.updateFromDto(dto, evento);
                 Evento saved = repository.save(evento);
                 return mapper.toDto(saved);
