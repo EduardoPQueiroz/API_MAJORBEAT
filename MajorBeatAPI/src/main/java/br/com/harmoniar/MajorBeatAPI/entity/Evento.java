@@ -62,11 +62,10 @@ public class Evento {
 
     @JoinColumn
     @ManyToOne
-    @JoinColumn(name = "id_musico")
     private Musico idMusico;
 
+    @JoinColumn
     @ManyToOne
-    @JoinColumn(name = "id_contratante")
     private Contratante idContratante;
 
     @Column
