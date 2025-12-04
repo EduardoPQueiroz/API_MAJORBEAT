@@ -110,7 +110,7 @@ public class EventoServices {
 
 
     //MÉTODOS POST
-    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
+    @PreAuthorize("hasAuthority('ROLE_CONTRATANTE')")
     public EventoResponseDTO criarEvento(EventoRequestDTO dto, String token){
         Evento entity = mapper.toEntity(dto);
         Long idContratante = JwtUtil.extrairUsuarioId(token);
@@ -136,7 +136,7 @@ public class EventoServices {
     }
 
     //Métodos PUT
-    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
+    @PreAuthorize("hasAuthority('ROLE_CONTRATANTE')")
     public EventoResponseDTO alterarEvento(EventoUpdateDTO dto, Long idEvento, String token){
         Long idContratante = JwtUtil.extrairUsuarioId(token);
         Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
@@ -157,7 +157,7 @@ public class EventoServices {
 
     }
 
-    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
+    @PreAuthorize("hasAuthority('ROLE_CONTRATANTE')")
     public EventoResponseDTO addMusico(EventoUpdateDTO dto, Long idMusico, Long idEvento, String token){
         Long idContratante = JwtUtil.extrairUsuarioId(token);
         Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
@@ -180,7 +180,7 @@ public class EventoServices {
 
     }
 
-    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
+    @PreAuthorize("hasAuthority('ROLE_CONTRATANTE')")
     public void adicionarMediaUrl(Long idEvento, MediaUrlRequestDTO dto){
         Evento evento = repository.findById(idEvento).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
         evento.getMediaUrl().add(dto.mediaUrl());
@@ -188,7 +188,7 @@ public class EventoServices {
     }
 
     //Métodos DELETE
-    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
+    @PreAuthorize("hasAuthority('ROLE_CONTRATANTE')")
     public boolean excluirEvento(String token){
         Long id = JwtUtil.extrairUsuarioId(token);
         Optional<Evento> evento = repository.findById(id);
@@ -201,7 +201,7 @@ public class EventoServices {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
+    @PreAuthorize("hasAuthority('ROLE_CONTRATANTE')")
     public void DeleteMediaUrl(Long idEvento, MediaUrlRequestDTO dto){
         Evento evento = repository.findById(idEvento).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
         boolean removed = evento.getMediaUrl().remove(dto.mediaUrl());
