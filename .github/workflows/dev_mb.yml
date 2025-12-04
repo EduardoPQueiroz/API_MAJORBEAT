@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: List project files (diagnostic)
+      - name: Print repository tree (diagnostic)
         run: dir /s
 
       - name: Set up Java version
@@ -24,9 +24,14 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
-      - name: Build with Maven
+      # ==== Opção A: se pom.xml está dentro de MajorBeatAPI ====
+      - name: Build with Maven (using working-directory)
         working-directory: ./MajorBeatAPI
         run: mvn clean install
+
+      # ==== Opção B alternativa: forçar local do pom com -f ====
+      # - name: Build with Maven (using -f)
+      #   run: mvn -f MajorBeatAPI/pom.xml clean install
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -37,13 +42,13 @@ jobs:
   deploy:
     runs-on: windows-latest
     needs: build
-    
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
-      
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
