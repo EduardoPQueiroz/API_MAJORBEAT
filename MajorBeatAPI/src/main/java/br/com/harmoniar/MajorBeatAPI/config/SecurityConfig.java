@@ -55,7 +55,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/Musico/login", "/Musico/cadastrar", "/Musico/uploadTemp", "/Musico/uploadTempMulti",
                                 "/Contratante/login", "/Contratante/cadastrar","/Contratante/uploadTemp","/Contratante/uploadMedia","/Musico/uploadTemp","/Musico/uploadMedia").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/Eventos/**").hasRole("CONTRATANTE")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
