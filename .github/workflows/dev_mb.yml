@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy JAR app to Azure Web App - mb
 
 on:
@@ -10,41 +13,37 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read
+      contents: read # This is required for actions/checkout
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Print repository tree (diagnostic)
-        run: Get-ChildItem -Recurse | ForEach-Object { $_.FullName }
-
-      - name: Set up Java version
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'microsoft'
 
       - name: Build with Maven
-        working-directory: './API_MAJORBEAT' # <-- ajuste para a pasta onde está o pom.xml
         run: mvn clean install
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: './API_MAJORBEAT/target/*.jar'
+          path: 'target/*.jar' # Maven gera o JAR na pasta target/
 
   deploy:
     runs-on: windows-latest
     needs: build
-    
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
-      
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
