@@ -13,8 +13,7 @@ jobs:
       contents: read
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -23,27 +22,25 @@ jobs:
           distribution: 'microsoft'
 
       - name: Build with Maven
+        working-directory: MajorBeatAPI
         run: mvn clean install
-        working-directory: API_MAJORBEAT  # sem './', apenas a subpasta
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: 'API_MAJORBEAT/target/*.jar' # caminho correto do JAR
+          path: 'MajorBeatAPI/target/*.jar'
 
   deploy:
     runs-on: windows-latest
     needs: build
 
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
           name: java-app
 
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'mb'
