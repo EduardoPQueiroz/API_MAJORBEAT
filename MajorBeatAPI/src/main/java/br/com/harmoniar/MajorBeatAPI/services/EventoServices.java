@@ -149,7 +149,6 @@ public class EventoServices {
 
 
     //Métodos PUT
-    @PreAuthorize("hasAuthority('ROLE_CONTRATANTE')")
     public EventoResponseDTO alterarEvento(EventoUpdateDTO dto, Long idEvento, String token){
         Long idContratante = JwtUtil.extrairUsuarioId(token);
         Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
@@ -170,7 +169,6 @@ public class EventoServices {
 
     }
 
-    @PreAuthorize("hasAuthority('ROLE_CONTRATANTE')")
     public EventoResponseDTO addMusico(EventoUpdateDTO dto, Long idMusico, Long idEvento, String token){
         Long idContratante = JwtUtil.extrairUsuarioId(token);
         Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
@@ -193,7 +191,6 @@ public class EventoServices {
 
     }
 
-    @PreAuthorize("hasAuthority('ROLE_CONTRATANTE')")
     public void adicionarMediaUrl(Long idEvento, MediaUrlRequestDTO dto){
         Evento evento = repository.findById(idEvento).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
         evento.getMediaUrl().add(dto.mediaUrl());
@@ -201,7 +198,7 @@ public class EventoServices {
     }
 
     //Métodos DELETE
-    @PreAuthorize("hasAuthority('ROLE_CONTRATANTE')")
+
     public boolean excluirEvento(String token){
         Long id = JwtUtil.extrairUsuarioId(token);
         Optional<Evento> evento = repository.findById(id);
@@ -214,7 +211,6 @@ public class EventoServices {
         }
     }
 
-    @PreAuthorize("hasAuthority('ROLE_CONTRATANTE')")
     public void DeleteMediaUrl(Long idEvento, MediaUrlRequestDTO dto){
         Evento evento = repository.findById(idEvento).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
         boolean removed = evento.getMediaUrl().remove(dto.mediaUrl());

@@ -19,8 +19,6 @@ public interface EventoMapper {
     List<EventoResponseDTO> toResponseDTOList(List<Evento> eventos);
 
     void updateFromDto(EventoUpdateDTO dto, @MappingTarget Evento entity);
-    @Mapping(target = "contratante", source = "contratante")
-    @Mapping(target = "musico", source = "musico")
 
     EventoResponseDTO toDto(Evento evento);
 
