@@ -13,10 +13,11 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Print repository tree (diagnostic)
-        run: dir /s
+        run: Get-ChildItem -Recurse | ForEach-Object { $_.FullName }
 
       - name: Set up Java version
         uses: actions/setup-java@v4
@@ -24,31 +25,26 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
-      # ==== Opção A: se pom.xml está dentro de MajorBeatAPI ====
-      - name: Build with Maven (using working-directory)
-        working-directory: ./MajorBeatAPI
+      - name: Build with Maven
+        working-directory: './API_MAJORBEAT' # <-- ajuste para a pasta onde está o pom.xml
         run: mvn clean install
-
-      # ==== Opção B alternativa: forçar local do pom com -f ====
-      # - name: Build with Maven (using -f)
-      #   run: mvn -f MajorBeatAPI/pom.xml clean install
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: './MajorBeatAPI/target/*.jar'
+          path: './API_MAJORBEAT/target/*.jar'
 
   deploy:
     runs-on: windows-latest
     needs: build
-
+    
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
-
+      
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
