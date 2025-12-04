@@ -23,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.swing.text.html.Option;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,27 +113,40 @@ public class EventoServices {
     //MÉTODOS POST
     public EventoResponseDTO criarEvento(EventoRequestDTO dto, String token){
         Evento entity = mapper.toEntity(dto);
+
         Long idContratante = JwtUtil.extrairUsuarioId(token);
-        Contratante contratante = contratanteRepository.findById(idContratante).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
+        Contratante contratante = contratanteRepository.findById(idContratante)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
+
         entity.setContratante(contratante);
 
-        if (entity.getHoraInicio().isAfter(entity.getHoraFim())){
+        // status inicial (obrigatório)
+        entity.setStatus(StatusEvento.NAO_PREENCHIDO);
+
+        // Garantindo listas válidas
+        if (entity.getInstrumentos() == null)
+            entity.setInstrumentos(new ArrayList<>());
+
+        if (entity.getGeneros() == null)
+            entity.setGeneros(new ArrayList<>());
+
+        if (entity.getMediaUrl() == null)
+            entity.setMediaUrl(new ArrayList<>());
+
+        if (entity.getHoraInicio().isAfter(entity.getHoraFim())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O evento precisa começar antes de terminar!");
         }
-        else{
-            try {
-                Evento saved  = repository.save(entity);
-                return mapper.toDto(saved);
-            } catch (org.springframework.dao.DataIntegrityViolationException e) {
-                System.err.println("Erro de integridade de dados ao criar evento: " + e.getMessage());
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "Falha na criação do evento. Verifique se todos os campos obrigatórios foram preenchidos corretamente, incluindo 'tipoMusico' e o status inicial.");
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro desconhecido ao criar evento: " + e.getMessage());
-            }
+
+        try {
+            Evento saved  = repository.save(entity);
+            return mapper.toDto(saved);
+        }
+        catch (org.springframework.dao.DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Falha na criação do evento. Verifique campos obrigatórios, como 'tipoMusico' e 'status inicial'.");
         }
     }
+
 
     //Métodos PUT
     @PreAuthorize("hasAuthority('ROLE_CONTRATANTE')")
