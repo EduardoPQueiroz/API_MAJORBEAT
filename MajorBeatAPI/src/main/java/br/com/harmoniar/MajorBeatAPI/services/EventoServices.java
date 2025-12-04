@@ -121,8 +121,17 @@ public class EventoServices {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O evento precisa começar antes de terminar!");
         }
         else{
-            Evento saved  = repository.save(entity);
-            return mapper.toDto(saved);
+            try {
+                Evento saved  = repository.save(entity);
+                return mapper.toDto(saved);
+            } catch (org.springframework.dao.DataIntegrityViolationException e) {
+                System.err.println("Erro de integridade de dados ao criar evento: " + e.getMessage());
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Falha na criação do evento. Verifique se todos os campos obrigatórios foram preenchidos corretamente, incluindo 'tipoMusico' e o status inicial.");
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro desconhecido ao criar evento: " + e.getMessage());
+            }
         }
     }
 

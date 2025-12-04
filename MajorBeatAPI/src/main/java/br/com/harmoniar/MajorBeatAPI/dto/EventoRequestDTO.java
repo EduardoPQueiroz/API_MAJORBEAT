@@ -1,9 +1,6 @@
 package br.com.harmoniar.MajorBeatAPI.dto;
 
-import br.com.harmoniar.MajorBeatAPI.enums.NomeGenero;
-import br.com.harmoniar.MajorBeatAPI.enums.NomeInstrumento;
-import br.com.harmoniar.MajorBeatAPI.enums.StatusEvento;
-import br.com.harmoniar.MajorBeatAPI.enums.TipoEvento;
+import br.com.harmoniar.MajorBeatAPI.enums.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,7 +9,7 @@ import java.util.List;
 
 public record EventoRequestDTO(
         String nome,
-        String tipoMusico,
+        TipoMusico tipoMusico,
         LocalDate data,
         String endereco,
         List<String> mediaUrl,
