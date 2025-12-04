@@ -110,7 +110,6 @@ public class EventoServices {
 
 
     //MÉTODOS POST
-    @PreAuthorize("hasAuthority('ROLE_CONTRATANTE')")
     public EventoResponseDTO criarEvento(EventoRequestDTO dto, String token){
         Evento entity = mapper.toEntity(dto);
         Long idContratante = JwtUtil.extrairUsuarioId(token);
