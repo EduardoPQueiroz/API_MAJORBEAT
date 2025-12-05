@@ -56,6 +56,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
+            System.out.println("Token extraído: " + token);
+            System.out.println("UserId extraído: " + userId);
+            System.out.println("Role extraída: " + roleName);
+
+
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido");
             return;

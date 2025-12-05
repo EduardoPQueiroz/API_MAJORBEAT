@@ -3,11 +3,13 @@ package br.com.harmoniar.MajorBeatAPI.services;
 import br.com.harmoniar.MajorBeatAPI.dto.PropostaRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.PropostaResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
+import br.com.harmoniar.MajorBeatAPI.entity.Evento;
 import br.com.harmoniar.MajorBeatAPI.entity.Musico;
 import br.com.harmoniar.MajorBeatAPI.entity.Proposta;
 import br.com.harmoniar.MajorBeatAPI.enums.StatusProposta;
 import br.com.harmoniar.MajorBeatAPI.mappers.PropostaMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.ContratanteRepository;
+import br.com.harmoniar.MajorBeatAPI.repositories.EventoRepository;
 import br.com.harmoniar.MajorBeatAPI.repositories.MusicoRepository;
 import br.com.harmoniar.MajorBeatAPI.repositories.PropostaRepository;
 import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
@@ -28,6 +30,9 @@ public class PropostaServices {
 
     @Autowired
     MusicoRepository musicoRepository;
+
+    @Autowired
+    EventoRepository eventoRepository;
 
     @Autowired
     ContratanteRepository contratanteRepository;
@@ -74,6 +79,10 @@ public class PropostaServices {
 
         Long idUsuarioLogado = JwtUtil.extrairUsuarioId(token);
         String role = JwtUtil.extrairRole(token);
+
+        Evento evento = eventoRepository.findById(dto.idEvento())
+                .orElseThrow(() -> new IllegalArgumentException("Evento não encontrado com o ID fornecido."));
+        entity.setEvento(evento);
 
         entity.setIdRemetente(idUsuarioLogado);
         entity.setStatusProposta(StatusProposta.ABERTO);

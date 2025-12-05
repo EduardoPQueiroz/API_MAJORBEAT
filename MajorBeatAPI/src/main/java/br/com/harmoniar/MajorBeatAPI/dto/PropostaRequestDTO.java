@@ -6,6 +6,6 @@ public record PropostaRequestDTO(
         double valor,
 
         Long idRecebedor,
-        EventoRequestDTO evento
+        Long idEvento
 ) {
 }
