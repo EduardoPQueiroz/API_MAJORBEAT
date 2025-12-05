@@ -33,6 +33,7 @@ public class Evento {
     @Column
     private String endereco;
 
+    @Column
     @Enumerated(EnumType.STRING)
     private StatusEvento status;
 
@@ -52,10 +53,12 @@ public class Evento {
     @Enumerated(EnumType.STRING)
     private TipoEvento tipoEvento;
 
+    @Column
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<NomeInstrumento> instrumentos = new ArrayList<>();
 
+    @Column
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<NomeGenero> generos = new ArrayList<>();
