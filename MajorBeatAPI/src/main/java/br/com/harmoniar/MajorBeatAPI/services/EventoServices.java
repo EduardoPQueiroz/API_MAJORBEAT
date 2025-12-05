@@ -122,7 +122,7 @@ public class EventoServices {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
 
         entity.setContratante(contratante);
-        
+
         entity.setStatus(StatusEvento.NAO_PREENCHIDO);
 
         if (entity.getInstrumentos() == null)

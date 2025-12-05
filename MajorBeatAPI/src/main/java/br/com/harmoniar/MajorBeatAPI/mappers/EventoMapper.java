@@ -1,23 +1,19 @@
 package br.com.harmoniar.MajorBeatAPI.mappers;
 
-import br.com.harmoniar.MajorBeatAPI.dto.ContratanteUpdateDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoResponseDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.EventoUpdateDTO;
-import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
 import br.com.harmoniar.MajorBeatAPI.entity.Evento;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.*;
 
 import java.util.List;
-import java.util.Optional;
 
-@Mapper(componentModel = "spring", uses = { ContratanteMapper.class, MusicoMapper.class, AvaliacaoMapper.class, ChatMapper.class })
+@Mapper(componentModel = "spring", uses = { ContratanteMapper.class, MusicoMapper.class })
 public interface EventoMapper {
+
     List<EventoResponseDTO> toResponseDTOList(List<Evento> eventos);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateFromDto(EventoUpdateDTO dto, @MappingTarget Evento entity);
 
     EventoResponseDTO toDto(Evento evento);
