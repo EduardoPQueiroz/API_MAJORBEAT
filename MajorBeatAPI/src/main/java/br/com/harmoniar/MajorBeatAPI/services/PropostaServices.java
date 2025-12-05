@@ -81,35 +81,31 @@ public class PropostaServices {
 
         if (role.equals("ROLE_CONTRATANTE")) {
 
-            entity.setContratante(
-                    contratanteRepository.findById(idUsuarioLogado)
-                            .orElseThrow(() -> new IllegalArgumentException("Contratante remetente não encontrado"))
-            );
+            Contratante remetente = contratanteRepository.findById(idUsuarioLogado)
+                    .orElseThrow(() -> new IllegalArgumentException("Contratante remetente não encontrado"));
 
-            entity.setMusico(
-                    musicoRepository.findById(dto.idRecebedor())
-                            .orElseThrow(() -> new IllegalArgumentException("Músico recebedor não encontrado"))
-            );
+            Musico destinatario = musicoRepository.findById(dto.idRecebedor())
+                    .orElseThrow(() -> new IllegalArgumentException("Destinatário não é um músico"));
+
+            entity.setContratante(remetente);
+            entity.setMusico(destinatario);
         }
         else if (role.equals("ROLE_MUSICO")) {
 
-            entity.setMusico(
-                    musicoRepository.findById(idUsuarioLogado)
-                            .orElseThrow(() -> new IllegalArgumentException("Músico remetente não encontrado"))
-            );
+            Musico remetente = musicoRepository.findById(idUsuarioLogado)
+                    .orElseThrow(() -> new IllegalArgumentException("Músico remetente não encontrado"));
 
-            entity.setContratante(
-                    contratanteRepository.findById(dto.idRecebedor())
-                            .orElseThrow(() -> new IllegalArgumentException("Contratante recebedor não encontrado"))
-            );
+            Contratante destinatario = contratanteRepository.findById(dto.idRecebedor())
+                    .orElseThrow(() -> new IllegalArgumentException("Destinatário não é um contratante"));
+
+            entity.setMusico(remetente);
+            entity.setContratante(destinatario);
         }
-
         else {
             throw new RuntimeException("Role não reconhecida ou inválida!");
         }
 
         Proposta saved = repository.save(entity);
-
         return mapper.toDto(saved);
     }
 
