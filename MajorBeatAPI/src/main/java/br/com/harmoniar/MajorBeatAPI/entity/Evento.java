@@ -63,7 +63,7 @@ public class Evento {
     @Enumerated(EnumType.STRING)
     private List<NomeGenero> generos = new ArrayList<>();
 
-    @JoinColumn
+    @JoinColumn(nullable = true)
     @ManyToOne
     private Musico musico;
 

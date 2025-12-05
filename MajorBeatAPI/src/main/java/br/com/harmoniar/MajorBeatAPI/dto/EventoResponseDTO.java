@@ -12,6 +12,8 @@ import java.util.List;
 public record EventoResponseDTO(
         Long idEvento,
         String nome,
+
+        String titulo,
         TipoMusico tipoMusico,
         LocalDate data,
         String endereco,
