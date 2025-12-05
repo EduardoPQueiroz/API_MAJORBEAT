@@ -8,6 +8,7 @@ import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
 import br.com.harmoniar.MajorBeatAPI.entity.Evento;
 import br.com.harmoniar.MajorBeatAPI.entity.Musico;
 import br.com.harmoniar.MajorBeatAPI.enums.*;
+import br.com.harmoniar.MajorBeatAPI.mappers.ContratanteMapper;
 import br.com.harmoniar.MajorBeatAPI.mappers.EventoMapper;
 import br.com.harmoniar.MajorBeatAPI.repositories.ContratanteRepository;
 import br.com.harmoniar.MajorBeatAPI.repositories.EventoRepository;
@@ -40,6 +41,8 @@ public class EventoServices {
     MusicoRepository musicoRepository;
     @Autowired
     EventoMapper mapper;
+    @Autowired
+    ContratanteMapper contratanteMapper;
 
     //Métodos GET
     public List<EventoResponseDTO> getAllEventos(){
@@ -119,11 +122,9 @@ public class EventoServices {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
 
         entity.setContratante(contratante);
-
-        // status inicial (obrigatório)
+        
         entity.setStatus(StatusEvento.NAO_PREENCHIDO);
 
-        // Garantindo listas válidas
         if (entity.getInstrumentos() == null)
             entity.setInstrumentos(new ArrayList<>());
 

@@ -22,8 +22,9 @@ public record EventoResponseDTO(
         LocalTime horaInicio,
         List<NomeInstrumento> instrumentos,
         List<NomeGenero> generos,
-        ContratanteResponseDTO contratante,
         LocalTime horaFim,
-        String descricao
+        String descricao,
+
+        ContratanteResponseDTO contratante
 ) {
 }
