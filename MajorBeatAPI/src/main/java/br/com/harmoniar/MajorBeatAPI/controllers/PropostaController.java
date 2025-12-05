@@ -37,9 +37,9 @@ public class PropostaController {
 
     //POST
     @PostMapping("/post")
-    public ResponseEntity<PropostaResponseDTO> postProposta(@RequestHeader("Authorization") String authHeader, @PathVariable Long idRecebedor, @RequestBody PropostaRequestDTO dto){
+    public ResponseEntity<PropostaResponseDTO> postProposta(@RequestHeader("Authorization") String authHeader, @RequestBody PropostaRequestDTO dto){
         String token = authHeader.replace("Bearer ", "").trim();
-        return ResponseEntity.ok(services.postProposta(dto, token, idRecebedor));
+        return ResponseEntity.ok(services.postProposta(dto, token));
     }
 
 }
