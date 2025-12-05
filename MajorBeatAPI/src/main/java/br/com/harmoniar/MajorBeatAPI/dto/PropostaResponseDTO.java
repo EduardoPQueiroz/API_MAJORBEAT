@@ -8,6 +8,8 @@ import br.com.harmoniar.MajorBeatAPI.enums.StatusProposta;
 import java.util.Date;
 
 public record PropostaResponseDTO(
+
+        Long idProposta,
         Date dataEnvio,
         double valor,
         StatusProposta statusProposta,
