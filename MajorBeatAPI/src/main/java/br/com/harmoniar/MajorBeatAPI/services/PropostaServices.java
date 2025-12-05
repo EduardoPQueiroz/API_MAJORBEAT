@@ -73,27 +73,46 @@ public class PropostaServices {
         Proposta entity = mapper.toEntity(dto);
 
         Long idUsuarioLogado = JwtUtil.extrairUsuarioId(token);
+        String role = JwtUtil.extrairRole(token);
+
         entity.setIdRemetente(idUsuarioLogado);
         entity.setStatusProposta(StatusProposta.ABERTO);
         entity.setDataEnvio(LocalDate.now());
 
-        boolean isContratante = contratanteRepository.existsById(idUsuarioLogado);
-        boolean isMusico = musicoRepository.existsById(idUsuarioLogado);
+        if (role.equals("ROLE_CONTRATANTE")) {
 
-        if (isContratante) {
-            entity.setContratante(contratanteRepository.findById(idUsuarioLogado).get());
-            entity.setMusico(null);
+            entity.setContratante(
+                    contratanteRepository.findById(idUsuarioLogado)
+                            .orElseThrow(() -> new IllegalArgumentException("Contratante remetente não encontrado"))
+            );
 
-        } else if (isMusico) {
-            entity.setMusico(musicoRepository.findById(idUsuarioLogado).get());
-        } else {
-            throw new IllegalArgumentException("Usuário remetente não encontrado.");
+            entity.setMusico(
+                    musicoRepository.findById(dto.idRecebedor())
+                            .orElseThrow(() -> new IllegalArgumentException("Músico recebedor não encontrado"))
+            );
+        }
+        else if (role.equals("ROLE_MUSICO")) {
+
+            entity.setMusico(
+                    musicoRepository.findById(idUsuarioLogado)
+                            .orElseThrow(() -> new IllegalArgumentException("Músico remetente não encontrado"))
+            );
+
+            entity.setContratante(
+                    contratanteRepository.findById(dto.idRecebedor())
+                            .orElseThrow(() -> new IllegalArgumentException("Contratante recebedor não encontrado"))
+            );
+        }
+
+        else {
+            throw new RuntimeException("Role não reconhecida ou inválida!");
         }
 
         Proposta saved = repository.save(entity);
 
         return mapper.toDto(saved);
     }
+
 
 
 }
