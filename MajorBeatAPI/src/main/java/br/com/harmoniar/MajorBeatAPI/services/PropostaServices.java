@@ -68,13 +68,12 @@ public class PropostaServices {
     }
 
     //POST
-    public PropostaResponseDTO postProposta(PropostaRequestDTO dto, String token, Long idRecebedor) {
+    public PropostaResponseDTO postProposta(PropostaRequestDTO dto, String token) {
 
         Proposta entity = mapper.toEntity(dto);
 
         Long idUsuarioLogado = JwtUtil.extrairUsuarioId(token);
         entity.setIdRemetente(idUsuarioLogado);
-        entity.setIdRecebedor(idRecebedor);
         entity.setStatusProposta(StatusProposta.ABERTO);
         entity.setDataEnvio(LocalDate.now());
 
