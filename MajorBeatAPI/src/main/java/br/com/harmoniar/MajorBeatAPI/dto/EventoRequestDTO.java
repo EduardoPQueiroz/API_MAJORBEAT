@@ -9,6 +9,7 @@ import java.util.List;
 
 public record EventoRequestDTO(
         String nome,
+        String titulo,
         TipoMusico tipoMusico,
         LocalDate data,
         String endereco,
