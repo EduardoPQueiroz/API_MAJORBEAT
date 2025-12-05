@@ -2,6 +2,7 @@ package br.com.harmoniar.MajorBeatAPI.controllers;
 
 import br.com.harmoniar.MajorBeatAPI.dto.PropostaRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.PropostaResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.PropostaUpdateDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Proposta;
 import br.com.harmoniar.MajorBeatAPI.services.PropostaServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,12 @@ public class PropostaController {
     public ResponseEntity<PropostaResponseDTO> postProposta(@RequestHeader("Authorization") String authHeader, @RequestBody PropostaRequestDTO dto){
         String token = authHeader.replace("Bearer ", "").trim();
         return ResponseEntity.ok(services.postProposta(dto, token));
+    }
+
+    //PUT
+    @PutMapping("/update/{idProposta}")
+    public ResponseEntity<PropostaResponseDTO> updateProposta(@RequestBody PropostaUpdateDTO dto, @PathVariable Long idProposta){
+        return ResponseEntity.ok(services.updateProposta(dto, idProposta));
     }
 
 }

@@ -2,6 +2,7 @@ package br.com.harmoniar.MajorBeatAPI.services;
 
 import br.com.harmoniar.MajorBeatAPI.dto.PropostaRequestDTO;
 import br.com.harmoniar.MajorBeatAPI.dto.PropostaResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.PropostaUpdateDTO;
 import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
 import br.com.harmoniar.MajorBeatAPI.entity.Evento;
 import br.com.harmoniar.MajorBeatAPI.entity.Musico;
@@ -115,6 +116,15 @@ public class PropostaServices {
         }
 
         Proposta saved = repository.save(entity);
+        return mapper.toDto(saved);
+    }
+
+    //PUT
+
+    public PropostaResponseDTO updateProposta(PropostaUpdateDTO dto, Long idProposta){
+        Proposta proposta = repository.findById(idProposta).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        mapper.updateFromDto(dto, proposta);
+        Proposta saved = repository.save(proposta);
         return mapper.toDto(saved);
     }
 
