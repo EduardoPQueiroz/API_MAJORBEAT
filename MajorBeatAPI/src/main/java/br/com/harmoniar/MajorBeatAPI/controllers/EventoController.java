@@ -88,7 +88,7 @@ public class EventoController {
     //Métodos POST
 
     @PostMapping("/criar")
-    public ResponseEntity<EventoResponseDTO> criarEvento(@RequestBody EventoRequestDTO dto, @RequestHeader String authHeader){
+    public ResponseEntity<EventoResponseDTO> criarEvento(@RequestBody EventoRequestDTO dto, @RequestHeader("Authorization") String authHeader){
             String token = authHeader.replace("Bearer ", "").trim();
             return ResponseEntity.ok(services.criarEvento(dto, token));
     }

@@ -1,0 +1,22 @@
+{
+  "nome": "Festa de Aniversário - João",
+  "titulo": "Busca por Banda de Rock/Pop",
+  "tipoMusico": "BANDA",
+  "data": "2026-03-15",
+  "endereco": "Rua das Flores, 123 - Centro, São Paulo - SP",
+  "mediaUrl": [],
+  "horaInicio": "20:00:00",
+  "tipoEvento": "FESTA",
+  "instrumentos": [
+    "GUITARRA",
+    "BAIXO",
+    "BATERIA"
+  ],
+  "generos": [
+    "ROCK",
+    "POP",
+    "BLUES"
+  ],
+  "horaFim": "23:00:00",
+  "descricao": "Procuramos uma banda animada para tocar clássicos do rock e pop dos anos 80 e 90, em volume moderado. O evento ocorrerá em um salão de festas com estrutura de som básica."
+}
