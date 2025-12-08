@@ -12,6 +12,8 @@ public record MusicoUpdateDTO(
         String telefone,
         String endereco,
         byte[] fotoPerfil,
+
+        List<String> mediaUrl,
         String biografia,
         List<String> links,
         List<NomeInstrumento> nomeInstrumentos,

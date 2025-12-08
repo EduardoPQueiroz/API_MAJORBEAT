@@ -15,6 +15,8 @@ public record EventoUpdateDTO(
         String endereco,
         StatusEvento statusEvento,
         List<byte[]> imagemLocalEvento,
+        List<String> mediaUrl,
+
         LocalTime horaInicio,
         List<NomeInstrumento> instrumentos,
         List<NomeGenero> generos,
