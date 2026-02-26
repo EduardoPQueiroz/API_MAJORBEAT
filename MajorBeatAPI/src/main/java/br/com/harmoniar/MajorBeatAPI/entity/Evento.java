@@ -1,13 +1,13 @@
 package br.com.harmoniar.MajorBeatAPI.entity;
 
-import br.com.harmoniar.MajorBeatAPI.enums.StatusEvento;
-import br.com.harmoniar.MajorBeatAPI.enums.TipoMusico;
+import br.com.harmoniar.MajorBeatAPI.enums.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table
@@ -24,6 +24,7 @@ public class Evento {
     private String nome;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private TipoMusico tipoMusico;
 
     @Column
@@ -32,11 +33,9 @@ public class Evento {
     @Column
     private String endereco;
 
-    @Enumerated
-    private StatusEvento status;
-
     @Column
-    private byte[] imagemLocalEvento;
+    @Enumerated(EnumType.STRING)
+    private StatusEvento status;
 
     @Column
     private LocalTime horaInicio;
@@ -50,16 +49,30 @@ public class Evento {
     @Column
     private String titulo;
 
-    @ManyToMany
-    @JoinTable(name = "InstrumentoEvento",
-    joinColumns = @JoinColumn(name = "idEvento"),
-    inverseJoinColumns = @JoinColumn(name = "idInstrumento"))
-    private List<Instrumento> idInstrumento;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private TipoEvento tipoEvento;
 
-    @ManyToMany
-    @JoinTable(name = "GeneroMusicalEvento",
-    joinColumns = @JoinColumn(name = "idEvento"),
-    inverseJoinColumns = @JoinColumn(name = "idGeneroMusical"))
-    private List<GeneroMusical> idGeneroMusical;
+    @Column
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    private List<NomeInstrumento> instrumentos = new ArrayList<>();
+
+    @Column
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    private List<NomeGenero> generos = new ArrayList<>();
+
+    @JoinColumn(nullable = true)
+    @ManyToOne
+    private Musico musico;
+
+    @JoinColumn
+    @ManyToOne
+    private Contratante contratante;
+
+    @Column
+    @ElementCollection
+    private List<String> mediaUrl = new ArrayList<>();
 
 }

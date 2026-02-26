@@ -2,7 +2,8 @@ package br.com.harmoniar.MajorBeatAPI.enums;
 
 public enum NomeInstrumento {
 
-    VIOLÃO,
+    VOZ,
+    VIOLAO,
     GUITARRA,
     BAIXO,
     PIANO,
@@ -18,7 +19,7 @@ public enum NomeInstrumento {
     ACORDEON,
     GAITA,
     TAMBORE,
-    CUÍCA,
+    CUICA,
     CONTRABAIXO,
     CAVAQUINHO,
 

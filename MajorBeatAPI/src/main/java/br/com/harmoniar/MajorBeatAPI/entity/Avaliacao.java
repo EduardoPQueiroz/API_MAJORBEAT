@@ -17,7 +17,7 @@ public class Avaliacao {
     private Long idAvaliacao;
 
     @Column
-    private int nota;
+    private Long nota;
 
     @Column
     private String comentario;
@@ -26,9 +26,17 @@ public class Avaliacao {
     private LocalDateTime data;
 
     @Column
-    private String avaliador;
+    private Long idAvaliador;
 
     @Column
-    private String recebedor;
+    private Long idRecebedor;
+
+    @JoinColumn
+    @ManyToOne
+    private Musico idMusico;
+
+    @JoinColumn
+    @ManyToOne
+    private Contratante idContratante;
 
 }

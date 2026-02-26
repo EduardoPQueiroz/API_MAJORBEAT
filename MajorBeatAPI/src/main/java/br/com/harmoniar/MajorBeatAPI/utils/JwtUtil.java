@@ -1,0 +1,49 @@
+package br.com.harmoniar.MajorBeatAPI.utils;
+
+import br.com.harmoniar.MajorBeatAPI.enums.Role;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
+import java.security.Key;
+import java.util.Date;
+
+public class JwtUtil {
+    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static final long EXPIRATION_TIME = 30 * 24 * 12 * 60;
+
+    public static String gerarToken(Long userId, Role role) {
+        return Jwts.builder()
+                .setSubject(String.valueOf(userId))
+                .claim("role", role.name())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SECRET_KEY)
+                .compact();
+    }
+
+    public static Long extrairUsuarioId(String token) {
+        String subject = Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+
+        return Long.parseLong(subject);
+    }
+
+    public static String extrairRole(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("role", String.class); // ex: ROLE_MUSICO
+    }
+
+
+
+
+}
+

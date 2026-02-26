@@ -1,0 +1,144 @@
+package br.com.harmoniar.MajorBeatAPI.services;
+
+import br.com.harmoniar.MajorBeatAPI.dto.ContratanteRequestDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.ContratanteResponseDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.ContratanteUpdateDTO;
+import br.com.harmoniar.MajorBeatAPI.dto.MediaUrlRequestDTO;
+import br.com.harmoniar.MajorBeatAPI.entity.Contratante;
+import br.com.harmoniar.MajorBeatAPI.entity.Musico;
+import br.com.harmoniar.MajorBeatAPI.enums.Role;
+import br.com.harmoniar.MajorBeatAPI.enums.TipoContratante;
+import br.com.harmoniar.MajorBeatAPI.mappers.ContratanteMapper;
+import br.com.harmoniar.MajorBeatAPI.repositories.ContratanteRepository;
+import br.com.harmoniar.MajorBeatAPI.utils.JwtUtil;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ContratanteServices {
+
+    @Autowired
+    ContratanteRepository repository;
+
+    @Autowired
+    ContratanteMapper mapper;
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
+    //Métodos GET
+    public List<ContratanteResponseDTO> getAllContratantes(){
+        return mapper.toResponseDTOList(repository.findAll());
+    }
+
+    public ContratanteResponseDTO getContratanteById(Long id){
+        Contratante contratante = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante com esse ID não encontrado!"));;
+        return mapper.toDto(contratante);
+    }
+
+    public ContratanteResponseDTO getContratanteByNome(String nomeContratante){
+        Contratante contratante = repository.getByNome(nomeContratante).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante com esse NOME não encontrado!"));
+        return mapper.toDto(contratante);
+    }
+
+    public List<ContratanteResponseDTO> getContratanteByTipoContratante(TipoContratante tipoContratante){
+        List<Contratante> contratante = repository.getByTipoContratante(tipoContratante);
+        if (contratante.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhum contratante deste tipo foi encontrado");
+        }
+        return mapper.toResponseDTOList(contratante);
+    }
+
+    //Métodos Post
+    public ContratanteResponseDTO cadastrarContratante(ContratanteRequestDTO dto){
+
+        Contratante entity = mapper.toEntity(dto);
+        if (!entity.getTelefone().matches("\\d{10,11}")){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Número de telefone inválido");
+        }
+        if(!entity.getEmail().matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email inválido inserido!");
+        }
+        entity.setSenha(passwordEncoder.encode(dto.senha()));
+        entity.setRole(Role.ROLE_CONTRATANTE);
+        entity.setDtCriacao(LocalDate.now());
+        Contratante saved = repository.save(entity);
+        return mapper.toDto(saved);
+    }
+
+    public String autenticarContratante(String nome, String email, String senhaDigitada) {
+        Contratante contratante;
+
+        if (nome != null && !nome.isEmpty()) {
+            contratante = repository.getByNome(nome)
+                    .orElseThrow(() -> new RuntimeException("Usuário inexistente"));
+        } else if (email != null && !email.isEmpty()) {
+            contratante = repository.getByEmail(email)
+                    .orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um contratante com esse email"));
+        } else {
+            throw new NullPointerException("Insira o nome ou o email para realizar o login");
+        }
+
+        if (!passwordEncoder.matches(senhaDigitada, contratante.getSenha())) {
+            throw new RuntimeException("Senha incorreta inserida");
+        }
+
+        return JwtUtil.gerarToken(contratante.getIdContratante(), Role.ROLE_CONTRATANTE);
+    }
+
+    //Métodos PUT
+    public ContratanteResponseDTO editContratanteById(ContratanteUpdateDTO dto, String token){
+            Long id = JwtUtil.extrairUsuarioId(token);
+            Contratante contratante = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Não foi encontrado um contratante com esse id"));
+            if (!contratante.getTelefone().matches("\\d{10,11}")){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Número de telefone inválido inserido");
+            }
+            else{
+                mapper.updateFromDto(dto, contratante);
+                Contratante saved = repository.save(contratante);
+                return mapper.toDto(saved);
+            }
+        }
+
+    //Patch
+    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
+    public void adicionarMediaUrl(String token, MediaUrlRequestDTO dto){
+        Long idContratante = JwtUtil.extrairUsuarioId(token);
+        Contratante contratante = repository.findById(idContratante).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
+        contratante.getMediaUrl().add(dto.mediaUrl());
+        repository.save(contratante);
+    }
+
+    //Métodos DELETE
+    public boolean DeleteContratanteById(String token){
+        Long id = JwtUtil.extrairUsuarioId(token);
+        Optional<Contratante> contratante = repository.findById(id);
+        if (contratante.isPresent()){
+            repository.deleteById(id);
+            return true;
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não é possível deletar um contratante que não existe!");
+    }
+
+    @PreAuthorize("hasRole('ROLE_CONTRATANTE')")
+    public void DeleteMediaUrl(String token, MediaUrlRequestDTO dto){
+        Long idContratante = JwtUtil.extrairUsuarioId(token);
+        Contratante contratante = repository.findById(idContratante).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contratante não encontrado"));
+        boolean removed = contratante.getMediaUrl().remove(dto.mediaUrl());
+        if (!removed){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Url não encontrada");
+        }
+    }
+}
+

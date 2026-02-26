@@ -1,0 +1,362 @@
+---Mensagens
+
+[
+  {
+    "texto": "Olá! Vi seu perfil e gostaria de saber se está disponível para um evento em novembro.",
+    "proposta": false,
+    "chat": { "id": 1 }
+  },
+  {
+    "texto": "Gostei do seu trabalho! Você se apresenta em festas particulares também?",
+    "proposta": false,
+    "chat": { "id": 2 }
+  },
+  {
+    "texto": "Tenho um evento no dia 20/12 e posso pagar R$900 pela apresentação.",
+    "proposta": true,
+    "valor": 900.0,
+    "evento": { "id": 4 },
+    "chat": { "id": 3 }
+  },
+  {
+    "texto": "Podemos fechar por R$1.200 para o evento Sertanejo Night?",
+    "proposta": true,
+    "valor": 1200.0,
+    "evento": { "id": 5 },
+    "chat": { "id": 4 }
+  },
+  {
+    "texto": "Tenho um show acústico no Terraço e o cachê é de R$700, incluindo o som básico.",
+    "proposta": true,
+    "valor": 700.0,
+    "evento": { "id": 2 },
+    "chat": { "id": 5 }
+  }
+]
+
+
+--------------------------Musicos
+
+[
+{
+    "nome": "João Silva",
+    "apelido": "JSilva",
+    "email": "joao.silva@example.com",
+    "senha": "senhaSegura123",
+    "telefone": "(11) 91234-5678",
+    "endereco": "Rua das Flores, 123 - São Paulo, SP",
+    "fotoPerfil": "iVBORw0KGgoAAAANSUhEUgAAAAUA",
+    "biografia": "Músico apaixonado por jazz e música instrumental. Atua há mais de 10 anos.",
+    "links": [
+      "https://www.instagram.com/jsilva_music",
+      "https://www.youtube.com/jsilvaoficial"
+    ],
+    "nomeInstrumentos": ["GUITARRA", "VIOLAO"],
+    "nomeGeneros": ["JAZZ", "BLUES"],
+    "tipoMusico": "SOLO",
+    "mediaUrl": []
+  },
+  {
+    "nome": "Maria Oliveira",
+    "apelido": "MariOli",
+    "email": "maria.oliveira@example.com",
+    "senha": "melodiaForte456",
+    "telefone": "(21) 99876-5432",
+    "endereco": "Av. Atlântica, 987 - Rio de Janeiro, RJ",
+    "fotoPerfil": "iVBORw0KGgoAAAANSUhEUgAAAAUB",
+    "biografia": "Cantora e compositora com influências da MPB e bossa nova.",
+    "links": [
+      "https://www.instagram.com/mariaoli_music"
+    ],
+    "nomeInstrumentos": ["VOZ", "VIOLAO"],
+    "nomeGeneros": ["MPB", "BOSSA_NOVA"],
+    "tipoMusico": "SOLO",
+    "mediaUrl": []
+  },
+  {
+    "nome": "Lucas Andrade",
+    "apelido": "LAndrade",
+    "email": "lucas.andrade@example.com",
+    "senha": "bateriaTop789",
+    "telefone": "(31) 97777-2222",
+    "endereco": "Rua dos Tambores, 56 - Belo Horizonte, MG",
+    "fotoPerfil": "iVBORw0KGgoAAAANSUhEUgAAAAUC",
+    "biografia": "Baterista profissional atuando em bandas de rock alternativo.",
+    "links": [
+      "https://www.youtube.com/lucasdrums"
+    ],
+    "nomeInstrumentos": ["BATERIA"],
+    "nomeGeneros": ["ROCK", "POP_ROCK"],
+    "tipoMusico": "BANDA",
+    "mediaUrl": []
+  },
+  {
+    "nome": "Ana Costa",
+    "apelido": "AnaC",
+    "email": "ana.costa@example.com",
+    "senha": "pianoMelody321",
+    "telefone": "(41) 98765-1122",
+    "endereco": "Rua Harmonia, 75 - Curitiba, PR",
+    "fotoPerfil": "iVBORw0KGgoAAAANSUhEUgAAAAUD",
+    "biografia": "Pianista clássica com experiência em orquestras e eventos.",
+    "links": [
+      "https://www.instagram.com/anacpiano"
+    ],
+    "nomeInstrumentos": ["PIANO", "TECLADO"],
+    "nomeGeneros": ["CLASSICO"],
+    "tipoMusico": "SOLO",
+    "mediaUrl": []
+  },
+  {
+    "nome": "Pedro Rocha",
+    "apelido": "PRocha",
+    "email": "pedro.rocha@example.com",
+    "senha": "baixoGroove654",
+    "telefone": "(71) 98888-3344",
+    "endereco": "Rua dos Ritmos, 222 - Salvador, BA",
+    "fotoPerfil": "iVBORw0KGgoAAAANSUhEUgAAAAUE",
+    "biografia": "Baixista apaixonado por groove, funk e reggae.",
+    "links": [
+      "https://www.instagram.com/prochabass"
+    ],
+    "nomeInstrumentos": ["BAIXO"],
+    "nomeGeneros": ["FUNK", "REGGAE"],
+    "tipoMusico": "BANDA",
+    "mediaUrl": []
+  },
+  {
+    "nome": "Carolina Mendes",
+    "apelido": "CaroM",
+    "email": "carolina.mendes@example.com",
+    "senha": "vozDoce123",
+    "telefone": "(51) 99666-7788",
+    "endereco": "Av. Central, 45 - Porto Alegre, RS",
+    "fotoPerfil": "iVBORw0KGgoAAAANSUhEUgAAAAUF",
+    "biografia": "Cantora de pop e soul, com repertório internacional.",
+    "links": [
+      "https://www.youtube.com/carolmendesmusic"
+    ],
+    "nomeInstrumentos": ["VOZ"],
+    "nomeGeneros": ["POP", "SOUL"],
+    "tipoMusico": "SOLO",
+    "mediaUrl": []
+  },
+  {
+    "nome": "Diego Almeida",
+    "apelido": "DAlmeida",
+    "email": "diego.almeida@example.com",
+    "senha": "tecladoVivo852",
+    "telefone": "(61) 91122-3344",
+    "endereco": "Quadra 303, Brasília, DF",
+    "fotoPerfil": "iVBORw0KGgoAAAANSUhEUgAAAAUG",
+    "biografia": "Tecladista versátil com experiência em estúdios e casamentos.",
+    "links": [
+      "https://www.instagram.com/diegoalmeidamusic"
+    ],
+    "nomeInstrumentos": ["TECLADO", "SINTETIZADOR"],
+    "nomeGeneros": ["POP", "GOSPEL"],
+    "tipoMusico": "SOLO",
+    "mediaUrl": []
+}
+]
+
+--------------------Contratantes
+[
+  {
+    "nome": "João Silva",
+    "senha": "SenhaSegura123!",
+    "telefone": "11987654321",
+    "email": "joao.silva@example.com",
+    "endereco": "Rua das Flores, 123 - São Paulo, SP",
+    "fotoPerfil": "",
+    "biografia": "Produtor de eventos musicais há mais de 10 anos, especializado em shows e festivais.",
+    "links": [
+      "https://instagram.com/joaosilvaeventos",
+      "https://linkedin.com/in/joaosilva"
+    ],
+    "nomeEmpresa": "Silva Produções Artísticas",
+    "tipoContratante": "ESTABELECIMENTO"
+  },
+  {
+    "nome": "Maria Oliveira",
+    "senha": "Maria@2025",
+    "telefone": "21999887766",
+    "email": "maria.oliveira@example.com",
+    "endereco": "Av. Atlântica, 500 - Rio de Janeiro, RJ",
+    "fotoPerfil": "",
+    "biografia": "Apaixonada por música e eventos culturais, contratante independente de bandas locais.",
+    "links": [
+      "https://facebook.com/mariaoliveiraeventos"
+    ],
+    "nomeEmpresa": "",
+    "tipoContratante": "PESSOA_FISICA"
+  },
+  {
+    "nome": "Lucas Andrade",
+    "senha": "Luk123!@#",
+    "telefone": "31988776655",
+    "email": "lucas.andrade@beatsound.com",
+    "endereco": "Rua Belo Horizonte, 742 - Belo Horizonte, MG",
+    "fotoPerfil": "",
+    "biografia": "Gerente do BeatSound Pub, responsável por eventos de música ao vivo toda semana.",
+    "links": [
+      "https://instagram.com/beatsoundpub",
+      "https://facebook.com/beatsoundbh"
+    ],
+    "nomeEmpresa": "BeatSound Pub",
+    "tipoContratante": "ESTABELECIMENTO"
+  },
+  {
+    "nome": "Carla Mendes",
+    "senha": "Carla#2024",
+    "telefone": "41991234567",
+    "email": "carla.mendes@gmail.com",
+    "endereco": "Rua XV de Novembro, 145 - Curitiba, PR",
+    "fotoPerfil": "",
+    "biografia": "Organizadora de eventos particulares e festas corporativas. Ama descobrir novos talentos musicais.",
+    "links": [],
+    "nomeEmpresa": "",
+    "tipoContratante": "PESSOA_FISICA"
+  },
+  {
+    "nome": "Eduardo Lima",
+    "senha": "EduLima@2025",
+    "telefone": "11995554433",
+    "email": "eduardo.lima@aurafest.com",
+    "endereco": "Av. Paulista, 2000 - São Paulo, SP",
+    "fotoPerfil": "",
+    "biografia": "CEO da AuraFest, empresa especializada em grandes eventos e festivais de música eletrônica.",
+    "links": [
+      "https://aurafest.com",
+      "https://instagram.com/aurafestbr"
+    ],
+    "nomeEmpresa": "AuraFest Produções",
+    "tipoContratante": "ESTABELECIMENTO"
+  }
+]
+
+--------------------------Eventos
+
+[
+  {
+    "nome": "Noite Acústica no Terraço",
+    "tipoMusico": "solo",
+    "data": "2025-11-10T20:00:00",
+    "endereco": "Av. Paulista, 1500 - São Paulo, SP",
+    "imagemLocalEvento": [],
+    "horaInicio": "20:00:00",
+    "instrumentos": ["VIOLAO", "CAJON"],
+    "generos": ["MPB", "POP"],
+    "horaFim": "23:00:00",
+    "descricao": "Evento intimista com artistas locais apresentando repertório acústico.",
+    "titulo": "Noite Acústica"
+  },
+  {
+    "nome": "Festival Rock na Praça",
+    "tipoMusico": "banda",
+    "data": "2025-12-05T18:00:00",
+    "endereco": "Praça da Liberdade - Belo Horizonte, MG",
+    "imagemLocalEvento": [],
+    "horaInicio": "18:00:00",
+    "instrumentos": ["GUITARRA", "BAIXO", "BATERIA"],
+    "generos": ["ROCK", "METAL"],
+    "horaFim": "23:59:00",
+    "descricao": "Festival gratuito com bandas de rock e metal independentes.",
+    "titulo": "Rock na Praça"
+  },
+  {
+    "nome": "Jazz & Wine Experience",
+    "tipoMusico": "banda",
+    "data": "2025-11-22T19:30:00",
+    "endereco": "Rua das Palmeiras, 250 - Campinas, SP",
+    "imagemLocalEvento": [],
+    "horaInicio": "19:30:00",
+    "instrumentos": ["SAXOFONE", "CONTRABAIXO", "BATERIA", "TECLADO"],
+    "generos": ["JAZZ", "BLUES"],
+    "horaFim": "23:30:00",
+    "descricao": "Uma noite sofisticada de jazz acompanhada por uma degustação de vinhos selecionados.",
+    "titulo": "Jazz & Wine Experience"
+  },
+  {
+    "nome": "Sunset Eletrônico",
+    "tipoMusico": "solo",
+    "data": "2025-12-20T17:00:00",
+    "endereco": "Praia de Copacabana - Rio de Janeiro, RJ",
+    "imagemLocalEvento": [],
+    "horaInicio": "17:00:00",
+    "instrumentos": ["CONTROLADORA", "NOTEBOOK"],
+    "generos": ["ELETRONICA", "HOUSE"],
+    "horaFim": "22:00:00",
+    "descricao": "Festa sunset com DJs renomados e clima de verão à beira-mar.",
+    "titulo": "Sunset Eletrônico"
+  },
+  {
+    "nome": "Sertanejo Night",
+    "tipoMusico": "banda",
+    "data": "2025-11-30T21:00:00",
+    "endereco": "Arena Goiânia - Goiânia, GO",
+    "imagemLocalEvento": [],
+    "horaInicio": "21:00:00",
+    "instrumentos": ["VIOLAO", "SANFONA", "BATERIA"],
+    "generos": ["SERTANEJO", "COUNTRY"],
+    "horaFim": "02:00:00",
+    "descricao": "A maior noite sertaneja da região com duplas de destaque e muito agito.",
+    "titulo": "Sertanejo Night"
+  }
+]
+
+
+------------------------------------------chats
+
+[
+  {
+    "musico": { "id": 1 },
+    "contratante": { "id": 2 }
+  },
+  {
+    "musico": { "id": 3 },
+    "contratante": { "id": 1 }
+  },
+  {
+    "musico": { "id": 2 },
+    "contratante": { "id": 4 }
+  },
+  {
+    "musico": { "id": 5 },
+    "contratante": { "id": 3 }
+  },
+  {
+    "musico": { "id": 4 },
+    "contratante": { "id": 5 }
+  }
+]
+
+-------------------------------------Avaliações
+[
+  {
+    "nota": 5,
+    "comentario": "Experiência incrível! Profissional super pontual e talentoso, recomendo demais.",
+    "idRecebedor": 1
+  },
+  {
+    "nota": 4,
+    "comentario": "Show muito bom, mas o som teve alguns problemas técnicos no início.",
+    "idRecebedor": 2
+  },
+  {
+    "nota": 3,
+    "comentario": "Apresentação ok, mas esperava mais interação com o público.",
+    "idRecebedor": 3
+  },
+  {
+    "nota": 2,
+    "comentario": "Houve atraso e a comunicação poderia ter sido melhor.",
+    "idRecebedor": 4
+  },
+  {
+    "nota": 1,
+    "comentario": "Infelizmente o profissional não compareceu ao evento e não avisou com antecedência.",
+    "idRecebedor": 5
+  }
+]
+
